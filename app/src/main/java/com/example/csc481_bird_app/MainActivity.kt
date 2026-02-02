@@ -1,47 +1,38 @@
 package com.example.csc481_bird_app
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.csc481_bird_app.ui.theme.Csc481birdappTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(!hasCameraPermission()){
+            ActivityCompat.requestPermissions(
+                this, arrayOf(Manifest.permission.CAMERA), 0
+            )//requestPermissions
+            return
+        }//if
         enableEdgeToEdge()
         setContent {
             Csc481birdappTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
-        }
-    }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+            }//Theme
+        }//setContent
+    }//override fun
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Csc481birdappTheme {
-        Greeting("Android")
-    }
-}
+    //check that we have permission to use the camera in the first place
+    private fun hasCameraPermission(): Boolean{
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+    }//Boolean fun
+}//class
