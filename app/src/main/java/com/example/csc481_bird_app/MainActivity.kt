@@ -22,7 +22,24 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    BirdDetectionScreen()
+                    val navController = rememberNavController()
+
+                    NavHost(navController = navController, startDestination = "home") {
+                        composable("home") {
+                            HomeScreen(
+                                onScanClick = { navController.navigate("scan") },
+                                onUploadClick = { navController.navigate("birdDetection") }
+                            )
+                        }
+                        composable("scan") {
+                            ScanScreen(onBack = { navController.popBackStack() })
+                        }
+                        composable("birdDetection") {
+                            BirdDetectionScreen(
+                                onBack = { navController.popBackStack() }
+                            )
+                        }
+                    }//NavHost
                 }//Surface
             }//Theme
         }//setContent
