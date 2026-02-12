@@ -16,7 +16,7 @@ fun HomeScreen(onScanClick: () -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = { /* upload does nothing */ }) {
+        Button(onClick =  onUploadClick) {
             Text("Upload")
         }
 
