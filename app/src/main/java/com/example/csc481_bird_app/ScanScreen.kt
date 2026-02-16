@@ -18,7 +18,12 @@ import androidx.core.content.ContextCompat
 @Composable
 fun ScanScreen() {
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val scope = rememberCoroutineScope()
+
+    var bitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var detections by remember { mutableStateOf<List<Detection>>(emptyList()) }
+    var isProcessing by remember { mutableStateOf(false) }
+    var gpsCoords by remember { mutableStateOf<Pair<Double, Double>?>(null) }
 
     var showCamera by remember { mutableStateOf(false) }
     var hasPermission by remember {
