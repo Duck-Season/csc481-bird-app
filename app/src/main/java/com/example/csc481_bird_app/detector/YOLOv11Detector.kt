@@ -39,7 +39,7 @@ class YOLOv11Detector(private val context: Context) {
             inputImageWidth = inputShape[2]
         } catch (e: Exception) {
             //something went wrong
-            Log.e("YOLODetector", "Error loading model: ${e.message}")
+            Log.e("csc481birdapp", "Error loading model: ${e.message}")
         }//try-catch
 
         //load in the labels from the text file
@@ -205,7 +205,7 @@ class YOLOv11Detector(private val context: Context) {
             return applyNMS(detections, confidenceThreshold)
         } catch (e: Exception) {
             //something went wrong
-            Log.e("YOLODetector", "Error during detection: ${e.message}", e)
+            Log.e("csc481birdapp", "Error during detection: ${e.message}", e)
             return emptyList()
         }//try-catch
     }//fun

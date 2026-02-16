@@ -8,4 +8,4 @@ data class Detection(
     val confidence: Float,  //confidence in classification
     val classIndex: Int,    //numbered index of object class
     val className: String   //string index of object class
-)
+)//data class
