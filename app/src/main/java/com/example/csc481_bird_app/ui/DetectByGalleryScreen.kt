@@ -84,9 +84,7 @@ fun DetectByGalleryScreen(
         ) {
             Text(if(viewModel.isProcessing) "Processing..." else "Pick Image from Gallery")
         }//Button
-        Button(onClick = onBack) {
-            Text("Back Home")
-        }
+
         //only display if an image was successfully processed
         viewModel.bitmap?.let { bmp ->
             Box(modifier = Modifier.fillMaxWidth()) {
