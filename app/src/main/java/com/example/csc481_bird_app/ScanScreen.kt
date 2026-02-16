@@ -35,9 +35,67 @@ fun ScanScreen() {
         )
     }
 
-    val permissionLauncher =
-        androidx.activity.compose.rememberLauncherForActivityResult(
-            contract = androidx.activity.result.contract.ActivityResultContracts.RequestPermission()
+    // Get GPS location
+    val locationPermissionLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { granted ->
+            if (granted) {
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location: Location? ->
+                        location?.let {
+                            gpsCoords = it.latitude to it.longitude
+                        }
+                    }
+            }
+        }
+    LaunchedEffect(Unit) {
+        if (
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    // Camera launcher
+    val cameraLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.TakePicturePreview()
+        ) { bmp ->
+            bmp?.let {
+                //launch on a separate thread so the app doesn't freeze
+                scope.launch {
+
+
+
+                    //disable button until finished
+                    isProcessing = true
+
+
+                    //wrap in "withContext" to run on another thread and not freak the UI out
+                    bitmap = withContext(Dispatchers.IO) {
+                        it
+                    }//withContext
+
+                    //run detection when image is actually loaded as a bitmap
+                    bitmap?.let { bmp ->
+                        detections = withContext(Dispatchers.Default) {
+                            //set threshold somewhat high but not too high
+                            detector.detectObjects(bmp, 0.5f)
+                        }//withContext
+                    }//.let
+
+                    isProcessing = false
+                }
+            }
+        }
+    // Request CAMERA permission
+    val cameraPermissionLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestPermission()
         ) { granted ->
             hasPermission = granted
             if (granted) showCamera = true
