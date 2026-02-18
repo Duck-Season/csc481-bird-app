@@ -17,6 +17,7 @@ import com.example.csc481_bird_app.ui.DetectByCameraScreen
 import com.example.csc481_bird_app.ui.DetectByGalleryScreen
 import com.example.csc481_bird_app.ui.HomeScreen
 import com.example.csc481_bird_app.ui.ResultsScreen
+import com.example.csc481_bird_app.ui.ScanScreen
 import com.example.csc481_bird_app.ui.theme.Csc481birdappTheme
 
 class MainActivity : ComponentActivity() {
@@ -50,7 +51,9 @@ class MainActivity : ComponentActivity() {
                             )///HomeScreen
                         }//composable
                         composable("bycamera") {
-                            DetectByCameraScreen()
+                            ScanScreen(
+                                onBack = { navController.navigate("home") }
+                            )
                         }//composable
                         composable("byfile") {
                             ChooseFileScreen(
