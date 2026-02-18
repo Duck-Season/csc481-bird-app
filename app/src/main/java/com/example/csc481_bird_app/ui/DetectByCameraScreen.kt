@@ -12,18 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.csc481_bird_app.detector.DectectionsViewModel
 
 @Composable
-fun ChooseFileScreen(
-    viewModel: DectectionsViewModel,
-    onDetectionsComplete: () -> Unit,
-    onBack: () -> Unit
-){
-
+fun DetectByCameraScreen(){
     val context = LocalContext.current
-    val listSaves = context.filesDir.listFiles()
-
 
     //mutable values
     var isLoading by remember { mutableStateOf<Boolean>(false) }

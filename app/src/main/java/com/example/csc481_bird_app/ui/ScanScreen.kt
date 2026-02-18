@@ -1,12 +1,11 @@
 package com.example.csc481_bird_app.ui
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Paint
+import android.content.pm.PackageManager
 import android.location.Location
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
@@ -25,10 +24,10 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.csc481_bird_app.detector.Detection
+import com.example.csc481_bird_app.detector.YOLOv11Detector
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import com.example.csc481_bird_app.detector.YOLOv11Detector
-import com.example.csc481_bird_app.detector.Detection
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,14 +39,13 @@ fun ScanScreen(onBack: () -> Unit) {
     val scope = rememberCoroutineScope()
 
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
-    val detector = remember { YOLOv11Detector(context) }
     var detections by remember { mutableStateOf<List<Detection>>(emptyList()) }
     var isProcessing by remember { mutableStateOf(false) }
     var gpsCoords by remember { mutableStateOf<Pair<Double, Double>?>(null) }
 
-    val fusedLocationClient = remember {
-        LocationServices.getFusedLocationProviderClient(context)
-    }
+    val detector = remember { YOLOv11Detector(context) }
+    val fusedLocationClient =
+        remember { LocationServices.getFusedLocationProviderClient(context) }
 
     val locationPermissionLauncher =
         rememberLauncherForActivityResult(
@@ -74,47 +72,37 @@ fun ScanScreen(onBack: () -> Unit) {
         }
     }
 
-
     // Camera launcher
-    val cameraLauncher =
-        rememberLauncherForActivityResult(
-            ActivityResultContracts.TakePicturePreview()
-        ) { bmp ->
-            bmp?.let {
-                scope.launch {
-                    isProcessing = true
+    val cameraLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.TakePicturePreview()
+    ) { bmp ->
+        bmp?.let {
+            scope.launch {
+                isProcessing = true
 
 
-                    //wrap in "withContext" to run on another thread and not freak the UI out
-                    bitmap = withContext(Dispatchers.IO) {
-                        it   // already a Bitmap, no decoding needed
-                    }//withContext
 
-                    //run detection when image is actually loaded as a bitmap
-                    bitmap?.let { bmp ->
-                        detections = withContext(Dispatchers.Default) {
-                            detector.detectObjects(bmp, 0.5f)
-                        }//withContext
-                    }//.let
+                bitmap = withContext(Dispatchers.IO) { it }
 
-                    isProcessing = false
+                bitmap?.let { bmp ->
+                    detections = withContext(Dispatchers.Default) {
+                        detector.detectObjects(bmp, 0.5f)
+                    }
                 }
+
+                isProcessing = false
             }
         }
+    }
 
-    // Permission launcher
-    val permissionLauncher =
-        rememberLauncherForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { perms ->
-            val camGranted = perms[Manifest.permission.CAMERA] ?: false
-            val locGranted =
-                perms[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
-
-            if (camGranted) {
-                cameraLauncher.launch(null)
-            }
+    // Request CAMERA permission
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            cameraLauncher.launch(null)
         }
+    }
 
     DisposableEffect(Unit) {
         onDispose { detector.close() }
@@ -123,18 +111,21 @@ fun ScanScreen(onBack: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Button(
             onClick = {
-                permissionLauncher.launch(
-                    arrayOf(
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    )
-                )
+                if (
+                    ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.CAMERA
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    cameraLauncher.launch(null)
+                } else {
+                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                }
             },
             enabled = !isProcessing
         ) {
@@ -151,10 +142,9 @@ fun ScanScreen(onBack: () -> Unit) {
                     .fillMaxWidth()
                     .aspectRatio(bmp.width.toFloat() / bmp.height.toFloat())
             ) {
-
                 Image(
                     bitmap = bmp.asImageBitmap(),
-                    contentDescription = null,
+                    contentDescription = "Captured image",
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Fit
                 )
@@ -162,27 +152,22 @@ fun ScanScreen(onBack: () -> Unit) {
                 Canvas(modifier = Modifier.fillMaxSize()) {
                     val scale =
                         minOf(size.width / bmp.width, size.height / bmp.height)
-
                     val offsetX =
                         (size.width - bmp.width * scale) / 2f
                     val offsetY =
                         (size.height - bmp.height * scale) / 2f
 
                     detections.forEach { det ->
-                        val left =
-                            det.bbox.left * scale + offsetX
-                        val top =
-                            det.bbox.top * scale + offsetY
-                        val width =
-                            det.bbox.width() * scale
-                        val height =
-                            det.bbox.height() * scale
+                        val left = det.bbox.left * scale + offsetX
+                        val top = det.bbox.top * scale + offsetY
+                        val width = det.bbox.width() * scale
+                        val height = det.bbox.height() * scale
 
                         drawRect(
                             color = Color.Green,
                             topLeft = Offset(left, top),
                             size = Size(width, height),
-                            style = Stroke(3f)
+                            style = Stroke(width = 3f)
                         )
 
                         drawRect(
@@ -192,7 +177,7 @@ fun ScanScreen(onBack: () -> Unit) {
                         )
 
                         drawContext.canvas.nativeCanvas.drawText(
-                            "${det.className} (${(det.confidence * 100).toInt()}%)",
+                            "${det.className} (${(det.confidence * 100).toInt()}% sure)",
                             left + 5f,
                             top - 8f,
                             android.graphics.Paint().apply {
