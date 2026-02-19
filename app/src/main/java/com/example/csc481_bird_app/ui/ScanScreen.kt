@@ -95,6 +95,36 @@ fun ScanScreen(onBack: () -> Unit) {
         }
     }
 
+    // Helper function to fetch location (DRY - Don't Repeat Yourself)
+    @SuppressLint("MissingPermission")
+    fun fetchLocation() {
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            location?.let {
+                gpsCoords = it.latitude to it.longitude
+                scope.launch(Dispatchers.IO) {
+                    try {
+                        val geocoder = Geocoder(context, Locale.getDefault())
+                        val addresses = geocoder.getFromLocation(it.latitude, it.longitude, 1)
+                        if (!addresses.isNullOrEmpty()) {
+                            val city = addresses[0].locality ?: ""
+                            val state = addresses[0].adminArea ?: ""
+                            withContext(Dispatchers.Main) {
+                                locationName = "$city, $state"
+                            }
+                        }
+                    } catch (e: Exception) { e.printStackTrace() }
+                }
+            }
+        }
+    }
+
+    // Permission Launcher
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) fetchLocation()
+    }
+
     // Request CAMERA permission
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
