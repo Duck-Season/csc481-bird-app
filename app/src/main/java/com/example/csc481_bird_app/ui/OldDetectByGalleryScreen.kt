@@ -33,7 +33,7 @@ import kotlinx.coroutines.withContext
 //temporary Composable layout to test the model
 //opens the phone's image gallery to load an image
 @Composable
-fun OldDetectByGalleryScreen() {
+fun OldDetectByGalleryScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val detector = remember { YOLOv11Detector(context) }
@@ -96,7 +96,9 @@ fun OldDetectByGalleryScreen() {
         ) {
             Text(if(isProcessing) "Processing..." else "Pick Image from Gallery")
         }//Button
-
+        Button(onClick = onBack) {
+            Text("Back Home")
+        }
         //only display if an image was successfully processed
         bitmap?.let { bmp ->
             //ok so unlike HTML/CSS Compose elements just stack on top by default

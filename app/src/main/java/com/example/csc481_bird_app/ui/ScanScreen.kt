@@ -1,10 +1,12 @@
 package com.example.csc481_bird_app.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Paint
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,10 +30,13 @@ import com.example.csc481_bird_app.detector.Detection
 import com.example.csc481_bird_app.detector.YOLOv11Detector
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.util.Locale
 
 @Composable
 fun ScanScreen(onBack: () -> Unit) {
@@ -43,46 +48,34 @@ fun ScanScreen(onBack: () -> Unit) {
     var isProcessing by remember { mutableStateOf(false) }
     var gpsCoords by remember { mutableStateOf<Pair<Double, Double>?>(null) }
 
+    var locationName by remember { mutableStateOf<String?>(null) }
+
     val detector = remember { YOLOv11Detector(context) }
     val fusedLocationClient =
         remember { LocationServices.getFusedLocationProviderClient(context) }
 
-    val locationPermissionLauncher =
-        rememberLauncherForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { granted ->
-            if (granted) {
-                fusedLocationClient.lastLocation
-                    .addOnSuccessListener { location: Location? ->
-                        location?.let {
-                            gpsCoords = it.latitude to it.longitude
-                        }
-                    }
-            }
-        }
-
-    LaunchedEffect(Unit) {
-        if (
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        }
+    val imageUri = remember {
+        val file = File(context.cacheDir, "camera_temp.jpg")
+        FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.provider",
+            file
+        )
     }
 
     // Camera launcher
     val cameraLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.TakePicturePreview()
-    ) { bmp ->
-        bmp?.let {
+        ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success) {
             scope.launch {
                 isProcessing = true
 
-
-
-                bitmap = withContext(Dispatchers.IO) { it }
+                bitmap = withContext(Dispatchers.IO) {
+                    context.contentResolver.openInputStream(imageUri)?.use {
+                        BitmapFactory.decodeStream(it)
+                    }
+                }
 
                 bitmap?.let { bmp ->
                     detections = withContext(Dispatchers.Default) {
@@ -130,7 +123,7 @@ fun ScanScreen(onBack: () -> Unit) {
         ActivityResultContracts.RequestPermission()
     ) { granted ->
         if (granted) {
-            cameraLauncher.launch(null)
+            cameraLauncher.launch(imageUri)
         }
     }
 
@@ -152,7 +145,7 @@ fun ScanScreen(onBack: () -> Unit) {
                         Manifest.permission.CAMERA
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
-                    cameraLauncher.launch(null)
+                    cameraLauncher.launch(imageUri)
                 } else {
                     cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                 }
@@ -165,13 +158,28 @@ fun ScanScreen(onBack: () -> Unit) {
         Button(onClick = onBack) {
             Text("Back Home")
         }
+        Button(
+            onClick = {
+                val permission = Manifest.permission.ACCESS_FINE_LOCATION
+                if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
+                    fetchLocation()
+                } else {
+                    locationPermissionLauncher.launch(permission)
+                }
+            }
+        ) {
+            Text("Add Location")
+        }
+        locationName?.let {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text("📍 $it")
+        }
 
         bitmap?.let { bmp ->
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(bmp.width.toFloat() / bmp.height.toFloat())
-            ) {
+                    .fillMaxWidth())
+             {
                 Image(
                     bitmap = bmp.asImageBitmap(),
                     contentDescription = "Captured image",
@@ -217,11 +225,6 @@ fun ScanScreen(onBack: () -> Unit) {
                         )
                     }
                 }
-            }
-
-            gpsCoords?.let {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("📍 Location: ${it.first}, ${it.second}")
             }
         }
     }
