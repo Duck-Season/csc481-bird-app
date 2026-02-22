@@ -6,9 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 //view model for running model detections on image
@@ -17,6 +15,8 @@ class DectectionsViewModel(application: Application) : AndroidViewModel(applicat
     var bitmap by mutableStateOf<Bitmap?>(null)
     var detections by mutableStateOf<List<Detection>>(emptyList())
     var isProcessing by mutableStateOf(false)
+    var geoLat by mutableStateOf<Float?>(null)
+    var geoLon by mutableStateOf<Float?>(null)
 
     //create detector model instance with application context
     private val detector = YOLOv11Detector(application)

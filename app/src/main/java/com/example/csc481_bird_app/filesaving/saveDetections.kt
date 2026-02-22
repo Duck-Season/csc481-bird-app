@@ -8,11 +8,10 @@ import java.util.Date
 
 //save a list of detections to an internal file to be accessed later
 //detections is self-explanatory
-//image_path is a path from the image gallery to the image
 //coords are going to be passed either from geolocation API (camera mode) or EXIF data (gallery)
-fun saveDetections(context: Context, detections: List<Detection>, image_path: String?, coords: Pair<Float?, Float?>){
-    //make sure that the list isn't empty first AND there's a path to the image
-    if(detections.isNotEmpty() && image_path != null){
+fun saveDetections(context: Context, detections: List<Detection>, imageUri: String?, coords: Pair<Float?, Float?>){
+    //make sure that the list isn't empty first AND there's an image
+    if(detections.isNotEmpty() && imageUri != null){
         try {
             //create filename for save
             //using Date to make unique-ish names
@@ -21,7 +20,7 @@ fun saveDetections(context: Context, detections: List<Detection>, image_path: St
             val saveName = "save_" + Date().time
 
             //start with the image path and geocoords first, we need only store them once
-            var strContents = image_path + "\n"
+            var strContents = imageUri + "\n"
             strContents += coords.first.toString() + " " + coords.second.toString() + "\n"
 
             //then go through each detection
