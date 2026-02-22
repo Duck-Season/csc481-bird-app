@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.camera.core.ImageCapture
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -31,6 +33,20 @@ class MainActivity : ComponentActivity() {
                 //create controller for navigating screens
                 val navController = rememberNavController()
 
+                fun onBackToHome(){
+                    //reset everything in the viewModel
+                    viewModel.isProcessing = false;
+                    viewModel.bitmap = null;
+                    viewModel.detections = emptyList();
+                    viewModel.geoLat = null;
+                    viewModel.geoLon = null;
+
+                    //move back to home screen
+                    navController.navigate("home")
+                }//fun
+
+                val imageCapture = remember {ImageCapture.Builder().build()}
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -50,18 +66,15 @@ class MainActivity : ComponentActivity() {
                             )///HomeScreen
                         }//composable
                         composable("bycamera") {
-                            DetectByCameraScreen()
-                        }//composable
-                        composable("byfile") {
-                            ChooseFileScreen(
+                            DetectByCameraScreen(
                                 viewModel,
                                 onDetectionsComplete = {
                                     navController.navigate("results")
                                 },
                                 onBack = {
-                                    navController.navigate("home")
+                                    onBackToHome()
                                 }//onBack
-                            )//ChooseFileScreen
+                            )//DetectByCameraScreen
                         }//composable
                         composable("bygallery") {
                             DetectByGalleryScreen(
@@ -70,23 +83,32 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate("results")
                                 },
                                 onBack = {
-                                    navController.navigate("home")
+                                    onBackToHome()
                                 }//onBack
                             )//DetectByGalleryScreen
+                        }//composable
+                        composable("byfile") {
+                            ChooseFileScreen(
+                                viewModel,
+                                onDetectionsComplete = {
+                                    navController.navigate("results")
+                                },
+                                onBack = {
+                                    onBackToHome()
+                                }//onBack
+                            )//ChooseFileScreen
                         }//composable
                         composable("results") {
                             ResultsScreen(
                                 viewModel,
                                 onBack = {
-                                    navController.navigate("home")
+                                    onBackToHome()
                                 }//onBack
                             )//ResultsScreen
                         }//composable
                     }//NavHost
                 }//Surface
-
             }//Theme
         }//setContent
     }//override fun
-
 }//class

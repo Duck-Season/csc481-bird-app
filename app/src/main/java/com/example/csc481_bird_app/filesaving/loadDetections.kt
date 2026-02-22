@@ -3,26 +3,28 @@ package com.example.csc481_bird_app.filesaving
 import android.content.Context
 import android.graphics.RectF
 import android.util.Log
+import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.detector.Detection
+import com.example.csc481_bird_app.utils.getImageFromSave
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
 
-//load in a list of detections from an internal file
-//detections is self-explanatory
+//load data from internal save file into the detections ViewModel
 //scan_path is a path from the scan file in internal storage
-fun loadDetections(context: Context, scan_path: String): SavedScan?{
+fun loadDetections(context: Context, scan_path: String, viewModel: DectectionsViewModel){
     try{
         //open the file chosen
         val inputStream = context.openFileInput(scan_path)
         val reader = BufferedReader(InputStreamReader(inputStream))
 
         //get the image path
-        val iPath = reader.readLine()
+        val bmp = getImageFromSave(context, scan_path);
 
-        //get the geoCoords
+        //skip the image path, get the geoCoords
+        reader.readLine()
         val gList = reader.readLine()?.split(" ")
-        val gCoords = Pair(gList?.get(0)?.toFloat(), gList?.get(1)?.toFloat())
+        val gCoords = Pair(gList?.get(0)?.toFloatOrNull(), gList?.get(1)?.toFloatOrNull())
 
         //then loop through detections
         val detList = mutableListOf<Detection>()
@@ -49,11 +51,14 @@ fun loadDetections(context: Context, scan_path: String): SavedScan?{
         //close the input stream
         inputStream.close()
 
-        //return list as an unmutable copy
-        return SavedScan(iPath, gCoords, detList.toList())
+        //set values in the viewModel
+        //pass list as an unmutable copy
+        viewModel.bitmap = bmp
+        viewModel.geoLat = gCoords.first
+        viewModel.geoLon = gCoords.second
+        viewModel.detections = detList.toList()
     } catch (e: Exception) {
         //give a null and an error log; null is to be handled by UI
         Log.e("csc481birdapp", "Error loading detections: ${e.message}")
-        return null
     }//try-catch
 }//fun
