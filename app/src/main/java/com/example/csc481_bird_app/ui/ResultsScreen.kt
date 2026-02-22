@@ -1,6 +1,8 @@
 package com.example.csc481_bird_app.ui
 
+import android.annotation.SuppressLint
 import android.graphics.Paint
+import android.location.Geocoder
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -11,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Card
@@ -24,9 +25,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,11 +42,14 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.csc481_bird_app.R
 import com.example.csc481_bird_app.detector.DectectionsViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,6 +61,39 @@ fun ResultsScreen(
 
     //mutable values
     var selectedIndex by remember { mutableStateOf<Int>(-1)}
+    var locationName by remember { mutableStateOf<String?>(null) }
+    val scope = rememberCoroutineScope()
+
+    // Helper function to fetch location (DRY - Don't Repeat Yourself)
+    @SuppressLint("MissingPermission")
+    fun fetchLocation() {
+        val lat = viewModel.geoLat
+        val lon = viewModel.geoLon
+
+        if (lat != null && lon != null) {
+            scope.launch(Dispatchers.IO) {
+                try {
+                    val geocoder = Geocoder(context, Locale.getDefault())
+                    // 3. Use the local variables instead of the viewModel properties
+                    val addresses = geocoder.getFromLocation(lat.toDouble(), lon.toDouble(), 1)
+
+                    if (!addresses.isNullOrEmpty()) {
+                        val city = addresses[0].locality ?: ""
+                        val state = addresses[0].adminArea ?: ""
+                        withContext(Dispatchers.Main) {
+                            locationName = "$city, $state"
+                        }//withContext
+                    }//if
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }//try-catch
+            }//.launch
+        }//if
+    }//fun
+
+    LaunchedEffect(viewModel.geoLat, viewModel.geoLon) {
+        fetchLocation()
+    }//LaunchedEffect
 
     Scaffold(
         topBar = {
@@ -160,7 +199,23 @@ fun ResultsScreen(
                         .weight(0.1f)
                         .height(32.dp)
                 ){
-                    Text("Taken at: ${viewModel.geoLat}, ${viewModel.geoLon}")
+                    var displayStr = ""
+                    if(locationName != null){
+                        displayStr += locationName + " "
+                    }//if
+
+                    if(viewModel.geoLat != null && viewModel.geoLon != null){
+                        displayStr += "(${viewModel.geoLat}, ${viewModel.geoLon})"
+                    }//if
+
+                    if(displayStr == ""){
+                        displayStr = "Location Unknown"
+                    }//if
+
+                    Text(
+                        text = "Taken at: \n$displayStr",
+                        fontSize = 12.sp
+                    )//Text
                 }//Box
 
                 LazyColumn(

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Environment
 import android.provider.MediaStore
@@ -21,11 +22,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,6 +51,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -60,7 +67,6 @@ import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.util.Date
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
@@ -84,9 +90,7 @@ fun DetectByCameraScreen(
     var hasCameraPermission by remember { mutableStateOf(false) }
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
     val imageCapture = remember { ImageCapture.Builder().build() }
-
     var hasTakenPicture by remember { mutableStateOf(false) }
-
     val cameraExecutor = remember { Executors.newSingleThreadExecutor() }
 
     //--------------- Geolocation Service ---------------
@@ -109,16 +113,15 @@ fun DetectByCameraScreen(
         //make sure the geocoordinates are obtained
         if (viewModel.geoLat == null || viewModel.geoLon == null) {
             getLocation()
-            // You could add a Toast here: "Getting location..."
             return
         }//if
 
-        // Create file in Pictures directory
+        //create file in Pictures directory
         val contentValues = ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, "bird_${Date().time}.jpg")
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
             put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/BirdApp")
-        }
+        }//val
 
         val outputFileOptions = ImageCapture.OutputFileOptions.Builder(
             context.contentResolver,
@@ -137,11 +140,20 @@ fun DetectByCameraScreen(
                     scope.launch {
                         val bitmap = withContext(Dispatchers.IO) {
                             context.contentResolver.openInputStream(savedUri)?.use {
-                                BitmapFactory.decodeStream(it)
+                                val decodedBmp = BitmapFactory.decodeStream(it)
+                                val rotatedBmp = rotateBitmap(decodedBmp, savedUri, context)
+
+                                context.contentResolver.openOutputStream(savedUri)?.use { outStream ->
+                                    rotatedBmp.compress(Bitmap.CompressFormat.JPEG, 100, outStream)
+                                }//.use
+
+                                rotatedBmp
                             }//.use
                         }//val
 
                         bitmap?.let { bmp ->
+                            viewModel.bitmap = bmp
+                            viewModel.isProcessing = true
                             viewModel.runDetections(bmp)
 
                             val geoCoords = Pair(viewModel.geoLat, viewModel.geoLon)
@@ -223,7 +235,7 @@ fun DetectByCameraScreen(
             )//TopAppBar
         }//topBar
     ) { innerPadding ->
-        if(hasCameraPermission){
+        if(hasCameraPermission && !viewModel.isProcessing){
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -277,25 +289,64 @@ fun DetectByCameraScreen(
                 }//IconButton
             }//Box
         }else{
-            Card(
-                modifier = Modifier
-                    .padding(innerPadding)
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(16.dp)
+            if(viewModel.isProcessing && viewModel.bitmap != null){
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.rounded_close_24),
-                        contentDescription = "Back Arrow"
-                    )//Icon
-                    Text(
-                        text = "Camera Disabled",
-                        fontSize = 30.sp
-                    )//Text
-                    Text("Please enable camera permissions in the app settings.")
-                } //Column
-            }//Card
+                    Image(
+                        bitmap = viewModel.bitmap!!.asImageBitmap(),
+                        contentDescription = "Processing Image",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Fit,
+                        alpha = 0.5f
+                    )//Image
+
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        )
+                    ){
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            CircularProgressIndicator(
+                                color = MaterialTheme.colorScheme.primary,
+                                strokeWidth = 4.dp,
+                                modifier = Modifier.size(64.dp)
+                            )//CircularProgressIndicator
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Text(
+                                text = "Scanning for Birds...",
+                                color = MaterialTheme.colorScheme.primary
+                            )//Text
+                        }//Column
+                    }//Card
+                }//Box
+            }else{
+                Card(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.rounded_close_24),
+                            contentDescription = "Back Arrow"
+                        )//Icon
+                        Text(
+                            text = "Camera Disabled",
+                            fontSize = 30.sp
+                        )//Text
+                        Text("Please enable camera permissions in the app settings.")
+                    } //Column
+                }//Card
+            }//if-else
         }//if-else
     }//Scaffold
 }//fun
@@ -306,3 +357,22 @@ suspend fun Context.cameraProvider(): ProcessCameraProvider = suspendCoroutine {
         continuation.resume(listenableFuture.get())
     }, ContextCompat.getMainExecutor(this))
 }//suspend fun
+
+fun rotateBitmap(bitmap: Bitmap, uri: android.net.Uri, context: android.content.Context): Bitmap {
+    val inputStream = context.contentResolver.openInputStream(uri)
+    val exif = inputStream?.let { androidx.exifinterface.media.ExifInterface(it) }
+    val orientation = exif?.getAttributeInt(
+        androidx.exifinterface.media.ExifInterface.TAG_ORIENTATION,
+        androidx.exifinterface.media.ExifInterface.ORIENTATION_NORMAL
+    )//val
+
+    val matrix = android.graphics.Matrix()
+    when (orientation) {
+        androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
+        androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
+        androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
+        else -> return bitmap
+    }//when
+
+    return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+}//fun

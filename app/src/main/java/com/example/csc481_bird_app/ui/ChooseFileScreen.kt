@@ -1,7 +1,5 @@
 package com.example.csc481_bird_app.ui
 
-import android.graphics.BitmapFactory
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -33,15 +30,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.filesaving.loadDetections
-import com.example.csc481_bird_app.utils.getImageFromSave
+import com.example.csc481_bird_app.utils.getImageUriFromSave
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -57,13 +54,28 @@ fun ChooseFileScreen(
     val context = LocalContext.current
     val listSaves = remember {
         context.filesDir.listFiles()
-            ?.filter { it.name.startsWith("save_") }
+            ?.filter { file ->
+                //check for valid save name prefix
+                if (file.name.startsWith("save_")) {
+                    val uri = getImageUriFromSave(context, file.name)
+
+                    //check if URI is null or if the image file it points to is missing
+                    val imageExists = uri?.let {
+                        try {
+                            context.contentResolver.openInputStream(it)?.use { true } ?: false
+                        } catch (e: Exception) { false }
+                    } ?: false
+
+                    //delete the save file if the image is gone
+                    if (!imageExists) {
+                        file.delete()
+                        false
+                    } else true
+                } else false
+            }
             ?.sortedByDescending { it.lastModified() }
             ?: emptyList()
     }//val remember
-
-    //placeholder asset
-    val bmp_tempicon = BitmapFactory.decodeStream(context.assets.open("assets_fileloading_tempicon.png"))
 
     //mutable values
     var selectedIndex by remember { mutableStateOf<Int>(-1)}
@@ -161,8 +173,7 @@ fun ChooseFileScreen(
                         name.substring(name.indexOf("_") + 1, name.length)
                     )//val
 
-                    //either load image in save file or a temp icon
-                    val bmp = getImageFromSave(context, name) ?: bmp_tempicon
+                    val imgUri = getImageUriFromSave(context, name)
 
                     //file entry
                     Card(
@@ -186,14 +197,12 @@ fun ChooseFileScreen(
                                 .padding(16.dp)
                         ){
                             //a preview of the image is more intuitive than a date
-                            Image(
-                                bitmap = bmp.asImageBitmap(),
-                                contentDescription = "Preview icon of a scanned image",
+                            AsyncImage(
+                                model = getImageUriFromSave(context, name), // Get the URI/File instead of Bitmap
+                                contentDescription = "Preview",
+                                modifier = Modifier.size(64.dp).clip(RoundedCornerShape(8.dp)),
                                 contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .size(64.dp)
-                                    .clip(RoundedCornerShape(8.dp))
-                            )//Image
+                            )//AsyncImage
 
                             //use the readable time name
                             Text(previewName)
