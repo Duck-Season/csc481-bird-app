@@ -1,5 +1,4 @@
-# CSC481 Bird App
-##### *by Team Duck Season*
+# Team Duck Season's CSC481 Bird App
 ###### *(name is a work in progress)*
 
 An Android app for identifying various species of North American birds using object detection. Intended for educational, non-commercial purposes, such as while birdwatching, hiking, or even while walking around your local park.
@@ -25,10 +24,10 @@ This app is part of our capstone project for La Salle University's [CSC481/Proje
 
 Downloads with instructions for the latest version of the app can be found in the Releases section of this repo, which you can also click to [here](https://github.com/Duck-Season/csc481-bird-app/releases). The app requires a device that at least runs Android 7.0, though consistent testing has only been done with an Android 13 phone.
 
-## Developers
-* Aidan Hurin
-* Dastan Utegenov
-* Ricco Little
+## Meet the Team
+* Aidan Hurin: developer
+* Dastan Utegenov: developer
+* Ricco Little: developer
 
 ## Credits
 * [Ultralytics YOLO11](https://docs.ultralytics.com/models/yolo11/): object detection model used for processing images.
