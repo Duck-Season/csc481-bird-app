@@ -40,6 +40,8 @@ class MainActivity : ComponentActivity() {
                     viewModel.detections = emptyList();
                     viewModel.geoLat = null;
                     viewModel.geoLon = null;
+                    viewModel.takenWithCamera = false;
+                    viewModel.bmpUri = null;
 
                     //move back to home screen
                     navController.navigate("home")
@@ -55,6 +57,7 @@ class MainActivity : ComponentActivity() {
                         composable("home") {
                             HomeScreen(
                                 onCameraClick = {
+                                    viewModel.takenWithCamera = true;
                                     navController.navigate("bycamera")
                                 },
                                 onGalleryClick = {

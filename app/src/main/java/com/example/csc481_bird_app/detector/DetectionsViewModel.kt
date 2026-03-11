@@ -2,6 +2,7 @@ package com.example.csc481_bird_app.detector
 
 import android.app.Application
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -12,11 +13,14 @@ import kotlinx.coroutines.withContext
 //view model for running model detections on image
 //necessary for moving data between screens (i.e. Camera/Gallery/File -> Results screen)
 class DectectionsViewModel(application: Application) : AndroidViewModel(application) {
+    //mutables
     var bitmap by mutableStateOf<Bitmap?>(null)
     var detections by mutableStateOf<List<Detection>>(emptyList())
     var isProcessing by mutableStateOf(false)
     var geoLat by mutableStateOf<Float?>(null)
     var geoLon by mutableStateOf<Float?>(null)
+    var takenWithCamera by mutableStateOf(false)
+    var bmpUri by mutableStateOf<Uri?>(null)
 
     //create detector model instance with application context
     private val detector = YOLOv11Detector(application)

@@ -2,6 +2,7 @@ package com.example.csc481_bird_app.filesaving
 
 import android.content.Context
 import android.graphics.RectF
+import android.net.Uri
 import android.util.Log
 import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.detector.Detection
@@ -12,7 +13,7 @@ import java.io.InputStreamReader
 
 //load data from internal save file into the detections ViewModel
 //scan_path is a path from the scan file in internal storage
-fun loadDetections(context: Context, scan_path: String, viewModel: DectectionsViewModel){
+fun loadDetections(context: Context, scan_path: String, viewModel: DectectionsViewModel, saveUri: Uri?, isCameraSave: Boolean){
     try{
         //open the file chosen
         val inputStream = context.openFileInput(scan_path)
@@ -57,6 +58,8 @@ fun loadDetections(context: Context, scan_path: String, viewModel: DectectionsVi
         viewModel.geoLat = gCoords.first
         viewModel.geoLon = gCoords.second
         viewModel.detections = detList.toList()
+        viewModel.bmpUri = saveUri
+        viewModel.takenWithCamera = isCameraSave
     } catch (e: Exception) {
         //give a null and an error log; null is to be handled by UI
         Log.e("csc481birdapp", "Error loading detections: ${e.message}")

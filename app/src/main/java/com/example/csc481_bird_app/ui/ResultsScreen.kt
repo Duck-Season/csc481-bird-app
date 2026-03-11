@@ -9,13 +9,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,8 +49,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.exifinterface.media.ExifInterface
 import com.example.csc481_bird_app.R
 import com.example.csc481_bird_app.detector.DectectionsViewModel
+import com.example.csc481_bird_app.filesaving.saveDetections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -63,6 +70,7 @@ fun ResultsScreen(
     var selectedIndex by remember { mutableStateOf<Int>(-1)}
     var locationName by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
+    var showRescanDialog by remember { mutableStateOf(false) }
 
     // Helper function to fetch location (DRY - Don't Repeat Yourself)
     @SuppressLint("MissingPermission")
@@ -117,10 +125,28 @@ fun ResultsScreen(
                         }//TextButton
 
                         Text("Results Screen")
+
+                        Spacer(
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        TextButton(
+                            onClick = {
+                                //display the dialog for deleting files
+                                showRescanDialog = true
+                            }//onClick
+                        ) {
+                            Row() {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.outline_rescan_24),
+                                    contentDescription = "Rescan Selected File"
+                                )//Icon
+                            }//Row
+                        }//Button
                     }//Row
                 }//title
-            )
-        }
+            )//TopAppBar
+        }//Scaffold
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -130,146 +156,235 @@ fun ResultsScreen(
         ) {
             //only display if an image was successfully processed
             viewModel.bitmap?.let { bmp ->
-                //ok so unlike HTML/CSS Compose elements just stack on top by default
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.6f)
-                ) {
-                    //display the image
-                    Image(
-                        bitmap = bmp.asImageBitmap(),
-                        contentDescription = "Image loaded from gallery to run detections on. Hopefully it's a bird of some sort.",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Fit     //don't stretch the image; keep aspect ratio
-                    )//Image
+                if(!viewModel.isProcessing){
+                    //ok so unlike HTML/CSS Compose elements just stack on top by default
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(0.6f)
+                    ) {
+                        //display the image
+                        Image(
+                            bitmap = bmp.asImageBitmap(),
+                            contentDescription = "Image loaded from gallery to run detections on. Hopefully it's a bird of some sort.",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Fit     //don't stretch the image; keep aspect ratio
+                        )//Image
 
-                    //drawing the bounding boxes
-                    Canvas(modifier = Modifier.fillMaxSize()) {
-                        //scale up and offset boxes relative to the image
-                        val scale = minOf(size.width / bmp.width, size.height / bmp.height)
-                        val offsetX = (size.width - bmp.width * scale) / 2f
-                        val offsetY = (size.height - bmp.height * scale) / 2f
+                        //drawing the bounding boxes
+                        Canvas(modifier = Modifier.fillMaxSize()) {
+                            //scale up and offset boxes relative to the image
+                            val scale = minOf(size.width / bmp.width, size.height / bmp.height)
+                            val offsetX = (size.width - bmp.width * scale) / 2f
+                            val offsetY = (size.height - bmp.height * scale) / 2f
 
-                        viewModel.detections.forEachIndexed { index, det ->
-                            //if a certain detection is selected, 'highlight' it on the image
-                            val bboxColor = if(index == selectedIndex){
-                                Color.Blue
-                            }else{
-                                Color.Green
-                            }//if-else
+                            viewModel.detections.forEachIndexed { index, det ->
+                                //if a certain detection is selected, 'highlight' it on the image
+                                val bboxColor = if(index == selectedIndex){
+                                    Color.Blue
+                                }else{
+                                    Color.Green
+                                }//if-else
 
-                            //get bounding box dimensions from detection bbox
-                            val left = det.bbox.left * scale + offsetX
-                            val top = det.bbox.top * scale + offsetY
-                            val width = det.bbox.width() * scale
-                            val height = det.bbox.height() * scale
+                                //get bounding box dimensions from detection bbox
+                                val left = det.bbox.left * scale + offsetX
+                                val top = det.bbox.top * scale + offsetY
+                                val width = det.bbox.width() * scale
+                                val height = det.bbox.height() * scale
 
-                            //draw the bounding box with stroke
-                            drawRect(
-                                color = bboxColor,
-                                topLeft = Offset(left, top),
-                                size = Size(width, height),
-                                style = Stroke(width = 3f)
-                            )//drawRect
+                                //draw the bounding box with stroke
+                                drawRect(
+                                    color = bboxColor,
+                                    topLeft = Offset(left, top),
+                                    size = Size(width, height),
+                                    style = Stroke(width = 3f)
+                                )//drawRect
 
-                            //draw background for the label
-                            drawRect(
-                                color = bboxColor,
-                                topLeft = Offset(left, top - 25f),
-                                size = Size(width.coerceAtLeast(150f), 25f)
-                            )//drawRect
+                                //draw background for the label
+                                drawRect(
+                                    color = bboxColor,
+                                    topLeft = Offset(left, top - 25f),
+                                    size = Size(width.coerceAtLeast(150f), 25f)
+                                )//drawRect
 
-                            //draw the text for the label
-                            //need to call nativeCanvas
-                            drawContext.canvas.nativeCanvas.drawText(
-                                "${det.className} (${(det.confidence * 100).toInt()}% sure)",
-                                left + 5f,
-                                top - 8f,
-                                Paint().apply {
-                                    color = android.graphics.Color.BLACK
-                                    textSize = 14f
-                                }//.apply
-                            )//drawText
-                        }//forEach
-                    }//Canvas
-                }//Box
+                                //draw the text for the label
+                                //need to call nativeCanvas
+                                drawContext.canvas.nativeCanvas.drawText(
+                                    "${det.className} (${(det.confidence * 100).toInt()}% sure)",
+                                    left + 5f,
+                                    top - 8f,
+                                    Paint().apply {
+                                        color = android.graphics.Color.BLACK
+                                        textSize = 14f
+                                    }//.apply
+                                )//drawText
+                            }//forEach
+                        }//Canvas
+                    }//Box
 
-                Box(
-                    modifier = Modifier
-                        .weight(0.1f)
-                        .height(32.dp)
-                ){
-                    var displayStr = ""
-                    if(locationName != null){
-                        displayStr += locationName + " "
-                    }//if
+                    Box(
+                        modifier = Modifier
+                            .weight(0.1f)
+                            .height(32.dp)
+                    ){
+                        var displayStr = ""
+                        if(locationName != null){
+                            displayStr += locationName + " "
+                        }//if
 
-                    if(viewModel.geoLat != null && viewModel.geoLon != null){
-                        displayStr += "(${viewModel.geoLat}, ${viewModel.geoLon})"
-                    }//if
+                        if(viewModel.geoLat != null && viewModel.geoLon != null){
+                            displayStr += "(${viewModel.geoLat}, ${viewModel.geoLon})"
+                        }//if
 
-                    if(displayStr == ""){
-                        displayStr = "Location Unknown"
-                    }//if
+                        if(displayStr == ""){
+                            displayStr = "Location Unknown"
+                        }//if
 
-                    Text(
-                        text = "Taken at: \n$displayStr",
-                        fontSize = 12.sp
-                    )//Text
-                }//Box
+                        Text(
+                            text = "Taken at: \n$displayStr",
+                            fontSize = 12.sp
+                        )//Text
+                    }//Box
 
-                LazyColumn(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .weight(0.3f),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    if(viewModel.detections.isNotEmpty()){
-                        itemsIndexed(viewModel.detections){ index, det ->
-                            Card(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(4.dp)
-                            ) {
-                                Row(
+                    LazyColumn(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .weight(0.3f),
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        if(viewModel.detections.isNotEmpty()){
+                            itemsIndexed(viewModel.detections){ index, det ->
+                                Card(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(16.dp)
+                                        .padding(4.dp)
                                 ) {
-                                    Text(
-                                        text = "${index+1}.) " + det.className.substringAfter(" ").replace("_", " "),
-                                        fontSize = 16.sp,
+                                    Row(
                                         modifier = Modifier
-                                            .weight(0.6f)
-                                    )//Text
+                                            .fillMaxWidth()
+                                            .padding(16.dp)
+                                    ) {
+                                        Text(
+                                            text = "${index+1}.) " + det.className.substringAfter(" ").replace("_", " "),
+                                            fontSize = 16.sp,
+                                            modifier = Modifier
+                                                .weight(0.6f)
+                                        )//Text
 
-                                    Text(
-                                        text = "${String.format("%.2f", det.confidence*100)}%",
-                                        fontSize = 24.sp,
-                                        modifier = Modifier
-                                            .weight(0.4f)
-                                    )//Text
-                                }//Row
-                            }//Card
-                        }//itemsIndexed
-                    } else {
-                        item{
-                            Card() {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    modifier = Modifier.padding(16.dp)
-                                ) {
-                                    Text(
-                                        text = "No detections found...",
-                                        fontSize = 30.sp
-                                    )//Text
-                                } //Column
-                            }//Card
-                        }//item
-                    }//if-else
-                }//LazyColumn
+                                        Text(
+                                            text = "${String.format("%.2f", det.confidence*100)}%",
+                                            fontSize = 24.sp,
+                                            modifier = Modifier
+                                                .weight(0.4f)
+                                        )//Text
+                                    }//Row
+                                }//Card
+                            }//itemsIndexed
+                        } else {
+                            item{
+                                Card() {
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        modifier = Modifier.padding(16.dp)
+                                    ) {
+                                        Text(
+                                            text = "No detections found...",
+                                            fontSize = 30.sp
+                                        )//Text
+                                    } //Column
+                                }//Card
+                            }//item
+                        }//if-else
+                    }//LazyColumn
+                }else{
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            bitmap = viewModel.bitmap!!.asImageBitmap(),
+                            contentDescription = "Processing Image",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Fit,
+                            alpha = 0.5f
+                        )//Image
+
+                        Card(
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            )
+                        ){
+                            Column(
+                                modifier = Modifier.padding(16.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                CircularProgressIndicator(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    strokeWidth = 4.dp,
+                                    modifier = Modifier.size(64.dp)
+                                )//CircularProgressIndicator
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                Text(
+                                    text = "Rescanning for birds...",
+                                    color = MaterialTheme.colorScheme.primary
+                                )//Text
+                            }//Column
+                        }//Card
+                    }//Box
+                }//if-else
             }//.let
         }//Column
+
+        if(showRescanDialog){
+            AlertDialog(
+                icon = {
+                    Icon(painter = painterResource(id = R.drawable.outline_rescan_24), contentDescription = "Rescan Current Results")
+                },
+                title = {
+                    Text("Rescan")
+                },
+                text = {
+                    Text("Would you like to rescan the current results? This will create another save file.")
+                },
+                onDismissRequest = {
+                    showRescanDialog = false
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            scope.launch {
+                                //hide dialog
+                                showRescanDialog = false
+
+                                //run detections again
+                                viewModel.runDetections(viewModel.bitmap!!)
+
+                                //save to file
+                                saveDetections(
+                                    context,
+                                    viewModel.detections,
+                                    viewModel.bmpUri.toString(),
+                                    Pair(viewModel.geoLat, viewModel.geoLon),
+                                    viewModel.takenWithCamera
+                                )//saveDetections
+                            }//scope.launch
+                        }//onClick
+                    ) {
+                        Text("Yes")
+                    }//TextButton
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            showRescanDialog = false
+                        }//onClick
+                    ) {
+                        Text("No")
+                    }//TextButton
+                }//dismissButton
+            )//AlertDialog
+        }//if
     }//Scaffold
 }//fun
