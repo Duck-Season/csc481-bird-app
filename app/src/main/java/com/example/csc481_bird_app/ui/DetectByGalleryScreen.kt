@@ -75,7 +75,13 @@ fun DetectByGalleryScreen(
                                 exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE)?.split("/")[0]?.toFloatOrNull(),
                                 exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)?.split("/")[0]?.toFloatOrNull()
                             )//val Pair
-                            saveDetections(context, viewModel.detections, uri.toString(), coords)
+                            saveDetections(
+                                context,
+                                viewModel.detections,
+                                uri.toString(),
+                                coords,
+                                false
+                            )
                         }//.use
                     }//if
 

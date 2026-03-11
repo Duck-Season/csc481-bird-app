@@ -1,8 +1,10 @@
 package com.example.csc481_bird_app.ui
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import com.example.csc481_bird_app.R
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,7 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,6 +26,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -53,6 +56,9 @@ fun ChooseFileScreen(
     //filter ONLY by those beginning with "save_"
     val context = LocalContext.current
     val listSaves = remember {
+        mutableStateListOf<java.io.File>()
+    }//val remember mutableStateList
+    listSaves.addAll(
         context.filesDir.listFiles()
             ?.filter { file ->
                 //check for valid save name prefix
@@ -72,13 +78,18 @@ fun ChooseFileScreen(
                         false
                     } else true
                 } else false
-            }
+            }//.filter
             ?.sortedByDescending { it.lastModified() }
             ?: emptyList()
-    }//val remember
+    )
 
     //mutable values
-    var selectedIndex by remember { mutableStateOf<Int>(-1)}
+    var selectedIndex by remember { mutableStateOf(-1)}
+    var showDeleteDialog by remember { mutableStateOf(false)}
+
+    //non-mutable vars
+    var tempUri : Uri? = null
+    var tempIsCamera = false
 
     Scaffold(
         topBar = {
@@ -89,6 +100,7 @@ fun ChooseFileScreen(
                 ),
                 title = {
                     if(selectedIndex == -1){
+                        //nothing currently selected
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.fillMaxWidth()
@@ -105,6 +117,7 @@ fun ChooseFileScreen(
                             Text("Choose a Saved Scan")
                         }//Row
                     }else{
+                        //a file is picked by the user
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.fillMaxWidth()
@@ -120,9 +133,27 @@ fun ChooseFileScreen(
                                 )//Icon
                             }//TextButton
 
-                            Button(
+                            Spacer(
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            TextButton(
                                 onClick = {
-                                    loadDetections(context, listSaves[selectedIndex].name, viewModel)
+                                    //display the dialog for deleting files
+                                    showDeleteDialog = true
+                                }//onClick
+                            ) {
+                                Row() {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.outline_delete_24),
+                                        contentDescription = "Delete Selected File"
+                                    )//Icon
+                                }//Row
+                            }//Button
+
+                            TextButton(
+                                onClick = {
+                                    loadDetections(context, listSaves[selectedIndex].name, viewModel, tempUri, tempIsCamera)
                                     onDetectionsComplete()
                                 }//onClick
                             ) {
@@ -133,7 +164,7 @@ fun ChooseFileScreen(
                                         contentDescription = "Load Selected File"
                                     )//Icon
                                 }//Row
-                            }//FilledTonalButton
+                            }//Button
                         }//Row
                     }//if-else
                 }//title
@@ -167,13 +198,19 @@ fun ChooseFileScreen(
                 //make a list of files
                 itemsIndexed(listSaves){ index, save ->
                     val name = save.name
+                    val nameSplits = name.split("_")
+
+                    //boolean for indicator
+                    //even if using a save with the old filename, will default to "false" (gallery mode)
+                    val isCameraSave = nameSplits[1] == "camera"
+
+                    //get Uri for image
+                    val imgUri = getImageUriFromSave(context, name)
 
                     //convert epoch time in name to readable format
                     val previewName = convertEpochDateToReadable(
-                        name.substring(name.indexOf("_") + 1, name.length)
+                        nameSplits[2]
                     )//val
-
-                    val imgUri = getImageUriFromSave(context, name)
 
                     //file entry
                     Card(
@@ -181,7 +218,10 @@ fun ChooseFileScreen(
                             .fillMaxWidth()
                             .padding(4.dp),
                         onClick = {
+                            //set temporary selection values
                             selectedIndex = index
+                            tempIsCamera = isCameraSave
+                            tempUri = imgUri
                         },
                         colors = CardDefaults.cardColors(
                             containerColor = if (selectedIndex == index) {
@@ -198,19 +238,72 @@ fun ChooseFileScreen(
                         ){
                             //a preview of the image is more intuitive than a date
                             AsyncImage(
-                                model = getImageUriFromSave(context, name), // Get the URI/File instead of Bitmap
+                                model = imgUri, // Get the URI/File instead of Bitmap
                                 contentDescription = "Preview",
                                 modifier = Modifier.size(64.dp).clip(RoundedCornerShape(8.dp)),
                                 contentScale = ContentScale.Crop,
                             )//AsyncImage
 
                             //use the readable time name
-                            Text(previewName)
+                            Row(
+                                modifier = Modifier.fillMaxWidth()
+                            ){
+                                Text(previewName)
+                                Spacer(modifier = Modifier.weight(1f))
+                                Icon(
+                                    painter = painterResource(id = if(isCameraSave) R.drawable.rounded_add_camera_24 else R.drawable.rounded_add_photo_alternate_24),
+                                    contentDescription = "Save taken with phone " + if(isCameraSave) "camera" else "gallery"
+                                )//Icon
+                            }//Row
                         }//Row
                     }//Card
                 }//itemsIndexed
             }//if-else
         }//LazyColumn
+
+        //popup to confirm deleting a file
+        if(showDeleteDialog){
+            AlertDialog(
+                icon = {
+                    Icon(painter = painterResource(id = R.drawable.outline_delete_24), contentDescription = "Delete Selected File")
+                },
+                title = {
+                    Text("Delete File?")
+                },
+                text = {
+                    Text("Are you sure you want to delete this file from your saved scans?")
+                },
+                onDismissRequest = {
+                    showDeleteDialog = false
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            //delete the currently chosen file and remove it from display list
+                            listSaves[selectedIndex].delete()
+                            listSaves.removeAt(selectedIndex)
+
+                            //reset the selection
+                            selectedIndex = -1
+
+                            //hide dialog
+                            showDeleteDialog = false
+                        }//onClick
+                    ) {
+                        Text("Yes")
+                    }//TextButton
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            showDeleteDialog = false
+                        }//onClick
+                    ) {
+                        Text("No")
+                    }//TextButton
+                }//dismissButton
+            )//AlertDialog
+        }//if
     }//Scaffold
 }//fun
 

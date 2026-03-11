@@ -9,15 +9,14 @@ import java.util.Date
 //save a list of detections to an internal file to be accessed later
 //detections is self-explanatory
 //coords are going to be passed either from geolocation API (camera mode) or EXIF data (gallery)
-fun saveDetections(context: Context, detections: List<Detection>, imageUri: String?, coords: Pair<Float?, Float?>){
+fun saveDetections(context: Context, detections: List<Detection>, imageUri: String?, coords: Pair<Float?, Float?>, isCameraSave: Boolean){
     //make sure that the list isn't empty first AND there's an image
     if(detections.isNotEmpty() && imageUri != null){
         try {
             //create filename for save
+            //indicate whether camera or gallery was used
             //using Date to make unique-ish names
-            //this might break some things elsewhere if somebody messes with the phone's clock settings
-            //but idrc that much to foolproof it
-            val saveName = "save_" + Date().time
+            val saveName = "save_" + (if(isCameraSave) "camera_" else "gallery_") + Date().time
 
             //start with the image path and geocoords first, we need only store them once
             var strContents = imageUri + "\n"

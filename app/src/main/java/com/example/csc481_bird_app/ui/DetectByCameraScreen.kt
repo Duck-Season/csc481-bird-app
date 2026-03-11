@@ -163,7 +163,8 @@ fun DetectByCameraScreen(
                                     context,
                                     viewModel.detections,
                                     savedUri.toString(),
-                                    geoCoords
+                                    geoCoords,
+                                    true
                                 )//saveDetections
                             }//if
 
