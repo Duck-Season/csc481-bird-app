@@ -221,7 +221,33 @@ fun ResultsScreen(
                         }//Canvas
                     }//Box
 
-                    Box(
+                    // ---- Add Share Button ----
+                    IconButton(
+                        onClick = {
+                            val uri = viewModel.bmpUri
+
+                            if (uri != null) {
+                                try {
+                                    val shareIntent = Intent().apply {
+                                        action = Intent.ACTION_SEND
+                                        type = "image/*"
+                                        putExtra(Intent.EXTRA_STREAM, uri)
+                                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+                                    }
+
+                                    context.startActivity(
+                                        Intent.createChooser(shareIntent, "Share Image")
+                                    )
+
+                                } catch (e: Exception) {
+                                    Toast.makeText(context, "Error sharing image", Toast.LENGTH_SHORT).show()
+                                    e.printStackTrace()
+                                }
+                            } else {
+                                Toast.makeText(context, "No image to share", Toast.LENGTH_SHORT).show()
+                            }
+                        },
                         modifier = Modifier
                             .weight(0.1f)
                             .height(32.dp)
