@@ -44,6 +44,7 @@ fun DetectByGalleryScreen(
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         //".let" to only run when user actually picks something
         uri?.let {
+            viewModel.bmpUri = uri
             //launch on a separate thread so the app doesn't freeze
             scope.launch {
                 // CRITICAL: Request permanent read access to this specific file

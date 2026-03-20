@@ -1,10 +1,21 @@
 package com.example.csc481_bird_app.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Paint
 import android.location.Geocoder
+import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.material.icons.Icons
+import androidx.compose.material3.*
+import androidx.compose.ui.unit.dp
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,6 +28,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.filled.EditLocation
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -38,6 +52,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -47,8 +62,10 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.FileProvider
 import androidx.exifinterface.media.ExifInterface
 import com.example.csc481_bird_app.R
 import com.example.csc481_bird_app.detector.DectectionsViewModel
@@ -56,7 +73,10 @@ import com.example.csc481_bird_app.filesaving.saveDetections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.util.Locale
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -249,13 +269,16 @@ fun ResultsScreen(
                             }
                         },
                         modifier = Modifier
-                            .weight(0.1f)
-                            .height(32.dp)
-                    ){
-                        var displayStr = ""
-                        if(locationName != null){
-                            displayStr += locationName + " "
-                        }//if
+                            .align(Alignment.CenterHorizontally)
+                            .padding(16.dp)
+                            .size(56.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = "Share",
+                            tint = Color.Blue
+                        )
+                    }
 
                     if(viewModel.geoLat != null && viewModel.geoLon != null) {
                         val cameraPositionState = rememberCameraPositionState {
@@ -281,10 +304,10 @@ fun ResultsScreen(
                         }
                     } else {
                         Text(
-                            text = "Taken at: \n$displayStr",
-                            fontSize = 12.sp
-                        )//Text
-                    }//Box
+                            text = "Location not available",
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
 
                     LazyColumn(
                         modifier = Modifier

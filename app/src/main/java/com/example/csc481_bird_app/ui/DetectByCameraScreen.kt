@@ -9,10 +9,14 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.compose.runtime.key
+import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.FocusMeteringAction
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
@@ -28,6 +32,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cameraswitch
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -41,6 +47,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -70,6 +77,7 @@ import kotlinx.coroutines.withContext
 import java.util.Date
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -80,11 +88,11 @@ fun DetectByCameraScreen(
     onDetectionsComplete: () -> Unit,
     onBack: () -> Unit,
     scaleType: PreviewView.ScaleType = PreviewView.ScaleType.FILL_CENTER,
-    cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA,
 ){
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val scope = rememberCoroutineScope()
+
 
     //remember values
     var hasCameraPermission by remember { mutableStateOf(false) }
@@ -92,6 +100,13 @@ fun DetectByCameraScreen(
     val imageCapture = remember { ImageCapture.Builder().build() }
     var hasTakenPicture by remember { mutableStateOf(false) }
     val cameraExecutor = remember { Executors.newSingleThreadExecutor() }
+    var useFrontCamera by remember { mutableStateOf(false) }
+
+    val cameraSelector = if (useFrontCamera) {
+        CameraSelector.DEFAULT_FRONT_CAMERA
+    } else {
+        CameraSelector.DEFAULT_BACK_CAMERA
+    }
 
     //--------------- Geolocation Service ---------------
     //set viewModel coords to the geolocation client's
@@ -136,7 +151,7 @@ fun DetectByCameraScreen(
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = output.savedUri ?: return
-
+                    viewModel.bmpUri = savedUri
                     scope.launch {
                         val bitmap = withContext(Dispatchers.IO) {
                             context.contentResolver.openInputStream(savedUri)?.use {
@@ -169,6 +184,7 @@ fun DetectByCameraScreen(
                             }//if
 
                             onDetectionsComplete()
+                            hasTakenPicture = false
                         }//.let
                     }//.launch
                 }//fun
@@ -242,35 +258,70 @@ fun DetectByCameraScreen(
                     .fillMaxSize()
                     .padding(innerPadding)
             ){
-                AndroidView(
-                    modifier = Modifier.fillMaxSize(),
-                    factory = {context ->
-                    val previewView = PreviewView(context).apply {
-                        layoutParams = ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT
-                        )
+                key(cameraSelector) {
+                    AndroidView(
+                        modifier = Modifier.fillMaxSize(),
+                        factory = { context ->
+                            val previewView = PreviewView(context).apply {
+                                layoutParams = ViewGroup.LayoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT
+                                )
+                                this.scaleType = scaleType
+                            }
+                            previewView.setOnTouchListener { view, event ->
+                                if (event.action == MotionEvent.ACTION_DOWN) {
 
-                        this.scaleType = scaleType
-                    }//val
+                                    val factory = previewView.meteringPointFactory
+                                    val point = factory.createPoint(event.x, event.y)
 
-                    val previewUseCase = Preview.Builder().build()
-                    previewUseCase.setSurfaceProvider(previewView.surfaceProvider)
+                                    val action = FocusMeteringAction.Builder(
+                                        point,
+                                        FocusMeteringAction.FLAG_AF or FocusMeteringAction.FLAG_AE
+                                    ).setAutoCancelDuration(3, TimeUnit.SECONDS)
+                                        .build()
 
-                    scope.launch{
-                        val cameraProvider = context.cameraProvider()
+                                    val camera = previewView.tag as? Camera ?: return@setOnTouchListener true
+                                    camera.cameraControl.startFocusAndMetering(action)
 
-                        try{
-                            cameraProvider.unbindAll()
-                            cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, previewUseCase, imageCapture)
-                        }catch (e: Exception) {
-                            e.printStackTrace()
-                        }//try-catch
-                    }//.launch
+                                    view.performClick()
+                                }
+                                true
+                            }
+                            val preview = Preview.Builder().build()
+                            preview.setSurfaceProvider(previewView.surfaceProvider)
 
-                    previewView
-                })//AndroidView
+                            scope.launch {
+                                val cameraProvider = context.cameraProvider()
 
+                                cameraProvider.unbindAll()
+
+                                val camera = cameraProvider.bindToLifecycle(
+                                    lifecycleOwner,
+                                    cameraSelector,
+                                    preview,
+                                    imageCapture
+                                )
+
+                                previewView.tag = camera // 👈 needed for focus
+                            }
+
+                            previewView
+                        }
+                    )
+                }
+                IconButton(
+                    onClick = { useFrontCamera = !useFrontCamera },
+                    enabled = !hasTakenPicture, // ⬅ disables flip while capturing
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(16.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Cameraswitch,
+                        contentDescription = "Switch Camera"
+                    )
+                }
                 IconButton(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
@@ -350,7 +401,14 @@ fun DetectByCameraScreen(
             }//if-else
         }//if-else
     }//Scaffold
+    DisposableEffect(Unit) {
+        onDispose {
+            cameraExecutor.shutdown()
+        }
+    }
 }//fun
+
+
 
 suspend fun Context.cameraProvider(): ProcessCameraProvider = suspendCoroutine { continuation ->
     val listenableFuture = ProcessCameraProvider.getInstance(this)
