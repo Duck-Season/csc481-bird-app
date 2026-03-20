@@ -265,10 +265,21 @@ fun ResultsScreen(
                             )
                         }
 
-                        if(displayStr == ""){
-                            displayStr = "Location Unknown"
-                        }//if
-
+                        GoogleMap(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp)
+                                .padding(16.dp),
+                            cameraPositionState = cameraPositionState
+                        ) {
+                            Marker(
+                                state = MarkerState(
+                                    position = LatLng(viewModel.geoLat!!.toDouble(), viewModel.geoLon!!.toDouble())
+                                ),
+                                title = locationName ?: "Unknown Location"
+                            )
+                        }
+                    } else {
                         Text(
                             text = "Taken at: \n$displayStr",
                             fontSize = 12.sp
