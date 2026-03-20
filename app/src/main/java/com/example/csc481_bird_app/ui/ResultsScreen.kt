@@ -257,9 +257,13 @@ fun ResultsScreen(
                             displayStr += locationName + " "
                         }//if
 
-                        if(viewModel.geoLat != null && viewModel.geoLon != null){
-                            displayStr += "(${viewModel.geoLat}, ${viewModel.geoLon})"
-                        }//if
+                    if(viewModel.geoLat != null && viewModel.geoLon != null) {
+                        val cameraPositionState = rememberCameraPositionState {
+                            position = CameraPosition.fromLatLngZoom(
+                                LatLng(viewModel.geoLat!!.toDouble(), viewModel.geoLon!!.toDouble()),
+                                15f // zoom level
+                            )
+                        }
 
                         if(displayStr == ""){
                             displayStr = "Location Unknown"
