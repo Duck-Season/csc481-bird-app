@@ -14,14 +14,16 @@ import java.nio.channels.FileChannel
 import androidx.core.graphics.scale
 import androidx.core.graphics.createBitmap
 import com.example.csc481_bird_app.utils.getLabels
+import kotlin.math.exp
 
 class YOLOv11Detector(private val context: Context) {
     private var interpreter: Interpreter? = null
-    private var inputImageWidth = 640
-    private var inputImageHeight = 640
-    private val iouThreshold = 0.45f
-    private val modelFilename = "YOLOv11_birdstraining_20jan2026_latest5.tflite"
+    private var inputImageWidth = 1024
+    private var inputImageHeight = 1024
+    private val modelFilename = "nabirds/YOLOv11_NABirds_17mar2026_epoch30_int8.tflite"
     private val labelClasses: List<String>
+    private val groupClasses: List<String>
+
 
     //initialize the interpreter and the lines
     init {
@@ -44,6 +46,10 @@ class YOLOv11Detector(private val context: Context) {
 
         //load in the labels from the text file
         labelClasses = getLabels(context)
+
+        //get group class names ready for score aggregating
+        val regex = Regex("\\s*\\(.*?\\)")
+        groupClasses = labelClasses.map { it.replace(regex, "").trim() }
     }//init
 
     //loads the model into the interpreter
@@ -144,29 +150,60 @@ class YOLOv11Detector(private val context: Context) {
             //create the initial list of detections
             val detections = mutableListOf<Detection>()
 
+            //aggregate the scores by grouping up species names
+            val groupScores = mutableMapOf<String, Float>()
+
             //process each of the outputs
             for (i in 0 until outputShape[2]) {
+                //clear the group scores beforehand
+                groupScores.clear()
+
                 val xCenter = outputArray[0][i]
                 val yCenter = outputArray[1][i]
                 val width = outputArray[2][i]
                 val height = outputArray[3][i]
 
-                //find the best class for the detection
-                //track its score and index
-                var maxConfidence = 0f
-                var maxClassIndex = 0
+                //get the name of the best single candidate class
+                var maxSingleConfidence = 0f
+                var maxSingleClassIndex = 0
 
-                //confidence scores for classes start at 4
+                var quickMax = 0f
+
+                //remember to start counting from 4 onwards
                 for (j in 4 until outputShape[1]) {
                     val classConfidence = outputArray[j][i]
-                    if (classConfidence > maxConfidence) {
-                        maxConfidence = classConfidence
-                        maxClassIndex = j - 4
+                    val classIndex = j - 4
+
+                    //check current single score against max
+                    if (classConfidence > maxSingleConfidence) {
+                        maxSingleConfidence = classConfidence
+                        maxSingleClassIndex = j - 4
+                    }//if
+
+                    //quick pre-scan to skip classes with too low a threshold
+                    if (outputArray[j][i] > quickMax) quickMax = outputArray[j][i]
+                    if (quickMax < confidenceThreshold) continue
+
+                    //update the group scores
+                    val groupName = if (classIndex < labelClasses.size) groupClasses[classIndex] else continue
+                    val current = groupScores.getOrDefault(groupName, 0f)
+                    if (classConfidence > current) {
+                        groupScores[groupName] = classConfidence
                     }//if
                 }//for
 
+                //get these for subdetections
+                val groupScoresSorted = groupScores.toSortedMap(reverseOrder())
+                val gSSnames = groupScoresSorted.keys.toList()
+                val gSSscores = groupScoresSorted.values.toList()
+
+                //if no group entry shows up, skip this one
+                //otherwise, get the score from the highest group
+                val bestGroup = groupScores.maxByOrNull { it.value } ?: continue
+                val maxGroupConfidence = bestGroup.value
+
                 //if the threshold is reached, begin creating the bounding box for our detection
-                if (maxConfidence >= confidenceThreshold) {
+                if (maxSingleConfidence >= confidenceThreshold) {
                     val x1 = (xCenter - width / 2) * inputImageWidth
                     val y1 = (yCenter - height / 2) * inputImageHeight
                     val w = width * inputImageWidth
@@ -183,18 +220,22 @@ class YOLOv11Detector(private val context: Context) {
                     val clampedH = minOf(originalH, bitmap.height - clampedY)
 
                     if (clampedW > 10 && clampedH > 10) {
-                        //determine string from class index
-                        val className = if (maxClassIndex < labelClasses.size) {
-                            labelClasses[maxClassIndex]
+                        //determine string from highest group
+                        val className = if (maxSingleClassIndex < labelClasses.size) {
+                            labelClasses[maxSingleClassIndex]
                         } else "Unknown Bird"
 
                         //add a new detection to the list
                         detections.add(
                             Detection(
                                 bbox = RectF(clampedX, clampedY, clampedX + clampedW, clampedY + clampedH),
-                                confidence = maxConfidence,
-                                classIndex = maxClassIndex,
-                                className = className
+                                confidence = maxGroupConfidence,
+                                classIndex = maxSingleClassIndex,
+                                className = className,
+                                subDetections = listOf(
+                                    Pair(gSSnames[1], gSSscores[1]),
+                                    Pair(gSSnames[2], gSSscores[2]),
+                                )
                             )//Detection
                         )//.add
                     }//if
@@ -211,34 +252,39 @@ class YOLOv11Detector(private val context: Context) {
     }//fun
 
     //Non-Maximum Suppression (NMS) to remove duplicate boxes for an object
+    //technically Soft-NMS, which instead of a hard cutoff between objects applies a score penalty based on overlap
+    //https://www.abhik.ai/concepts/computer-vision/nms-soft-nms
     private fun applyNMS(detections: List<Detection>, scoreThreshold: Float): List<Detection> {
         //first filter the detections by whether they pass the threshold
         //then sort the detections by confidence score first
         val filteredDetections = detections
             .filter { it.confidence >= scoreThreshold }
             .sortedByDescending { it.confidence }
+            .toMutableList()
 
-        //create the filtered results list and an array
+        //make final results list
         val result = mutableListOf<Detection>()
-        val suppressed = BooleanArray(filteredDetections.size) { false }
+        val sigma = 0.6f
 
-        for (i in filteredDetections.indices) {
-            //skip if already suppressed
-            if (suppressed[i]) continue
+        while (filteredDetections.isNotEmpty()) {
+            //pop the highest scoring detection first from the list
+            val best = filteredDetections.removeAt(0)
 
-            result.add(filteredDetections[i])
+            if (best.confidence < scoreThreshold) break
+            result.add(best)
 
-            for (j in i + 1 until filteredDetections.size) {
-                if (suppressed[j]) continue
-
-                val iou = calculateIoU(filteredDetections[i].bbox, filteredDetections[j].bbox)
-                if (iou > iouThreshold) {
-                    suppressed[j] = true
-                }//if
+            //decay scores of the remaining candidates based on IoU overlap with best
+            for (det in filteredDetections) {
+                val iou = calculateIoU(best.bbox, det.bbox)
+                val decayFactor = exp((-iou * iou / sigma).toDouble()).toFloat()
+                det.confidence *= decayFactor
             }//for
-        }//for
 
-        //return
+            //remove any entries falling below score threshold
+            filteredDetections.removeAll { it.confidence < scoreThreshold }
+        }//while
+
+        //result is a mutable list but the function returns an immutable
         return result
     }//fun
 

@@ -33,7 +33,11 @@ fun loadDetections(context: Context, scan_path: String, viewModel: DectectionsVi
         while(line != null) {
             //everything in saveDetections() is split by a ' '
             //.readLine() doesn't include the '\n' so we don't need to worry about that
-            val sList = line.split(" ")
+            val sList = line.split("\t")
+
+            val subSplit = sList[6].split("|")
+            val subD1 = subSplit[0].split(":")
+            val subD2 = subSplit[1].split(":")
 
             //make the entry
             detList.add(
@@ -41,9 +45,15 @@ fun loadDetections(context: Context, scan_path: String, viewModel: DectectionsVi
                     bbox = RectF(sList[0].toFloat(), sList[1].toFloat(), sList[2].toFloat(), sList[3].toFloat(),),
                     confidence = sList[4].toFloat(),
                     classIndex = sList[5].toInt(),
-                    className = sList.subList(6, sList.size).joinToString(" ") //class name likely has spaces in it
+                    subDetections = listOf(
+                        Pair(subD1[0], subD1[1].toFloat()),
+                        Pair(subD2[0], subD2[1].toFloat()),
+                    ),
+                    className = sList.subList(7, sList.size).joinToString(" "), //class name likely has spaces in it
                 )//new Detection
             )//.add
+
+            Log.d("csc481birdapp", "RAW LINE: '$line'")
 
             //go to next line
             line = reader.readLine()
