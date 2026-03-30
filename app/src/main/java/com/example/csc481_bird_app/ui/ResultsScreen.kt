@@ -1,6 +1,7 @@
 package com.example.csc481_bird_app.ui
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
 import android.location.Geocoder
