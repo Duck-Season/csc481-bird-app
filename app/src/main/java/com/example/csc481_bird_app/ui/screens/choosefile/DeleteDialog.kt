@@ -39,7 +39,9 @@ fun DeleteDialog (
         },
         dismissButton = {
             TextButton(
-                onClick = {hideDialog}//onClick
+                onClick = {
+                    hideDialog()
+                }//onClick
             ) {
                 Text("No")
             }//TextButton
