@@ -330,6 +330,84 @@ fun ResultsScreen(
                         )
                     }
 
+                    val filteredDetections = viewModel.detections.filter { det ->
+                        val name = det.className.substringAfter(" ").replace("_", " ")
+
+                        val matchesSearch = searchQuery.isBlank() ||
+                                name.contains(searchQuery, ignoreCase = true)
+
+                        val matchesDropdown = selectedBird == null || name == selectedBird
+
+                        matchesSearch && matchesDropdown
+                    }
+
+                    Column(modifier = Modifier.padding(16.dp)) {
+
+                        // 🔍 SEARCH BAR
+                        TextField(
+                            value = searchQuery,
+                            onValueChange = {
+                                searchQuery = it
+
+                                val match = allBirds.find { bird ->
+                                    bird.equals(it, ignoreCase = true)
+                                }
+
+                                selectedBird = match
+
+                                // 🔥 OPEN BROWSER if exact match
+                                if (match != null) {
+                                    openBirdPage(match)
+                                }
+                            },
+                            label = { Text("Search bird...") },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // ⬇️ DROPDOWN
+                        ExposedDropdownMenuBox(
+                            expanded = expanded,
+                            onExpandedChange = { expanded = !expanded }
+                        ) {
+                            TextField(
+                                value = selectedBird ?: "Select Bird",
+                                onValueChange = {},
+                                readOnly = true,
+                                label = { Text("Filter by species") },
+                                trailingIcon = {
+                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded)
+                                },
+                                modifier = Modifier.menuAnchor().fillMaxWidth()
+                            )
+
+                            ExposedDropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false }
+                            ) {
+                                allBirds.forEach { bird ->
+                                    DropdownMenuItem(
+                                        text = { Text(bird) },
+                                        onClick = {
+                                            selectedBird = bird
+                                            expanded = false
+                                            openBirdPage(bird) // open browser
+                                        }
+                                    )
+                                }
+
+                                DropdownMenuItem(
+                                    text = { Text("Clear Filter") },
+                                    onClick = {
+                                        selectedBird = null
+                                        expanded = false
+                                    }
+                                )
+                            }
+                        }
+                    }
+
                     LazyColumn(
                         modifier = Modifier
                             .padding(16.dp)
