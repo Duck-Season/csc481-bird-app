@@ -92,6 +92,18 @@ fun ResultsScreen(
     val scope = rememberCoroutineScope()
     var showRescanDialog by remember { mutableStateOf(false) }
 
+    var allBirds by remember { mutableStateOf(listOf<String>()) }
+    var searchQuery by remember { mutableStateOf("") }
+    var selectedBird by remember { mutableStateOf<String?>(null) }
+    var expanded by remember { mutableStateOf(false) }
+
+    fun openBirdPage(birdName: String) {
+        val urlName = birdName.replace(" ", "_") // format for AllAboutBirds
+        val url = "https://www.allaboutbirds.org/guide/$urlName"
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        context.startActivity(intent)
+    }
+
     // Helper function to fetch location (DRY - Don't Repeat Yourself)
     @SuppressLint("MissingPermission")
     fun fetchLocation() {
