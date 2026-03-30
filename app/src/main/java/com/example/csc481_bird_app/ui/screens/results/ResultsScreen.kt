@@ -71,7 +71,6 @@ fun ResultsScreen(
     val scope = rememberCoroutineScope()
     var showRescanDialog by remember { mutableStateOf(false) }
     var isValidScan by remember { mutableStateOf(false) }
-    var listFiltered by remember { mutableStateOf<List<String>>(emptyList())}
 
     //helper function to fetch location
     @SuppressLint("MissingPermission")
