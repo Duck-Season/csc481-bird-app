@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
 import android.location.Geocoder
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
