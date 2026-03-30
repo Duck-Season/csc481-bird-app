@@ -416,7 +416,7 @@ fun ResultsScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         if(viewModel.detections.isNotEmpty()){
-                            itemsIndexed(viewModel.detections){ index, det ->
+                            itemsIndexed(filteredDetections){ index, det ->
                                 Card(
                                     modifier = Modifier
                                         .fillMaxWidth()
