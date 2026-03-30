@@ -1,4 +1,4 @@
-package com.example.csc481_bird_app.ui.screens
+package com.example.csc481_bird_app.ui.screens.choosefile
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Column
@@ -49,14 +49,22 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChooseFileScreen(
+fun OldChooseFileScreen(
     viewModel: DectectionsViewModel,
     onDetectionsComplete: () -> Unit,
     onBack: () -> Unit
 ){
+    val context = LocalContext.current
+
+    //load in the list of folders
+    val listFolders = remember {
+        mutableStateListOf(context.filesDir.listFiles()?.filter { file ->
+            file.isDirectory
+        })
+    }//val remember mutableStateList
+
     //load in the list of files
     //filter ONLY by those beginning with "save_"
-    val context = LocalContext.current
     val listSaves = remember {
         mutableStateListOf<File>()
     }//val remember mutableStateList
@@ -83,7 +91,7 @@ fun ChooseFileScreen(
             }//.filter
             ?.sortedByDescending { it.lastModified() }
             ?: emptyList()
-    )
+    )//.addAll
 
     //mutable values
     var selectedIndex by remember { mutableStateOf(-1)}
@@ -92,6 +100,7 @@ fun ChooseFileScreen(
     var tempIsCamera by remember { mutableStateOf(false) }
 
     Scaffold(
+        //------------ Top Bar ------------
         topBar = {
             TopAppBar(
                 colors = topAppBarColors(
@@ -171,6 +180,7 @@ fun ChooseFileScreen(
             )//TopAppBar
         },
     ) { innerPadding ->
+        //------------ Files List ------------
         //Lazy Column to hold everything in place
         LazyColumn(
             modifier = Modifier
@@ -208,9 +218,7 @@ fun ChooseFileScreen(
                     val imgUri = getImageUriFromSave(context, name)
 
                     //convert epoch time in name to readable format
-                    val previewName = convertEpochDateToReadable(
-                        nameSplits[2]
-                    )//val
+                    val previewName = oldConvertEpochDateToReadable(nameSplits[2])
 
                     //file entry
                     Card(
@@ -245,19 +253,39 @@ fun ChooseFileScreen(
                             AsyncImage(
                                 model = imgUri, // Get the URI/File instead of Bitmap
                                 contentDescription = "Preview",
-                                modifier = Modifier.size(64.dp).clip(RoundedCornerShape(8.dp)),
+                                modifier = Modifier
+                                    .size(64.dp)
+                                    .clip(RoundedCornerShape(8.dp)),
                                 contentScale = ContentScale.Crop,
                             )//AsyncImage
 
+                            Spacer(
+                                modifier = Modifier
+                                    .weight(0.1f)
+                            )//Spacer
+
                             //use the readable time name
                             Row(
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(0.6f)
                             ){
-                                Text(previewName)
-                                Spacer(modifier = Modifier.weight(1f))
                                 Icon(
                                     painter = painterResource(id = if(isCameraSave) R.drawable.rounded_add_camera_24 else R.drawable.rounded_add_photo_alternate_24),
-                                    contentDescription = "Save taken with phone " + if(isCameraSave) "camera" else "gallery"
+                                    contentDescription = "Save taken with phone " + if(isCameraSave) "camera" else "gallery",
+                                    modifier = Modifier
+                                        .size(32.dp)
+                                )//Icon
+                                Text(
+                                    text = previewName,
+                                    fontSize = 24.sp
+                                )
+                                Spacer(modifier = Modifier.weight(0.4f))
+                                Icon(
+                                    painter = painterResource(R.drawable.outline_more_vert_24),
+                                    contentDescription = "Save taken with phone " + if(isCameraSave) "camera" else "gallery",
+                                    modifier = Modifier
+                                        .size(48.dp)
                                 )//Icon
                             }//Row
                         }//Row
@@ -312,9 +340,9 @@ fun ChooseFileScreen(
     }//Scaffold
 }//fun
 
-fun convertEpochDateToReadable(strDate: String): String{
+fun oldConvertEpochDateToReadable(strDate: String): String{
     val epochMillis = strDate.toLongOrNull() ?: return "Unknown Date"
     val date = Date(epochMillis)
-    val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    val formatter = SimpleDateFormat("MMMM dd, yyyy\n HH:mm:ss aaa", Locale.getDefault())
     return formatter.format(date)
 }//fun

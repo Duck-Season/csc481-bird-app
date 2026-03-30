@@ -71,6 +71,7 @@ fun ResultsScreen(
     val scope = rememberCoroutineScope()
     var showRescanDialog by remember { mutableStateOf(false) }
     var isValidScan by remember { mutableStateOf(false) }
+    var listFiltered by remember { mutableStateOf<List<String>>(emptyList())}
 
     //helper function to fetch location
     @SuppressLint("MissingPermission")
@@ -156,7 +157,7 @@ fun ResultsScreen(
                             )//Icon
                         }//TextButton
 
-                        Text("Results Screen")
+                        Text("${viewModel.detections.size} bird${if(viewModel.detections.size == 1) "" else "s"} found")
 
                         Spacer(
                             modifier = Modifier.weight(1.5f)
@@ -328,36 +329,40 @@ fun ResultsScreen(
                                         }//Row
 
                                         if(selectedIndex == index){
-                                            if(det.subDetections[0].second > 0.01f && det.subDetections[1].second > 0.01f){
-                                                Text(
-                                                    text = "Other candidates",
-                                                    fontSize = 12.sp
-                                                )//Text
+                                            Text(
+                                                text = "Other candidates",
+                                                fontSize = 12.sp
+                                            )//Text
 
-                                                Column {
-                                                    det.subDetections.forEachIndexed { index, subDet ->
-                                                        Column {
-                                                            Row {
-                                                                Text(
-                                                                    text = subDet.first,
-                                                                    fontSize = 12.sp,
-                                                                    modifier = Modifier.weight(0.4f)
-                                                                )
-                                                                Text(
-                                                                    "${String.format("%.2f", subDet.second*100)}%",
-                                                                    fontSize = 12.sp,
-                                                                    modifier = Modifier.weight(0.4f)
-                                                                )
-                                                            }//Row
-                                                            Row {
-                                                                LinearProgressIndicator(
-                                                                    progress = { subDet.second },
-                                                                )
-                                                            }//Row
-                                                        }//Column
-                                                    }//forEach
-                                                }//Column
-                                            }//if
+                                            Column {
+                                                det.subDetections.forEachIndexed { index, subDet ->
+                                                    Column {
+                                                        Row (
+                                                            modifier = Modifier
+                                                                .fillMaxWidth()
+                                                        ) {
+                                                            Text(
+                                                                text = subDet.first,
+                                                                fontSize = 12.sp,
+                                                                modifier = Modifier.weight(0.6f)
+                                                            )
+                                                            Text(
+                                                                "${String.format("%.2f", subDet.second*100)}%",
+                                                                fontSize = 12.sp,
+                                                                modifier = Modifier.weight(0.4f)
+                                                            )
+                                                        }//Row
+                                                        Row (
+                                                            modifier = Modifier
+                                                                .fillMaxWidth()
+                                                        )  {
+                                                            LinearProgressIndicator(
+                                                                progress = { subDet.second },
+                                                            )
+                                                        }//Row
+                                                    }//Column
+                                                }//forEach
+                                            }//Column
                                         }//if
                                     }//Column
                                 }//Card

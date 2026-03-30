@@ -23,6 +23,7 @@ class YOLOv11Detector(private val context: Context) {
     private val modelFilename = "nabirds/YOLOv11_NABirds_17mar2026_epoch30_int8.tflite"
     private val labelClasses: List<String>
     private val groupClasses: List<String>
+    private val iouThreshold = 0.45f
 
 
     //initialize the interpreter and the lines
@@ -193,9 +194,13 @@ class YOLOv11Detector(private val context: Context) {
                 }//for
 
                 //get these for subdetections
-                val groupScoresSorted = groupScores.toSortedMap(reverseOrder())
-                val gSSnames = groupScoresSorted.keys.toList()
-                val gSSscores = groupScoresSorted.values.toList()
+                val groupScoresSorted = groupScores.entries
+                    .sortedByDescending { it.value }
+                val gSSentries = groupScoresSorted
+
+                val subDetections = mutableListOf<Pair<String, Float>>()
+                if (gSSentries.size > 1) subDetections.add(Pair(gSSentries[1].key, gSSentries[1].value))
+                if (gSSentries.size > 2) subDetections.add(Pair(gSSentries[2].key, gSSentries[2].value))
 
                 //if no group entry shows up, skip this one
                 //otherwise, get the score from the highest group
@@ -232,10 +237,7 @@ class YOLOv11Detector(private val context: Context) {
                                 confidence = maxGroupConfidence,
                                 classIndex = maxSingleClassIndex,
                                 className = className,
-                                subDetections = listOf(
-                                    Pair(gSSnames[1], gSSscores[1]),
-                                    Pair(gSSnames[2], gSSscores[2]),
-                                )
+                                subDetections = subDetections
                             )//Detection
                         )//.add
                     }//if
@@ -264,7 +266,7 @@ class YOLOv11Detector(private val context: Context) {
 
         //make final results list
         val result = mutableListOf<Detection>()
-        val sigma = 0.6f
+        val sigma = 0.55f
 
         while (filteredDetections.isNotEmpty()) {
             //pop the highest scoring detection first from the list
@@ -276,8 +278,9 @@ class YOLOv11Detector(private val context: Context) {
             //decay scores of the remaining candidates based on IoU overlap with best
             for (det in filteredDetections) {
                 val iou = calculateIoU(best.bbox, det.bbox)
-                val decayFactor = exp((-iou * iou / sigma).toDouble()).toFloat()
-                det.confidence *= decayFactor
+                if(iou > iouThreshold){
+                    det.confidence *= (1-iou)
+                }else continue;
             }//for
 
             //remove any entries falling below score threshold

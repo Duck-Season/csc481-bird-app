@@ -14,7 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.csc481_bird_app.detector.DectectionsViewModel
-import com.example.csc481_bird_app.ui.screens.ChooseFileScreen
+import com.example.csc481_bird_app.ui.screens.choosefile.ChooseFileScreen
 import com.example.csc481_bird_app.ui.screens.DetectByCameraScreen
 import com.example.csc481_bird_app.ui.screens.DetectByGalleryScreen
 import com.example.csc481_bird_app.ui.screens.HomeScreen
