@@ -123,6 +123,14 @@ fun ResultsScreen(
         fetchLocation()
     }//LaunchedEffect
 
+    LaunchedEffect(Unit) {
+        val input = context.assets.open("labels.txt")
+        val list = input.bufferedReader().readLines().map {
+            it.substringAfter(" ").replace("_", " ")
+        }
+        allBirds = list
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
