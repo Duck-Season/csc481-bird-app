@@ -11,6 +11,7 @@ import android.graphics.Matrix
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -200,6 +201,7 @@ fun DetectByCameraScreen(
                                 )//saveDetections
                             }//if
 
+                            Log.d("csc481birdapp", "Detections after runDetections: ${viewModel.detections.size}")
                             onDetectionsComplete()
                         }//.let
                     }//.launch

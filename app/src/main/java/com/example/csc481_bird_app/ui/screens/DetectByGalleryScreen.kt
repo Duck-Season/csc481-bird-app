@@ -88,6 +88,7 @@ fun DetectByGalleryScreen(
                     }//if
 
                     //call function for moving into the results screen
+                    Log.d("csc481birdapp", "Detections after runDetections: ${viewModel.detections.size}")
                     onDetectionsComplete()
                 }//.let
             }//scope launch
