@@ -8,19 +8,28 @@ import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.detector.Detection
 import com.example.csc481_bird_app.utils.getImageFromSave
 import java.io.BufferedReader
+import java.io.File
 import java.io.InputStreamReader
 
 
 //load data from internal save file into the detections ViewModel
 //scan_path is a path from the scan file in internal storage
-fun loadDetections(context: Context, scan_path: String, viewModel: DectectionsViewModel, saveUri: Uri?, isCameraSave: Boolean){
+fun loadDetections(
+    context: Context,
+    scan_path: String,
+    viewModel: DectectionsViewModel,
+    saveUri: Uri?,
+    isCameraSave: Boolean,
+    parentDir: File = context.filesDir
+){
     try{
         //open the file chosen
-        val inputStream = context.openFileInput(scan_path)
+        val saveFile = File(parentDir, scan_path)
+        val inputStream = saveFile.inputStream()
         val reader = BufferedReader(InputStreamReader(inputStream))
 
         //get the image path
-        val bmp = getImageFromSave(context, scan_path);
+        val bmp = getImageFromSave(context, scan_path, parentDir);
 
         //skip the image path, get the geoCoords
         reader.readLine()

@@ -238,7 +238,7 @@ fun ChooseFileScreen(
                             tempIsCamera = isCameraSave
                             tempUri = imgUri
 
-                            loadDetections(context, listSaves[selectedIndex].name, viewModel, tempUri, tempIsCamera)
+                            loadDetections(context, listSaves[selectedIndex].name, viewModel, tempUri, tempIsCamera, currentDir)
                             onDetectionsComplete()
                         },
                         imgUri = imgUri,
