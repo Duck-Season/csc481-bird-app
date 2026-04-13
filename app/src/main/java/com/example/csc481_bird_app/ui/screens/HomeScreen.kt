@@ -1,27 +1,7 @@
 package com.example.csc481_bird_app.ui.screens
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -50,98 +30,58 @@ fun HomeScreen(
                 }//title
             )//TopAppBar
         },
-    ) { innerPadding ->
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier
-                .padding(innerPadding),
-            contentPadding = PaddingValues(12.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            item {
-                OutlinedButton(
-                    onClick = onCameraClick,
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
-                    shape = MaterialTheme.shapes.medium,
-                    modifier = Modifier
-                        .aspectRatio(1f/1f)
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.rounded_add_camera_24),
-                            contentDescription = "File Icon",
-                            tint = MaterialTheme.colorScheme.primary
-                        )//Icon
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        Text(
-                            text = "Take Image\nwith Camera",
-                            color = MaterialTheme.colorScheme.primary,
-                            textAlign = TextAlign.Center
-                        )//Text
-                    }//Column
-                }//Button
-            }
-
-            item {
-                OutlinedButton(
-                    onClick = onGalleryClick,
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
-                    shape = MaterialTheme.shapes.medium,
-                    modifier = Modifier
-                        .aspectRatio(1f/1f)
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.rounded_add_photo_alternate_24),
-                            contentDescription = "File Icon",
-                            tint = MaterialTheme.colorScheme.primary
-                        )//Icon
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Pick Image\nfrom Gallery",
-                            color = MaterialTheme.colorScheme.primary,
-                            textAlign = TextAlign.Center
-                        )
-                    }//Row
-                }//Button
-            }//item
-
-            item {
-
-                OutlinedButton(
+        bottomBar = {
+            NavigationBar {
+                NavigationBarItem(
+                    selected = false,
                     onClick = onFileClick,
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
-                    shape = MaterialTheme.shapes.medium,
-                    modifier = Modifier
-                        .aspectRatio(1f/1f)
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
+                    icon = {
                         Icon(
                             painter = painterResource(id = R.drawable.rounded_files_24),
-                            contentDescription = "File Icon",
-                            tint = MaterialTheme.colorScheme.primary
-                        )//Icon
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Pick Image from\nSave File",
-                            color = MaterialTheme.colorScheme.primary,
-                            textAlign = TextAlign.Center
+                            contentDescription = "Collections"
                         )
-                    }//Row
-                }//Button
-            }//item
-        }//LazyVerticalGrid
-    }//Column
-}//fun
+                    },
+                    label = { Text("Collections") }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = onCameraClick,
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.rounded_add_camera_24),
+                            contentDescription = "Camera"
+                        )
+                    },
+                    label = { Text("Camera") }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = onGalleryClick,
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.rounded_add_photo_alternate_24),
+                            contentDescription = "Gallery"
+                        )
+                    },
+                    label = { Text("Gallery") }
+                )
+            }
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Welcome to the Bird App!\n\nUse the navigation bar below to get started.",
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.padding(24.dp)
+            )
+        }//Column
+    }
+}

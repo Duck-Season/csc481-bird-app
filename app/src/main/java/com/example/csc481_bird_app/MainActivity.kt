@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavHost(navController = navController, startDestination = "home") {
+                    NavHost(navController = navController, startDestination = "bycamera") {
                         composable("home") {
                             HomeScreen(
                                 onCameraClick = {
@@ -68,6 +68,8 @@ class MainActivity : ComponentActivity() {
                             )///HomeScreen
                         }//composable
                         composable("bycamera") {
+                            // Ensure camera state is set correctly when starting here
+                            viewModel.takenWithCamera = true
                             DetectByCameraScreen(
                                 viewModel,
                                 onDetectionsComplete = {
