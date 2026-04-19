@@ -27,15 +27,29 @@ fun saveDetections(context: Context, detections: List<Detection>, imageUri: Stri
                 //convert the entire detection to a string
                 var strEntry = ""
 
-                //order when splitting should be: [0-3] = RectF params, [4] = confidence Float, [5] = classIndex, [6] = className
-                strEntry += det.bbox.left.toString() + " " + det.bbox.top.toString() + " " + det.bbox.right.toString() + " " + det.bbox.bottom.toString() + " "
-                strEntry += det.confidence.toString() + " "
-                strEntry += det.classIndex.toString() + " "
+                //order when splitting should be:
+                // [0-3] = RectF params,
+                // [4] = confidence Float,
+                // [5] = classIndex,
+                // [6] = subDetections,
+                // [7] = className
+                strEntry +=
+                    det.bbox.left.toString() + "\t" +
+                    det.bbox.top.toString() + "\t" +
+                    det.bbox.right.toString() + "\t" +
+                    det.bbox.bottom.toString() + "\t"
+                strEntry += det.confidence.toString() + "\t"
+                strEntry += det.classIndex.toString() + "\t"
+                strEntry +=
+                    det.subDetections[0].first + ":" + det.subDetections[0].second.toString() +
+                    "|" + det.subDetections[1].first + ":" + det.subDetections[1].second.toString() + "\t"
                 strEntry += det.className
-                strEntry += "\n"
 
                 //add entry to contents
+                strEntry += "\n"
                 strContents += strEntry
+
+                Log.d("csc481birdapp", "SAVING LINE: '$strEntry'")
             }//forEach
 
             //now save contents to the file

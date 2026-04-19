@@ -8,19 +8,28 @@ import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.detector.Detection
 import com.example.csc481_bird_app.utils.getImageFromSave
 import java.io.BufferedReader
+import java.io.File
 import java.io.InputStreamReader
 
 
 //load data from internal save file into the detections ViewModel
 //scan_path is a path from the scan file in internal storage
-fun loadDetections(context: Context, scan_path: String, viewModel: DectectionsViewModel, saveUri: Uri?, isCameraSave: Boolean){
+fun loadDetections(
+    context: Context,
+    scan_path: String,
+    viewModel: DectectionsViewModel,
+    saveUri: Uri?,
+    isCameraSave: Boolean,
+    parentDir: File = context.filesDir
+){
     try{
         //open the file chosen
-        val inputStream = context.openFileInput(scan_path)
+        val saveFile = File(parentDir, scan_path)
+        val inputStream = saveFile.inputStream()
         val reader = BufferedReader(InputStreamReader(inputStream))
 
         //get the image path
-        val bmp = getImageFromSave(context, scan_path);
+        val bmp = getImageFromSave(context, scan_path, parentDir);
 
         //skip the image path, get the geoCoords
         reader.readLine()
@@ -33,7 +42,11 @@ fun loadDetections(context: Context, scan_path: String, viewModel: DectectionsVi
         while(line != null) {
             //everything in saveDetections() is split by a ' '
             //.readLine() doesn't include the '\n' so we don't need to worry about that
-            val sList = line.split(" ")
+            val sList = line.split("\t")
+
+            val subSplit = sList[6].split("|")
+            val subD1 = subSplit[0].split(":")
+            val subD2 = subSplit[1].split(":")
 
             //make the entry
             detList.add(
@@ -41,9 +54,15 @@ fun loadDetections(context: Context, scan_path: String, viewModel: DectectionsVi
                     bbox = RectF(sList[0].toFloat(), sList[1].toFloat(), sList[2].toFloat(), sList[3].toFloat(),),
                     confidence = sList[4].toFloat(),
                     classIndex = sList[5].toInt(),
-                    className = sList.subList(6, sList.size).joinToString(" ") //class name likely has spaces in it
+                    subDetections = listOf(
+                        Pair(subD1[0], subD1[1].toFloat()),
+                        Pair(subD2[0], subD2[1].toFloat()),
+                    ),
+                    className = sList.subList(7, sList.size).joinToString(" "), //class name likely has spaces in it
                 )//new Detection
             )//.add
+
+            Log.d("csc481birdapp", "RAW LINE: '$line'")
 
             //go to next line
             line = reader.readLine()
