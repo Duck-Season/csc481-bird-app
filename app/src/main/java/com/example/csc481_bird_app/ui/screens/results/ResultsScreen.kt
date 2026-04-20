@@ -181,6 +181,7 @@ fun ResultsScreen(
 
     //------------ the Composable part ------------
     Scaffold(
+        //------------ Top Bar ------------
         topBar = {
             TopAppBar(
                 colors = topAppBarColors(
@@ -291,6 +292,7 @@ fun ResultsScreen(
                         )//Text
                     }//Box
 
+                    //------------ Search Bar ------------
                     val filteredBirds = allBirds.filter {
                         it.contains(searchQuery, ignoreCase = true)
                     }.take(15)
@@ -361,6 +363,7 @@ fun ResultsScreen(
                         }
                     }
 
+                    //------------ Results List ------------
                     LazyColumn(
                         modifier = Modifier
                             .padding(16.dp)
@@ -555,6 +558,7 @@ fun ResultsScreen(
                         }//if-else
                     }//LazyColumn
                 }else{
+                    //------------ Scanning Overlay ------------
                     //rescanning screen
                     Box(
                         modifier = Modifier.fillMaxSize(),
@@ -574,6 +578,7 @@ fun ResultsScreen(
             }//.let
         }//Column
 
+        //------------ Rescan Dialog ------------
         //confirm we want to do a rescan first
         if(showRescanDialog){
             AlertDialog(
