@@ -20,7 +20,7 @@ class YOLOv11Detector(private val context: Context) {
     private var interpreter: Interpreter? = null
     private var inputImageWidth = 1024
     private var inputImageHeight = 1024
-    private val modelFilename = "nabirds/YOLOv11_NABirds_17mar2026_epoch30_int8.tflite"
+    private val modelFilename = "YOLOv11_birdstraining_20jan2026_latest5.tflite"
     private val labelClasses: List<String>
     private val groupClasses: List<String>
     private val iouThreshold = 0.45f

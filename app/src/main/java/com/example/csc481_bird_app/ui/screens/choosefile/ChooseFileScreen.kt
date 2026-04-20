@@ -22,10 +22,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,9 +35,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.csc481_bird_app.data.FavoritesManager
 import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.filesaving.loadDetections
+import com.example.csc481_bird_app.utils.extractBirdNameFromSave
 import com.example.csc481_bird_app.utils.getImageUriFromSave
+import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -49,6 +54,9 @@ fun ChooseFileScreen(
     onBack: () -> Unit
 ){
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val favoritesManager = remember { FavoritesManager(context) }
+    val favorites by favoritesManager.favoritesFlow.collectAsState(initial = emptySet())
 
     //mutable values
     var selectedIndex by remember { mutableStateOf(-1)}
@@ -73,7 +81,7 @@ fun ChooseFileScreen(
 
     //load in the list of files
     val listSaves = remember { mutableStateListOf<File>() }
-    LaunchedEffect(currentDir) {
+    LaunchedEffect(currentDir, favorites) {
         //clear existing list and counter
         listSaves.clear()
 
@@ -96,7 +104,14 @@ fun ChooseFileScreen(
                     else true
                 } else false
             }//.filter
-            ?.sortedByDescending { it.lastModified() }
+            ?.sortedWith(
+                compareByDescending<File> { file ->
+                    val birdName = extractBirdNameFromSave(context, file.name, currentDir)
+                    favorites.contains(birdName)
+                }.thenByDescending {
+                    it.lastModified()
+                }
+            )
             ?: emptyList()
 
         listSaves.addAll(files)
@@ -229,6 +244,8 @@ fun ChooseFileScreen(
 
                     //convert epoch time in name to readable format
                     val previewName = convertEpochDateToReadable(nameSplits[2])
+                    val birdName = extractBirdNameFromSave(context, name, currentDir)
+                    val isFavorite = favorites.contains(birdName)
 
                     FileCard(
                         fileName = previewName,
@@ -243,6 +260,7 @@ fun ChooseFileScreen(
                         },
                         imgUri = imgUri,
                         isCameraSave = isCameraSave,
+                        isFavorite = isFavorite,
                         onDelete = {
                             //set temporary selection value
                             selectedIndex = index
@@ -253,6 +271,11 @@ fun ChooseFileScreen(
                             selectedIndex = index
                             selectedIsFile = false
                             showMoveFileDialog = true
+                        },
+                        onToggleFavorite = {
+                            scope.launch {
+                                favoritesManager.toggleFavorite(birdName)
+                            }
                         }
                     )//FileCard
                 }//itemsIndexed

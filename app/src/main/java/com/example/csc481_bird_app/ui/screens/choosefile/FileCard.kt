@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -38,9 +41,11 @@ fun FileCard(
     imgUri: Uri? = null,
     isCameraSave: Boolean = false,
     isDeleteEnabled: Boolean = true,
+    isFavorite: Boolean = false,
     onSelection: () -> Unit,
     onDelete: () -> Unit = {},
     onMove: () -> Unit = {},
+    onToggleFavorite: () -> Unit = {},
 ){
     var expanded by remember { mutableStateOf(false) }
 
@@ -105,6 +110,17 @@ fun FileCard(
                     text = fileName,
                     fontSize = 16.sp
                 )
+
+                if (folder == null) {
+                    IconButton(onClick = onToggleFavorite) {
+                        Icon(
+                            imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
+                            contentDescription = "Favorite",
+                            tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
+                        )
+                    }
+                }
+
                 Spacer(modifier = Modifier.weight(0.4f))
 
                 Box(){

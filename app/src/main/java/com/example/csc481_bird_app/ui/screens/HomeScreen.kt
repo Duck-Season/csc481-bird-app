@@ -14,9 +14,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -36,7 +40,10 @@ import com.example.csc481_bird_app.R
 fun HomeScreen(
     onCameraClick: () -> Unit,
     onGalleryClick: () -> Unit,
-    onFileClick: () -> Unit
+    onFileClick: () -> Unit,
+    onFAQClick: () -> Unit,
+    onToggleTheme: () -> Unit,
+    isDark: Boolean
 ){
     Scaffold(
         topBar = {
@@ -47,7 +54,15 @@ fun HomeScreen(
                 ),
                 title = {
                     Text("CSC481 Bird App")
-                }//title
+                },//title
+                actions = {
+                    IconButton(onClick = onToggleTheme) {
+                        Icon(
+                            imageVector = if (isDark) Icons.Default.DarkMode else Icons.Default.LightMode,
+                            contentDescription = "Toggle Theme"
+                        )
+                    }
+                }
             )//TopAppBar
         },
     ) { innerPadding ->
@@ -141,6 +156,33 @@ fun HomeScreen(
                         )
                     }//Row
                 }//Button
+            }//item
+
+            item {
+                OutlinedButton(
+                    onClick = onFAQClick,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                    shape = MaterialTheme.shapes.medium,
+                    modifier = Modifier
+                        .aspectRatio(1f/1f)
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.outline_more_vert_24),
+                            contentDescription = "FAQ Icon",
+                            tint = MaterialTheme.colorScheme.primary
+                        )//Icon
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Frequently Asked\nQuestions",
+                            color = MaterialTheme.colorScheme.primary,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
             }//item
         }//LazyVerticalGrid
     }//Column

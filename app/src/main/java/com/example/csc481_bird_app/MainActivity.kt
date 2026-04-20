@@ -8,27 +8,36 @@ import androidx.camera.core.ImageCapture
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.csc481_bird_app.data.UserPreferences
 import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.ui.screens.choosefile.ChooseFileScreen
 import com.example.csc481_bird_app.ui.screens.DetectByCameraScreen
 import com.example.csc481_bird_app.ui.screens.DetectByGalleryScreen
+import com.example.csc481_bird_app.ui.screens.FAQScreen
 import com.example.csc481_bird_app.ui.screens.HomeScreen
 import com.example.csc481_bird_app.ui.screens.results.ResultsScreen
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val viewModel = DectectionsViewModel(application)
+        val prefs = UserPreferences(this)
 
         enableEdgeToEdge()
         setContent {
-            MaterialTheme() {
+            val darkMode by prefs.darkModeFlow.collectAsState(initial = false)
+
+            com.example.csc481_bird_app.ui.theme.Csc481birdappTheme(darkTheme = darkMode) {
                 //create controller for navigating screens
                 val navController = rememberNavController()
 
@@ -64,7 +73,16 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onFileClick = {
                                     navController.navigate("byfile")
-                                }//onFileClick
+                                },
+                                onFAQClick = {
+                                    navController.navigate("faq")
+                                },//onFAQClick
+                                onToggleTheme = {
+                                    lifecycleScope.launch {
+                                        prefs.setDarkMode(!darkMode)
+                                    }
+                                },
+                                isDark = darkMode
                             )///HomeScreen
                         }//composable
                         composable("bycamera") {
@@ -105,8 +123,21 @@ class MainActivity : ComponentActivity() {
                                 viewModel,
                                 onBack = {
                                     onBackToHome()
-                                }//onBack
+                                },
+                                onToggleTheme = {
+                                    lifecycleScope.launch {
+                                        prefs.setDarkMode(!darkMode)
+                                    }
+                                },
+                                isDark = darkMode
                             )//ResultsScreen
+                        }//composable
+                        composable("faq") {
+                            FAQScreen(
+                                onBack = {
+                                    navController.popBackStack()
+                                }
+                            )
                         }//composable
                     }//NavHost
                 }//Surface
