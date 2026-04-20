@@ -4,11 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.camera.core.ImageCapture
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,7 +15,9 @@ import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.ui.screens.choosefile.ChooseFileScreen
 import com.example.csc481_bird_app.ui.screens.DetectByCameraScreen
 import com.example.csc481_bird_app.ui.screens.DetectByGalleryScreen
+import com.example.csc481_bird_app.ui.screens.FAQScreen
 import com.example.csc481_bird_app.ui.screens.HomeScreen
+import com.example.csc481_bird_app.ui.screens.SettingsScreen
 import com.example.csc481_bird_app.ui.screens.results.ResultsScreen
 
 class MainActivity : ComponentActivity() {
@@ -26,27 +26,28 @@ class MainActivity : ComponentActivity() {
 
         val viewModel = DectectionsViewModel(application)
 
+        //needed for managing preferences
+        val sharedPrefs = getPreferences(MODE_PRIVATE)
+
         enableEdgeToEdge()
         setContent {
             MaterialTheme() {
                 //create controller for navigating screens
                 val navController = rememberNavController()
 
-                fun onBackToHome(){
+                fun onBackReset(){
                     //reset everything in the viewModel
-                    viewModel.isProcessing = false;
-                    viewModel.bitmap = null;
-                    viewModel.detections = emptyList();
-                    viewModel.geoLat = null;
-                    viewModel.geoLon = null;
-                    viewModel.takenWithCamera = false;
-                    viewModel.bmpUri = null;
+                    viewModel.isProcessing = false
+                    viewModel.bitmap = null
+                    viewModel.detections = emptyList()
+                    viewModel.geoLat = null
+                    viewModel.geoLon = null
+                    viewModel.takenWithCamera = false
+                    viewModel.bmpUri = null
 
                     //move back to home screen
                     navController.navigate("home")
                 }//fun
-
-                val imageCapture = remember {ImageCapture.Builder().build()}
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -56,7 +57,7 @@ class MainActivity : ComponentActivity() {
                         composable("home") {
                             HomeScreen(
                                 onCameraClick = {
-                                    viewModel.takenWithCamera = true;
+                                    viewModel.takenWithCamera = true
                                     navController.navigate("bycamera")
                                 },
                                 onGalleryClick = {
@@ -64,7 +65,13 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onFileClick = {
                                     navController.navigate("byfile")
-                                }//onFileClick
+                                },
+                                onFAQClick = {
+                                    navController.navigate("faq")
+                                },
+                                onSettingsClick = {
+                                    navController.navigate("settings")
+                                }
                             )///HomeScreen
                         }//composable
                         composable("bycamera") {
@@ -74,18 +81,20 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate("results")
                                 },
                                 onBack = {
-                                    onBackToHome()
-                                }//onBack
+                                    onBackReset()
+                                },
+                                prefs = sharedPrefs
                             )//DetectByCameraScreen
                         }//composable
                         composable("bygallery") {
                             DetectByGalleryScreen(
                                 viewModel,
+                                sharedPrefs,
                                 onDetectionsComplete = {
                                     navController.navigate("results")
                                 },
                                 onBack = {
-                                    onBackToHome()
+                                    onBackReset()
                                 }//onBack
                             )//DetectByGalleryScreen
                         }//composable
@@ -96,7 +105,7 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate("results")
                                 },
                                 onBack = {
-                                    onBackToHome()
+                                    onBackReset()
                                 }//onBack
                             )//ChooseFileScreen
                         }//composable
@@ -104,9 +113,27 @@ class MainActivity : ComponentActivity() {
                             ResultsScreen(
                                 viewModel,
                                 onBack = {
-                                    onBackToHome()
-                                }//onBack
+                                    onBackReset()
+                                },
+                                prefs = sharedPrefs
                             )//ResultsScreen
+                        }//composable
+                        composable("faq") {
+                            FAQScreen(
+                                onBack = {
+                                    //no need for ViewModel management
+                                    navController.navigate("home")
+                                }//onBack
+                            )//FAQScreen
+                        }//composable
+                        composable("settings") {
+                            SettingsScreen(
+                                prefs = sharedPrefs,
+                                onBack = {
+                                    //no need for ViewModel management
+                                    navController.navigate("home")
+                                }//onBack
+                            )//SettingsScreen
                         }//composable
                     }//NavHost
                 }//Surface

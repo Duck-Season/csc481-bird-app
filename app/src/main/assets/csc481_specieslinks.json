@@ -1,0 +1,1618 @@
+{
+  "Black-bellied Plover": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4892-Pluvialis-squatarola",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-bellied_Plover"
+  },
+  "Black-bellied Whistling-Duck": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6893-Dendrocygna-autumnalis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-bellied_Whistling-Duck"
+  },
+  "Semipalmated Plover": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4817-Charadrius-semipalmatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Semipalmated_Plover"
+  },
+  "Greater White-fronted Goose": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7019-Anser-albifrons",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Greater_White-fronted_Goose"
+  },
+  "Black Vulture": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4765-Coragyps-atratus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black_Vulture"
+  },
+  "American White Pelican": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4334-Pelecanus-erythrorhynchos",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_White_Pelican"
+  },
+  "Killdeer": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4793-Charadrius-vociferus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Killdeer"
+  },
+  "Red-headed Woodpecker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/18204-Melanerpes-erythrocephalus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Red-headed_Woodpecker"
+  },
+  "Snow Goose": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/558426-Anser-caerulescens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Snow_Goose"
+  },
+  "Chimney Swift": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6571-Chaetura-pelagica",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Chimney_Swift"
+  },
+  "American Oystercatcher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4840-Haematopus-palliatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Oystercatcher"
+  },
+  "Ross's Goose": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/558427-Anser-rossii",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Rosss_Goose"
+  },
+  "Barn Owl": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1578502-Tyto-furcata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Barn_Owl"
+  },
+  "Black Oystercatcher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4838-Haematopus-bachmani",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black_Oystercatcher"
+  },
+  "Turkey Vulture": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4756-Cathartes-aura",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Turkey_Vulture"
+  },
+  "Brown Pelican": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4328-Pelecanus-occidentalis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Brown_Pelican"
+  },
+  "Brant": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7087-Branta-bernicla",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Brant"
+  },
+  "Scaled Quail": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1419-Callipepla-squamata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Scaled_Quail"
+  },
+  "Northern Gannet": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3802-Morus-bassanus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Gannet"
+  },
+  "Rock Pigeon": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3017-Columba-livia",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Rock_Pigeon"
+  },
+  "Black-necked Stilt": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4836-Himantopus-mexicanus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-necked_Stilt"
+  },
+  "Acorn Woodpecker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/18209-Melanerpes-formicivorus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Acorn_Woodpecker"
+  },
+  "Pied-billed Grebe": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4246-Podilymbus-podiceps",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Pied-billed_Grebe"
+  },
+  "American Avocet": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4885-Recurvirostra-americana",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Avocet"
+  },
+  "Cackling Goose": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/59220-Branta-hutchinsii",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Cackling_Goose"
+  },
+  "Vaux's Swift": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6557-Chaetura-vauxi",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Vauxs_Swift"
+  },
+  "Osprey": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/116999-Pandion-haliaetus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Osprey"
+  },
+  "Crested Caracara": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4715-Caracara-plancus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Crested_Caracara"
+  },
+  "Spotted Sandpiper": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/72458-Actitis-macularius",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Spotted_Sandpiper"
+  },
+  "Canada Goose": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7089-Branta-canadensis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Canada_Goose"
+  },
+  "Great Blue Heron": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4956-Ardea-herodias",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Great_Blue_Heron"
+  },
+  "Solitary Sandpiper": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3875-Tringa-solitaria",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Solitary_Sandpiper"
+  },
+  "Mute Swan": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6921-Cygnus-olor",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Mute_Swan"
+  },
+  "Purple Gallinule": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/519-Porphyrio-martinica",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Purple_Gallinule"
+  },
+  "Western Screech-Owl": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/19743-Megascops-kennicottii",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Western_Screech-Owl"
+  },
+  "Gila Woodpecker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/18161-Melanerpes-uropygialis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Gila_Woodpecker"
+  },
+  "Greater Yellowlegs": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3892-Tringa-melanoleuca",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Greater_Yellowlegs"
+  },
+  "Swallow-tailed Kite": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/5301-Elanoides-forficatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Swallow-tailed_Kite"
+  },
+  "Trumpeter Swan": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6915-Cygnus-buccinator",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Trumpeter_Swan"
+  },
+  "White-throated Swift": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6553-Aeronautes-saxatalis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/White-throated_Swift"
+  },
+  "Willet": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144491-Tringa-semipalmata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Willet"
+  },
+  "Great Egret": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144455-Ardea-alba",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Great_Egret"
+  },
+  "Tundra Swan": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6917-Cygnus-columbianus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Tundra_Swan"
+  },
+  "California Quail": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1409-Callipepla-californica",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/California_Quail"
+  },
+  "Red-throated Loon": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4627-Gavia-stellata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Red-throated_Loon"
+  },
+  "Brandt's Cormorant": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1289607-Urile-penicillatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Brandts_Cormorant"
+  },
+  "Band-tailed Pigeon": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3108-Patagioenas-fasciata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Band-tailed_Pigeon"
+  },
+  "Yellow-billed Cuckoo": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1965-Coccyzus-americanus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Yellow-billed_Cuckoo"
+  },
+  "Lesser Yellowlegs": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3893-Tringa-flavipes",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Lesser_Yellowlegs"
+  },
+  "Golden-fronted Woodpecker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/18167-Melanerpes-aurifrons",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Golden-fronted_Woodpecker"
+  },
+  "Verdin": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7603-Auriparus-flaviceps",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Verdin"
+  },
+  "Wood Duck": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7107-Aix-sponsa",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Wood_Duck"
+  },
+  "Whimbrel": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1188213-Numenius-hudsonicus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Whimbrel"
+  },
+  "White-tailed Kite": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/5277-Elanus-leucurus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/White-tailed_Kite"
+  },
+  "Horned Grebe": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/631099-Podiceps-auritus-cornutus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Horned_Grebe"
+  },
+  "Snowy Egret": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4940-Egretta-thula",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Snowy_Egret"
+  },
+  "Long-billed Curlew": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3906-Numenius-americanus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Long-billed_Curlew"
+  },
+  "Gadwall": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/558439-Mareca-strepera",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Gadwall"
+  },
+  "Eastern Screech-Owl": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/19765-Megascops-asio",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Eastern_Screech-Owl"
+  },
+  "Broad-billed Hummingbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6141-Cynanthus-latirostris",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Broad-billed_Hummingbird"
+  },
+  "Marbled Godwit": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3954-Limosa-fedoa",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Marbled_Godwit"
+  },
+  "American Wigeon": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/485176-Mareca-americana",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Wigeon"
+  },
+  "Mississippi Kite": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/5416-Ictinia-mississippiensis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Mississippi_Kite"
+  },
+  "American Kestrel": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4665-Falco-sparverius",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Kestrel"
+  },
+  "Red-bellied Woodpecker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/18205-Melanerpes-carolinus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Red-bellied_Woodpecker"
+  },
+  "Ruddy Turnstone": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3938-Arenaria-interpres",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Ruddy_Turnstone"
+  },
+  "American Black Duck": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6924-Anas-rubripes",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Black_Duck"
+  },
+  "Little Blue Heron": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4937-Egretta-caerulea",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Little_Blue_Heron"
+  },
+  "Black Turnstone": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3941-Arenaria-melanocephala",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black_Turnstone"
+  },
+  "Mallard": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6930-Anas-platyrhynchos",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Mallard"
+  },
+  "Gambel's Quail": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1406-Callipepla-gambelii",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Gambels_Quail"
+  },
+  "Neotropic Cormorant": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1289601-Nannopterum-brasilianum",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Neotropic_Cormorant"
+  },
+  "Eurasian Collared-Dove": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/2969-Streptopelia-decaocto",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Eurasian_Collared-Dove"
+  },
+  "Surfbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/339592-Calidris-virgata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Surfbird"
+  },
+  "Ruby-throated Hummingbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6432-Archilochus-colubris",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Ruby-throated_Hummingbird"
+  },
+  "Bald Eagle": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/5305-Haliaeetus-leucocephalus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Bald_Eagle"
+  },
+  "Mottled Duck": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6948-Anas-fulvigula",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Mottled_Duck"
+  },
+  "Common Gallinule": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144479-Gallinula-galeata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Common_Gallinule"
+  },
+  "Great Horned Owl": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/20044-Bubo-virginianus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Great_Horned_Owl"
+  },
+  "Yellow-bellied Sapsucker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/18463-Sphyrapicus-varius",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Yellow-bellied_Sapsucker"
+  },
+  "Sanderling": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3849-Calidris-alba",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Sanderling"
+  },
+  "Tricolored Heron": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4938-Egretta-tricolor",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Tricolored_Heron"
+  },
+  "Blue-winged Teal": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/558433-Spatula-discors",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Blue-winged_Teal"
+  },
+  "Semipalmated Sandpiper": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3862-Calidris-pusilla",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Semipalmated_Sandpiper"
+  },
+  "Red-necked Grebe": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4224-Podiceps-grisegena",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Red-necked_Grebe"
+  },
+  "Northern Harrier": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/558446-Circus-hudsonius",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Harrier"
+  },
+  "Western Sandpiper": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3855-Calidris-mauri",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Western_Sandpiper"
+  },
+  "Cinnamon Teal": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/558434-Spatula-cyanoptera",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Cinnamon_Teal"
+  },
+  "Black-chinned Hummingbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6433-Archilochus-alexandri",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-chinned_Hummingbird"
+  },
+  "Red-naped Sapsucker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/18467-Sphyrapicus-nuchalis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Red-naped_Sapsucker"
+  },
+  "Least Sandpiper": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3864-Calidris-minutilla",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Least_Sandpiper"
+  },
+  "Reddish Egret": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4948-Egretta-rufescens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Reddish_Egret"
+  },
+  "Northern Shoveler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/558438-Spatula-clypeata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Shoveler"
+  },
+  "Dunlin": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3857-Calidris-alpina",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Dunlin"
+  },
+  "Northern Pintail": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6933-Anas-acuta",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Pintail"
+  },
+  "Northern Bobwhite": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1280-Colinus-virginianus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Bobwhite"
+  },
+  "Pacific Loon": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4621-Gavia-pacifica",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Pacific_Loon"
+  },
+  "Wood Stork": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4742-Mycteria-americana",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Wood_Stork"
+  },
+  "Double-crested Cormorant": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1454382-Nannopterum-auritum",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Double-crested_Cormorant"
+  },
+  "Sharp-shinned Hawk": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/5097-Accipiter-striatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Sharp-shinned_Hawk"
+  },
+  "Merlin": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4672-Falco-columbarius",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Merlin"
+  },
+  "White-winged Dove": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3460-Zenaida-asiatica",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/White-winged_Dove"
+  },
+  "Monk Parakeet": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/19349-Myiopsitta-monachus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Monk_Parakeet"
+  },
+  "Black-billed Cuckoo": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1960-Coccyzus-erythropthalmus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-billed_Cuckoo"
+  },
+  "Snowy Owl": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144594-Bubo-scandiacus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Snowy_Owl"
+  },
+  "Common Nighthawk": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/19577-Chordeiles-minor",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Common_Nighthawk"
+  },
+  "Belted Kingfisher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/2548-Megaceryle-alcyon",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Belted_Kingfisher"
+  },
+  "Black Guillemot": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4418-Cepphus-grylle",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black_Guillemot"
+  },
+  "Black-legged Kittiwake": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4494-Rissa-tridactyla",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-legged_Kittiwake"
+  },
+  "Short-billed Dowitcher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3869-Limnodromus-griseus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Short-billed_Dowitcher"
+  },
+  "Green-winged Teal": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6937-Anas-crecca",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Green-winged_Teal"
+  },
+  "Cattle Egret": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/411086-Ardea-ibis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Cattle_Egret"
+  },
+  "Wilson's Snipe": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144496-Gallinago-delicata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Wilsons_Snipe"
+  },
+  "Red-breasted Sapsucker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/18464-Sphyrapicus-ruber",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Red-breasted_Sapsucker"
+  },
+  "Anna's Hummingbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6317-Calypte-anna",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Annas_Hummingbird"
+  },
+  "Canvasback": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7057-Aythya-valisineria",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Canvasback"
+  },
+  "American Woodcock": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3936-Scolopax-minor",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Woodcock"
+  },
+  "Cooper's Hawk": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1579017-Astur-cooperii",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Coopers_Hawk"
+  },
+  "Eared Grebe": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4205-Podiceps-nigricollis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Eared_Grebe"
+  },
+  "Wilson's Phalarope": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144497-Phalaropus-tricolor",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Wilsons_Phalarope"
+  },
+  "Redhead": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7056-Aythya-americana",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Redhead"
+  },
+  "Green Heron": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/5020-Butorides-virescens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Green_Heron"
+  },
+  "Ring-necked Duck": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7044-Aythya-collaris",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Ring-necked_Duck"
+  },
+  "American Coot": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/473-Fulica-americana",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Coot"
+  },
+  "Northern Pygmy-Owl": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/19812-Glaucidium-gnoma",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Pygmy-Owl"
+  },
+  "Ladder-backed Woodpecker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/792986-Dryobates-scalaris",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Ladder-backed_Woodpecker"
+  },
+  "Harris's Hawk": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/5355-Parabuteo-unicinctus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Harriss_Hawk"
+  },
+  "Costa's Hummingbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6316-Calypte-costae",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Costas_Hummingbird"
+  },
+  "Greater Scaup": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7047-Aythya-marila",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Greater_Scaup"
+  },
+  "Ring-necked Pheasant": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/981-Phasianus-colchicus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Ring-necked_Pheasant"
+  },
+  "Great Cormorant": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4270-Phalacrocorax-carbo",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Great_Cormorant"
+  },
+  "Mourning Dove": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3454-Zenaida-macroura",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Mourning_Dove"
+  },
+  "Black-crowned Night-Heron": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4981-Nycticorax-nycticorax",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-crowned_Night-Heron"
+  },
+  "Lesser Scaup": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7054-Aythya-affinis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Lesser_Scaup"
+  },
+  "Red-shouldered Hawk": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/5206-Buteo-lineatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Red-shouldered_Hawk"
+  },
+  "Peregrine Falcon": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4647-Falco-peregrinus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Peregrine_Falcon"
+  },
+  "Nuttall's Woodpecker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/792987-Dryobates-nuttallii",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Nuttalls_Woodpecker"
+  },
+  "Common Eider": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7024-Somateria-mollissima",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Common_Eider"
+  },
+  "Calliope Hummingbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/199914-Selasphorus-calliope",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Calliope_Hummingbird"
+  },
+  "Harlequin Duck": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7111-Histrionicus-histrionicus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Harlequin_Duck"
+  },
+  "Burrowing Owl": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/19975-Athene-cunicularia",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Burrowing_Owl"
+  },
+  "Yellow-crowned Night-Heron": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4999-Nyctanassa-violacea",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Yellow-crowned_Night-Heron"
+  },
+  "Western Grebe": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4235-Aechmophorus-occidentalis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Western_Grebe"
+  },
+  "Broad-winged Hawk": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/5227-Buteo-platypterus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Broad-winged_Hawk"
+  },
+  "Surf Scoter": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7036-Melanitta-perspicillata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Surf_Scoter"
+  },
+  "Downy Woodpecker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/792988-Dryobates-pubescens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Downy_Woodpecker"
+  },
+  "Pigeon Guillemot": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4415-Cepphus-columba",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Pigeon_Guillemot"
+  },
+  "Bonaparte's Gull": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144502-Chroicocephalus-philadelphia",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Bonapartes_Gull"
+  },
+  "White-winged Scoter": {
+    "iNaturalist": "White-winged Scoter",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/White-winged_Scoter"
+  },
+  "Ruffed Grouse": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/890-Bonasa-umbellus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Ruffed_Grouse"
+  },
+  "Common Loon": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4626-Gavia-immer",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Common_Loon"
+  },
+  "Pelagic Cormorant": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1289605-Urile-pelagicus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Pelagic_Cormorant"
+  },
+  "Inca Dove": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3544-Columbina-inca",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Inca_Dove"
+  },
+  "Greater Roadrunner": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1986-Geococcyx-californianus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Greater_Roadrunner"
+  },
+  "White Ibis": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3751-Eudocimus-albus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/White_Ibis"
+  },
+  "Broad-tailed Hummingbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6369-Selasphorus-platycercus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Broad-tailed_Hummingbird"
+  },
+  "Black Scoter": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144220-Melanitta-americana",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black_Scoter"
+  },
+  "Swainson's Hawk": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/5196-Buteo-swainsoni",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Swainsons_Hawk"
+  },
+  "Long-tailed Duck": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7170-Clangula-hyemalis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Long-tailed_Duck"
+  },
+  "Sandhill Crane": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/508048-Antigone-canadensis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Sandhill_Crane"
+  },
+  "Barred Owl": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/19893-Strix-varia",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Barred_Owl"
+  },
+  "Hairy Woodpecker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1651487-Leuconotopicus-villosus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Hairy_Woodpecker"
+  },
+  "Glossy Ibis": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3756-Plegadis-falcinellus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Glossy_Ibis"
+  },
+  "Bufflehead": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6993-Bucephala-albeola",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Bufflehead"
+  },
+  "Red-tailed Hawk": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/5212-Buteo-jamaicensis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Red-tailed_Hawk"
+  },
+  "Prairie Falcon": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4644-Falco-mexicanus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Prairie_Falcon"
+  },
+  "Rufous Hummingbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6363-Selasphorus-rufus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Rufous_Hummingbird"
+  },
+  "Common Goldeneye": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6990-Bucephala-clangula",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Common_Goldeneye"
+  },
+  "Clark's Grebe": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4234-Aechmophorus-clarkii",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Clarks_Grebe"
+  },
+  "Northern Flicker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/18236-Colaptes-auratus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Flicker"
+  },
+  "Laughing Gull": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144514-Leucophaeus-atricilla",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Laughing_Gull"
+  },
+  "Barrow's Goldeneye": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6994-Bucephala-islandica",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Barrows_Goldeneye"
+  },
+  "Wild Turkey": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/906-Meleagris-gallopavo",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Wild_Turkey"
+  },
+  "Anhinga": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/5063-Anhinga-anhinga",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Anhinga"
+  },
+  "Common Ground-Dove": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3545-Columbina-passerina",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Common_Ground-Dove"
+  },
+  "White-faced Ibis": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3759-Plegadis-chihi",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/White-faced_Ibis"
+  },
+  "Rough-legged Hawk": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/5200-Buteo-lagopus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Rough-legged_Hawk"
+  },
+  "Hooded Merganser": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7109-Lophodytes-cucullatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Hooded_Merganser"
+  },
+  "Northern Saw-whet Owl": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/20356-Aegolius-acadicus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Saw-whet_Owl"
+  },
+  "Allen's Hummingbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6359-Selasphorus-sasin",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Allens_Hummingbird"
+  },
+  "Common Merganser": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7004-Mergus-merganser",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Common_Merganser"
+  },
+  "Pileated Woodpecker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/17855-Dryocopus-pileatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Pileated_Woodpecker"
+  },
+  "Heermann's Gull": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4353-Larus-heermanni",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Heermanns_Gull"
+  },
+  "Roseate Spoonbill": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/62529-Platalea-ajaja",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Roseate_Spoonbill"
+  },
+  "Golden Eagle": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/5074-Aquila-chrysaetos",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Golden_Eagle"
+  },
+  "Red-breasted Merganser": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/6996-Mergus-serrator",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Red-breasted_Merganser"
+  },
+  "Mew Gull": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1286964-Larus-brachyrhynchus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Mew_Gull"
+  },
+  "Ruddy Duck": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/850859-Oxyura-jamaicensis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Ruddy_Duck"
+  },
+  "Western Gull": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4345-Larus-occidentalis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Western_Gull"
+  },
+  "Ring-billed Gull": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4364-Larus-delawarensis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Ring-billed_Gull"
+  },
+  "California Gull": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4385-Larus-californicus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/California_Gull"
+  },
+  "Herring Gull": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1578489-Larus-smithsonianus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Herring_Gull"
+  },
+  "Glaucous-winged Gull": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4399-Larus-glaucescens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Glaucous-winged_Gull"
+  },
+  "Great Black-backed Gull": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4368-Larus-marinus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Great_Black-backed_Gull"
+  },
+  "Caspian Tern": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144537-Hydroprogne-caspia",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Caspian_Tern"
+  },
+  "Black Tern": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4512-Chlidonias-niger",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black_Tern"
+  },
+  "Common Tern": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4450-Sterna-hirundo",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Common_Tern"
+  },
+  "Forster's Tern": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4457-Sterna-forsteri",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Forsters_Tern"
+  },
+  "Royal Tern": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144539-Thalasseus-maximus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Royal_Tern"
+  },
+  "Black Skimmer": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/4496-Rynchops-niger",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black_Skimmer"
+  },
+  "Ovenbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/62550-Seiurus-aurocapilla",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Ovenbird"
+  },
+  "Green-tailed Towhee": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9419-Pipilo-chlorurus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Green-tailed_Towhee"
+  },
+  "Louisiana Waterthrush": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/73148-Parkesia-motacilla",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Louisiana_Waterthrush"
+  },
+  "Bobolink": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10487-Dolichonyx-oryzivorus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Bobolink"
+  },
+  "Gray-crowned Rosy-Finch": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9617-Leucosticte-tephrocotis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Gray-crowned_Rosy-Finch"
+  },
+  "Western Wood-Pewee": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/16079-Contopus-sordidulus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Western_Wood-Pewee"
+  },
+  "Gray Jay": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/8335-Perisoreus-canadensis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Gray_Jay"
+  },
+  "Spotted Towhee": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9420-Pipilo-maculatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Spotted_Towhee"
+  },
+  "Summer Tanager": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9915-Piranga-rubra",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Summer_Tanager"
+  },
+  "Northern Waterthrush": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/73149-Parkesia-noveboracensis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Waterthrush"
+  },
+  "Carolina Chickadee": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144814-Poecile-carolinensis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Carolina_Chickadee"
+  },
+  "Eastern Bluebird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/12942-Sialia-sialis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Eastern_Bluebird"
+  },
+  "White-eyed Vireo": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/17408-Vireo-griseus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/White-eyed_Vireo"
+  },
+  "Purple Martin": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/11867-Progne-subis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Purple_Martin"
+  },
+  "Cactus Wren": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7470-Campylorhynchus-brunneicapillus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Cactus_Wren"
+  },
+  "Blue-winged Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/73553-Vermivora-cyanoptera",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Blue-winged_Warbler"
+  },
+  "Eastern Towhee": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9424-Pipilo-erythrophthalmus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Eastern_Towhee"
+  },
+  "Red-winged Blackbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9744-Agelaius-phoeniceus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Red-winged_Blackbird"
+  },
+  "Black Rosy-Finch": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9611-Leucosticte-atrata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black_Rosy-Finch"
+  },
+  "Eastern Wood-Pewee": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/16100-Contopus-virens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Eastern_Wood-Pewee"
+  },
+  "Steller's Jay": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/8234-Cyanocitta-stelleri",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Stellers_Jay"
+  },
+  "Black-and-white Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10286-Mniotilta-varia",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-and-white_Warbler"
+  },
+  "Rufous-crowned Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9958-Aimophila-ruficeps",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Rufous-crowned_Sparrow"
+  },
+  "Scarlet Tanager": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9921-Piranga-olivacea",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Scarlet_Tanager"
+  },
+  "Gray Catbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/14995-Dumetella-carolinensis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Gray_Catbird"
+  },
+  "Prothonotary Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10729-Protonotaria-citrea",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Prothonotary_Warbler"
+  },
+  "Eastern Meadowlark": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9528-Sturnella-magna",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Eastern_Meadowlark"
+  },
+  "Black-capped Chickadee": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144815-Poecile-atricapillus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-capped_Chickadee"
+  },
+  "Western Bluebird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/12937-Sialia-mexicana",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Western_Bluebird"
+  },
+  "Brown-capped Rosy-Finch": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9612-Leucosticte-australis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Brown-capped_Rosy-Finch"
+  },
+  "Least Flycatcher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/16602-Empidonax-minimus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Least_Flycatcher"
+  },
+  "Canyon Towhee": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145289-Melozone-fusca",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Canyon_Towhee"
+  },
+  "Tennessee Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/979756-Leiothlypis-peregrina",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Tennessee_Warbler"
+  },
+  "Red-breasted Nuthatch": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/14823-Sitta-canadensis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Red-breasted_Nuthatch"
+  },
+  "Bell's Vireo": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/17356-Vireo-bellii",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Bells_Vireo"
+  },
+  "Blue Jay": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/8229-Cyanocitta-cristata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Blue_Jay"
+  },
+  "Tree Swallow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/11935-Tachycineta-bicolor",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Tree_Swallow"
+  },
+  "Canyon Wren": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7464-Catherpes-mexicanus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Canyon_Wren"
+  },
+  "Orange-crowned Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/979757-Leiothlypis-celata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Orange-crowned_Warbler"
+  },
+  "California Towhee": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/73044-Melozone-crissalis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/California_Towhee"
+  },
+  "Western Tanager": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9919-Piranga-ludoviciana",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Western_Tanager"
+  },
+  "Western Meadowlark": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9535-Sturnella-neglecta",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Western_Meadowlark"
+  },
+  "Nashville Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/979753-Leiothlypis-ruficapilla",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Nashville_Warbler"
+  },
+  "Pine Grosbeak": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9771-Pinicola-enucleator",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Pine_Grosbeak"
+  },
+  "Pacific-slope Flycatcher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/16598-Empidonax-difficilis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Pacific-slope_Flycatcher"
+  },
+  "Florida Scrub-Jay": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7829-Aphelocoma-coerulescens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Florida_Scrub-Jay"
+  },
+  "Abert's Towhee": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/73041-Melozone-aberti",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Aberts_Towhee"
+  },
+  "Mountain Chickadee": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144816-Poecile-gambeli",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Mountain_Chickadee"
+  },
+  "Mountain Bluebird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/12936-Sialia-currucoides",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Mountain_Bluebird"
+  },
+  "MacGillivray's Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145223-Geothlypis-tolmiei",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/MacGillivrays_Warbler"
+  },
+  "Yellow-headed Blackbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10470-Xanthocephalus-xanthocephalus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Yellow-headed_Blackbird"
+  },
+  "Yellow-throated Vireo": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/17365-Vireo-flavifrons",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Yellow-throated_Vireo"
+  },
+  "Mourning Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145224-Geothlypis-philadelphia",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Mourning_Warbler"
+  },
+  "American Tree Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/474210-Spizelloides-arborea",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Tree_Sparrow"
+  },
+  "Northern Cardinal": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9083-Cardinalis-cardinalis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Cardinal"
+  },
+  "Purple Finch": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/199841-Haemorhous-purpureus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Purple_Finch"
+  },
+  "Cordilleran Flycatcher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/16598-Empidonax-difficilis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Cordilleran_Flycatcher"
+  },
+  "Loggerhead Shrike": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/12024-Lanius-ludovicianus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Loggerhead_Shrike"
+  },
+  "Western Scrub-Jay": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/506118-Aphelocoma-californica",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Western_Scrub-Jay"
+  },
+  "Violet-green Swallow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/11931-Tachycineta-thalassina",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Violet-green_Swallow"
+  },
+  "Carolina Wren": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7513-Thryothorus-ludovicianus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Carolina_Wren"
+  },
+  "Blue-gray Gnatcatcher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7493-Polioptila-caerulea",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Blue-gray_Gnatcatcher"
+  },
+  "Golden-crowned Kinglet": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/117100-Regulus-satrapa",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Golden-crowned_Kinglet"
+  },
+  "Northern Mockingbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/14886-Mimus-polyglottos",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Mockingbird"
+  },
+  "Bohemian Waxwing": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7429-Bombycilla-garrulus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Bohemian_Waxwing"
+  },
+  "Common Yellowthroat": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9721-Geothlypis-trichas",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Common_Yellowthroat"
+  },
+  "Chipping Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9135-Spizella-passerina",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Chipping_Sparrow"
+  },
+  "Rusty Blackbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10322-Euphagus-carolinus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Rusty_Blackbird"
+  },
+  "Hooded Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145229-Setophaga-citrina",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Hooded_Warbler"
+  },
+  "Chestnut-backed Chickadee": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144820-Poecile-rufescens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Chestnut-backed_Chickadee"
+  },
+  "Townsend's Solitaire": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/12951-Myadestes-townsendi",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Townsends_Solitaire"
+  },
+  "Cassin's Finch": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/199839-Haemorhous-cassinii",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Cassins_Finch"
+  },
+  "Black Phoebe": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/17013-Sayornis-nigricans",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black_Phoebe"
+  },
+  "Clay-colored Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9148-Spizella-pallida",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Clay-colored_Sparrow"
+  },
+  "Pyrrhuloxia": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9081-Cardinalis-sinuatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Pyrrhuloxia"
+  },
+  "American Redstart": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10247-Setophaga-ruticilla",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Redstart"
+  },
+  "White-breasted Nuthatch": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/14801-Sitta-carolinensis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/White-breasted_Nuthatch"
+  },
+  "Plumbeous Vireo": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/17362-Vireo-plumbeus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Plumbeous_Vireo"
+  },
+  "Mexican Jay": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144207-Aphelocoma-wollweberi",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Mexican_Jay"
+  },
+  "Brewer's Blackbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10325-Euphagus-cyanocephalus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Brewers_Blackbird"
+  },
+  "Cape May Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145231-Setophaga-tigrina",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Cape_May_Warbler"
+  },
+  "Brewer's Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9144-Spizella-breweri",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Brewers_Sparrow"
+  },
+  "House Finch": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/199840-Haemorhous-mexicanus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/House_Finch"
+  },
+  "Eastern Phoebe": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/17008-Sayornis-phoebe",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Eastern_Phoebe"
+  },
+  "Northern Rough-winged Swallow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/11970-Stelgidopteryx-serripennis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Rough-winged_Swallow"
+  },
+  "Bewick's Wren": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7576-Thryomanes-bewickii",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Bewicks_Wren"
+  },
+  "Northern Parula": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145233-Setophaga-americana",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Parula"
+  },
+  "Boreal Chickadee": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144821-Poecile-hudsonicus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Boreal_Chickadee"
+  },
+  "Veery": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/12901-Catharus-fuscescens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Veery"
+  },
+  "Field Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9152-Spizella-pusilla",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Field_Sparrow"
+  },
+  "Rose-breasted Grosbeak": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10271-Pheucticus-ludovicianus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Rose-breasted_Grosbeak"
+  },
+  "Clark's Nutcracker": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/8520-Nucifraga-columbiana",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Clarks_Nutcracker"
+  },
+  "Common Grackle": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9602-Quiscalus-quiscula",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Common_Grackle"
+  },
+  "Magnolia Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145235-Setophaga-magnolia",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Magnolia_Warbler"
+  },
+  "Vesper Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10168-Pooecetes-gramineus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Vesper_Sparrow"
+  },
+  "Horned Lark": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7294-Eremophila-alpestris",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Horned_Lark"
+  },
+  "Bushtit": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7266-Psaltriparus-minimus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Bushtit"
+  },
+  "Brown Creeper": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7458-Certhia-americana",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Brown_Creeper"
+  },
+  "American Dipper": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7643-Cinclus-mexicanus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Dipper"
+  },
+  "Wrentit": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/15256-Chamaea-fasciata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Wrentit"
+  },
+  "Brown Thrasher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/14898-Toxostoma-rufum",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Brown_Thrasher"
+  },
+  "European Starling": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/14850-Sturnus-vulgaris",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/European_Starling"
+  },
+  "American Pipit": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/13732-Anthus-rubescens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Pipit"
+  },
+  "Phainopepla": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/3996-Phainopepla",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Phainopepla"
+  },
+  "Snow Bunting": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/117059-Plectrophenax-nivalis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Snow_Bunting"
+  },
+  "Bay-breasted Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145236-Setophaga-castanea",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Bay-breasted_Warbler"
+  },
+  "Red Crossbill": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10411-Loxia-curvirostra",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Red_Crossbill"
+  },
+  "House Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/13858-Passer-domesticus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/House_Sparrow"
+  },
+  "Say's Phoebe": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/17009-Sayornis-saya",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Says_Phoebe"
+  },
+  "Cassin's Vireo": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/17382-Vireo-cassinii",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Cassins_Vireo"
+  },
+  "Blackburnian Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145237-Setophaga-fusca",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Blackburnian_Warbler"
+  },
+  "Boat-tailed Grackle": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9601-Quiscalus-major",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Boat-tailed_Grackle"
+  },
+  "Black-billed Magpie": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/143853-Pica-hudsonia",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-billed_Magpie"
+  },
+  "Lark Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10479-Chondestes-grammacus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Lark_Sparrow"
+  },
+  "Black-headed Grosbeak": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10274-Pheucticus-melanocephalus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-headed_Grosbeak"
+  },
+  "Bridled Titmouse": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/13630-Baeolophus-wollweberi",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Bridled_Titmouse"
+  },
+  "Swainson's Thrush": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/12878-Catharus-ustulatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Swainsons_Thrush"
+  },
+  "Bank Swallow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/11941-Riparia-riparia",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Bank_Swallow"
+  },
+  "House Wren": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7562-Troglodytes-aedon",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/House_Wren"
+  },
+  "Yellow Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1188207-Setophaga-aestiva",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Yellow_Warbler"
+  },
+  "White-winged Crossbill": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10423-Loxia-leucoptera",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/White-winged_Crossbill"
+  },
+  "Vermilion Flycatcher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/16447-Pyrocephalus-rubinus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Vermilion_Flycatcher"
+  },
+  "Lark Bunting": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10585-Calamospiza-melanocorys",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Lark_Bunting"
+  },
+  "Chestnut-sided Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145239-Setophaga-pensylvanica",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Chestnut-sided_Warbler"
+  },
+  "Great-tailed Grackle": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9607-Quiscalus-mexicanus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Great-tailed_Grackle"
+  },
+  "Pygmy Nuthatch": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/14816-Sitta-pygmaea",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Pygmy_Nuthatch"
+  },
+  "Blue-headed Vireo": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/17402-Vireo-solitarius",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Blue-headed_Vireo"
+  },
+  "Yellow-billed Magpie": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/8319-Pica-nuttalli",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Yellow-billed_Magpie"
+  },
+  "Blackpoll Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145240-Setophaga-striata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Blackpoll_Warbler"
+  },
+  "Savannah Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9981-Passerculus-sandwichensis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Savannah_Sparrow"
+  },
+  "Blue Grosbeak": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/73155-Passerina-caerulea",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Blue_Grosbeak"
+  },
+  "Common Redpoll": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145300-Acanthis-flammea",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Common_Redpoll"
+  },
+  "Ash-throated Flycatcher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/16010-Myiarchus-cinerascens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Ash-throated_Flycatcher"
+  },
+  "Oak Titmouse": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/13633-Baeolophus-inornatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Oak_Titmouse"
+  },
+  "Hermit Thrush": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/12890-Catharus-guttatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Hermit_Thrush"
+  },
+  "Black-throated Blue Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/199916-Setophaga-caerulescens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-throated_Blue_Warbler"
+  },
+  "Bronzed Cowbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10369-Molothrus-aeneus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Bronzed_Cowbird"
+  },
+  "Fox Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9156-Passerella-iliaca",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Fox_Sparrow"
+  },
+  "Cliff Swallow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/11858-Petrochelidon-pyrrhonota",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Cliff_Swallow"
+  },
+  "Pacific Wren": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144882-Troglodytes-pacificus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Pacific_Wren"
+  },
+  "Black-tailed Gnatcatcher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7498-Polioptila-melanura",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-tailed_Gnatcatcher"
+  },
+  "Ruby-crowned Kinglet": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1289388-Corthylio-calendula",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Ruby-crowned_Kinglet"
+  },
+  "Curve-billed Thrasher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/14912-Toxostoma-curvirostre",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Curve-billed_Thrasher"
+  },
+  "Cedar Waxwing": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7428-Bombycilla-cedrorum",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Cedar_Waxwing"
+  },
+  "Palm Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145242-Setophaga-palmarum",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Palm_Warbler"
+  },
+  "Northern Shrike": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/558512-Lanius-borealis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northern_Shrike"
+  },
+  "American Crow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/8021-Corvus-brachyrhynchos",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Crow"
+  },
+  "Great Crested Flycatcher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/16028-Myiarchus-crinitus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Great_Crested_Flycatcher"
+  },
+  "Hoary Redpoll": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145300-Acanthis-flammea",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Hoary_Redpoll"
+  },
+  "Song Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9100-Melospiza-melodia",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Song_Sparrow"
+  },
+  "Lazuli Bunting": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10234-Passerina-amoena",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Lazuli_Bunting"
+  },
+  "Pine Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145244-Setophaga-pinus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Pine_Warbler"
+  },
+  "Hutton's Vireo": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/17375-Vireo-huttoni",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Huttons_Vireo"
+  },
+  "Brown-headed Cowbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10373-Molothrus-ater",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Brown-headed_Cowbird"
+  },
+  "Yellow-rumped Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145245-Setophaga-coronata",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Yellow-rumped_Warbler"
+  },
+  "Juniper Titmouse": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/13634-Baeolophus-ridgwayi",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Juniper_Titmouse"
+  },
+  "Wood Thrush": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/13270-Hylocichla-mustelina",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Wood_Thrush"
+  },
+  "Lincoln's Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9092-Melospiza-lincolnii",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Lincolns_Sparrow"
+  },
+  "Northwestern Crow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1290036-Corvus-brachyrhynchos-caurinus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Northwestern_Crow"
+  },
+  "Cassin's Kingbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/16779-Tyrannus-vociferans",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Cassins_Kingbird"
+  },
+  "Yellow-throated Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145246-Setophaga-dominica",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Yellow-throated_Warbler"
+  },
+  "Pine Siskin": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145304-Spinus-pinus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Pine_Siskin"
+  },
+  "Orchard Oriole": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9325-Icterus-spurius",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Orchard_Oriole"
+  },
+  "Swamp Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9096-Melospiza-georgiana",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Swamp_Sparrow"
+  },
+  "Indigo Bunting": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10227-Passerina-cyanea",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Indigo_Bunting"
+  },
+  "Cave Swallow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/11855-Petrochelidon-fulva",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Cave_Swallow"
+  },
+  "Winter Wren": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/144883-Troglodytes-hiemalis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Winter_Wren"
+  },
+  "Prairie Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145249-Setophaga-discolor",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Prairie_Warbler"
+  },
+  "Fish Crow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/8001-Corvus-ossifragus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Fish_Crow"
+  },
+  "Brown-headed Nuthatch": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/14825-Sitta-pusilla",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Brown-headed_Nuthatch"
+  },
+  "Warbling Vireo": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/17394-Vireo-gilvus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Warbling_Vireo"
+  },
+  "Black-throated Gray Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145254-Setophaga-nigrescens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-throated_Gray_Warbler"
+  },
+  "White-throated Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9184-Zonotrichia-albicollis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/White-throated_Sparrow"
+  },
+  "Lesser Goldfinch": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145308-Spinus-psaltria",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Lesser_Goldfinch"
+  },
+  "Western Kingbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/16791-Tyrannus-verticalis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Western_Kingbird"
+  },
+  "Tufted Titmouse": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/13632-Baeolophus-bicolor",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Tufted_Titmouse"
+  },
+  "American Robin": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/12727-Turdus-migratorius",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Robin"
+  },
+  "Hooded Oriole": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9319-Icterus-cucullatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Hooded_Oriole"
+  },
+  "California Thrasher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/14906-Toxostoma-redivivum",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/California_Thrasher"
+  },
+  "Townsend's Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145255-Setophaga-townsendi",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Townsends_Warbler"
+  },
+  "Harris's Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9182-Zonotrichia-querula",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Harriss_Sparrow"
+  },
+  "Painted Bunting": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10224-Passerina-ciris",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Painted_Bunting"
+  },
+  "Hermit Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145256-Setophaga-occidentalis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Hermit_Warbler"
+  },
+  "Chihuahuan Raven": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/8003-Corvus-cryptoleucus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Chihuahuan_Raven"
+  },
+  "American Goldfinch": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145310-Spinus-tristis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/American_Goldfinch"
+  },
+  "Eastern Kingbird": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/16782-Tyrannus-tyrannus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Eastern_Kingbird"
+  },
+  "Bullock's Oriole": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9357-Icterus-bullockii",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Bullocks_Oriole"
+  },
+  "White-crowned Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9176-Zonotrichia-leucophrys",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/White-crowned_Sparrow"
+  },
+  "Barn Swallow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/11901-Hirundo-rustica",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Barn_Swallow"
+  },
+  "Marsh Wren": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/7601-Cistothorus-palustris",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Marsh_Wren"
+  },
+  "Black-throated Green Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145258-Setophaga-virens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-throated_Green_Warbler"
+  },
+  "Red-eyed Vireo": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/891704-Vireo-olivaceus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Red-eyed_Vireo"
+  },
+  "Black-crested Titmouse": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/13631-Baeolophus-atricristatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Black-crested_Titmouse"
+  },
+  "Varied Thrush": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145088-Ixoreus-naevius",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Varied_Thrush"
+  },
+  "Canada Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145275-Cardellina-canadensis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Canada_Warbler"
+  },
+  "Golden-crowned Sparrow": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9185-Zonotrichia-atricapilla",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Golden-crowned_Sparrow"
+  },
+  "Dickcissel": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10676-Spiza-americana",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Dickcissel"
+  },
+  "Common Raven": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/8010-Corvus-corax",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Common_Raven"
+  },
+  "Evening Grosbeak": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/1650411-Hesperiphona-vespertina",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Evening_Grosbeak"
+  },
+  "Scissor-tailed Flycatcher": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/16783-Tyrannus-forficatus",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Scissor-tailed_Flycatcher"
+  },
+  "Baltimore Oriole": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/9346-Icterus-galbula",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Baltimore_Oriole"
+  },
+  "Wilson's Warbler": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/145276-Cardellina-pusilla",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Wilsons_Warbler"
+  },
+  "Dark-eyed Junco": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10094-Junco-hyemalis",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Dark-eyed_Junco"
+  },
+  "Yellow-breasted Chat": {
+    "iNaturalist": "https://www.inaturalist.org/taxa/10243-Icteria-virens",
+    "AllAboutBirds": "https://www.allaboutbirds.org/guide/Yellow-breasted_Chat"
+  }
+}

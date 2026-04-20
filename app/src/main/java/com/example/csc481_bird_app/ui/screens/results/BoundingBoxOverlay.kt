@@ -14,7 +14,11 @@ import androidx.compose.ui.graphics.nativeCanvas
 import com.example.csc481_bird_app.detector.DectectionsViewModel
 
 @Composable
-fun BoundingBoxOverlay(viewModel: DectectionsViewModel, bmp: Bitmap, selectedIndex: Int){
+fun BoundingBoxOverlay(
+    viewModel: DectectionsViewModel,
+    bmp: Bitmap,
+    selectedIndex: Int
+){
     //drawing the bounding boxes
     Canvas(modifier = Modifier.fillMaxSize()) {
         //scale up and offset boxes relative to the image

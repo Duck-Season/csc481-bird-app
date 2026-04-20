@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -91,6 +92,7 @@ fun DetectByCameraScreen(
     onDetectionsComplete: () -> Unit,
     onBack: () -> Unit,
     scaleType: PreviewView.ScaleType = PreviewView.ScaleType.FILL_CENTER,
+    prefs: SharedPreferences
 ){
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -189,6 +191,8 @@ fun DetectByCameraScreen(
                             viewModel.isProcessing = true
                             viewModel.runDetections(bmp)
 
+                            viewModel.bmpUri = savedUri
+
                             val geoCoords = Pair(viewModel.geoLat, viewModel.geoLon)
 
                             if (viewModel.detections.isNotEmpty()) {
@@ -197,7 +201,8 @@ fun DetectByCameraScreen(
                                     viewModel.detections,
                                     savedUri.toString(),
                                     geoCoords,
-                                    true
+                                    true,
+                                    prefs
                                 )//saveDetections
                             }//if
 

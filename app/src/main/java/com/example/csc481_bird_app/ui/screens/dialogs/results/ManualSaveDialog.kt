@@ -1,4 +1,4 @@
-package com.example.csc481_bird_app.ui.screens.choosefile
+package com.example.csc481_bird_app.ui.screens.dialogs.results
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -9,32 +9,34 @@ import androidx.compose.ui.res.painterResource
 import com.example.csc481_bird_app.R
 
 @Composable
-fun DeleteDialog (
+fun ManualSaveDialog (
     hideDialog: () -> Unit,
-    onChooseDelete: () -> Unit,
+    onChooseSave: () -> Unit,
 ) {
     AlertDialog(
         icon = {
-            Icon(painter = painterResource(id = R.drawable.outline_delete_24), contentDescription = "Delete Selected File")
+            Icon(painter = painterResource(id = R.drawable.rounded_save_24), contentDescription = "Save Current Scan")
         },
         title = {
-            Text("Delete File?")
+            Text("Save File?")
         },
         text = {
-            Text("Are you sure you want to delete this file from your saved scans?")
+            Text("Are you sure you want to manually save this scan?")
         },
-        onDismissRequest = {hideDialog},
+        onDismissRequest = {
+            hideDialog
+        },
         confirmButton = {
             TextButton(
                 onClick = {
-                    //run delete function
-                    onChooseDelete()
+                    //run saving function
+                    onChooseSave()
 
                     //hide dialog
                     hideDialog()
                 }//onClick
             ) {
-                Text("Yes")
+                Text("Save Scan")
             }//TextButton
         },
         dismissButton = {
@@ -43,7 +45,7 @@ fun DeleteDialog (
                     hideDialog()
                 }//onClick
             ) {
-                Text("No")
+                Text("Cancel")
             }//TextButton
         }//dismissButton
     )//AlertDialog

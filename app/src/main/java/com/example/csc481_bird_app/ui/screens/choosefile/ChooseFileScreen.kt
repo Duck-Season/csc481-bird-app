@@ -35,6 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.filesaving.loadDetections
+import com.example.csc481_bird_app.ui.screens.dialogs.choosefile.CreateFolderDialog
+import com.example.csc481_bird_app.ui.screens.dialogs.choosefile.DeleteDialog
+import com.example.csc481_bird_app.ui.screens.dialogs.choosefile.MoveFileDialog
 import com.example.csc481_bird_app.utils.getImageUriFromSave
 import java.io.File
 import java.text.SimpleDateFormat
@@ -57,7 +60,7 @@ fun ChooseFileScreen(
     var tempIsCamera by remember { mutableStateOf(false) }
     var currentDir by remember { mutableStateOf(context.filesDir) }
 
-    //dialog mutables
+    //dialog mutable flags
     var showDeleteDialog by remember { mutableStateOf(false)}
     var showCreateFolderDialog by remember { mutableStateOf(false)}
     var showMoveFileDialog by remember { mutableStateOf(false)}
@@ -266,11 +269,11 @@ fun ChooseFileScreen(
                     showDeleteDialog = false
                 },
                 onChooseDelete = {
-                    if(selectedIsFile){
+                    if (selectedIsFile) {
                         //delete the currently chosen file and remove it from display list
                         listSaves[selectedIndex].delete()
                         listSaves.removeAt(selectedIndex)
-                    }else{
+                    } else {
                         //delete the currently chosen folder and remove it from display list
                         listFolders[selectedIndex].delete()
                         listFolders.removeAt(selectedIndex)
@@ -288,13 +291,13 @@ fun ChooseFileScreen(
                 hideDialog = {
                     showCreateFolderDialog = false
                 },
-                onChooseCreate = {
-                    folderName: String -> run {
+                onChooseCreate = { folderName: String ->
+                    run {
                         //create new file with name
                         val createdFolder = File(context.filesDir, "birdScans_${folderName}")
 
                         //create a folder; if it works, add the folder to the list
-                        if(createdFolder.mkdir()) listFolders.add(createdFolder)
+                        if (createdFolder.mkdir()) listFolders.add(createdFolder)
                     }//fun
                 }//onChooseCreate
             )//Dialog

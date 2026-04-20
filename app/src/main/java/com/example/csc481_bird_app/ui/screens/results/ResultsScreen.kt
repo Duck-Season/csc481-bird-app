@@ -2,6 +2,7 @@ package com.example.csc481_bird_app.ui.screens.results
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap.createBitmap
 import android.location.Geocoder
 import android.widget.Toast
@@ -19,7 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -52,6 +52,9 @@ import com.example.csc481_bird_app.R
 import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.filesaving.saveDetections
 import com.example.csc481_bird_app.ui.ScanningIndicator
+import com.example.csc481_bird_app.ui.screens.dialogs.results.ManualSaveDialog
+import com.example.csc481_bird_app.ui.screens.dialogs.results.RescanDialog
+import com.example.csc481_bird_app.ui.screens.dialogs.results.SpeciesLinksDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -61,16 +64,23 @@ import java.util.Locale
 @Composable
 fun ResultsScreen(
     viewModel: DectectionsViewModel,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    prefs: SharedPreferences
 ){
     val context = LocalContext.current
 
-    //mutable values
+    //mutable variables
     var selectedIndex by remember { mutableStateOf<Int>(-1)}
     var locationName by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
+
+    //mutable dialog variabels
     var showRescanDialog by remember { mutableStateOf(false) }
     var isValidScan by remember { mutableStateOf(false) }
+    var showManualSaveDialog by remember {mutableStateOf(false)}
+    var isManualSavingEnabled by remember {mutableStateOf(true)}
+    var showLearnMoreDialog by remember {mutableStateOf(false)}
+    var selectedSpecies by remember { mutableStateOf("") }
 
     //helper function to fetch location
     @SuppressLint("MissingPermission")
@@ -172,7 +182,23 @@ fun ResultsScreen(
                             Row() {
                                 Icon(
                                     painter = painterResource(id = R.drawable.outline_rescan_24),
-                                    contentDescription = "Rescan Selected File"
+                                    contentDescription = "Rescan Current Scan"
+                                )//Icon
+                            }//Row
+                        }//Button
+
+                        //manual saving button
+                        TextButton(
+                            enabled = isManualSavingEnabled,
+                            onClick = {
+                                //display the dialog for deleting files
+                                showManualSaveDialog = true
+                            }//onClick
+                        ) {
+                            Row() {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.rounded_save_24),
+                                    contentDescription = "Manually Save Scan"
                                 )//Icon
                             }//Row
                         }//Button
@@ -327,7 +353,24 @@ fun ResultsScreen(
                                             )//Text
                                         }//Row
 
+                                        //display when tapped
                                         if(selectedIndex == index){
+                                            TextButton(
+                                                onClick = {
+                                                    val speciesName = det.className.substringAfter(" ").substringBefore(" (").trim()
+                                                    showLearnMoreDialog = true
+                                                    selectedSpecies = speciesName
+                                                }//onClick
+                                            ) {
+                                                Row() {
+                                                    Icon(
+                                                        painter = painterResource(id = R.drawable.outline_open_in_browser_24),
+                                                        contentDescription = "Learn more"
+                                                    )//Icon
+                                                    Text("Learn more about this species")
+                                                }//Row
+                                            }//TextButton
+
                                             Text(
                                                 text = "Other candidates",
                                                 fontSize = 12.sp
@@ -409,53 +452,63 @@ fun ResultsScreen(
 
         //confirm we want to do a rescan first
         if(showRescanDialog){
-            AlertDialog(
-                icon = {
-                    Icon(painter = painterResource(id = R.drawable.outline_rescan_24), contentDescription = "Rescan Current Results")
-                },
-                title = {
-                    Text("Rescan")
-                },
-                text = {
-                    Text("Would you like to rescan the current results? This will create another save file.")
-                },
-                onDismissRequest = {
+            RescanDialog(
+                hideDialog = {
                     showRescanDialog = false
                 },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            scope.launch {
-                                //hide dialog
-                                showRescanDialog = false
+                onChooseRescan = {
+                    scope.launch {
+                        //hide dialog
+                        showRescanDialog = false
 
-                                //run detections again
-                                viewModel.runDetections(viewModel.bitmap!!)
+                        //run detections again
+                        viewModel.runDetections(viewModel.bitmap!!)
 
-                                //save to file
-                                saveDetections(
-                                    context,
-                                    viewModel.detections,
-                                    viewModel.bmpUri.toString(),
-                                    Pair(viewModel.geoLat, viewModel.geoLon),
-                                    viewModel.takenWithCamera
-                                )//saveDetections
-                            }//scope.launch
-                        }//onClick
-                    ) {
-                        Text("Yes")
-                    }//TextButton
+                        //save to file
+                        saveDetections(
+                            context,
+                            viewModel.detections,
+                            viewModel.bmpUri.toString(),
+                            Pair(viewModel.geoLat, viewModel.geoLon),
+                            viewModel.takenWithCamera,
+                            prefs
+                        )//saveDetections
+                    }//scope.launch
+                }//onChooseRescan
+            )//RescanDialog
+        }//if
+
+        if(showManualSaveDialog){
+            ManualSaveDialog(
+                hideDialog = {
+                    showManualSaveDialog = false
                 },
-                dismissButton = {
-                    TextButton(
-                        onClick = {
-                            showRescanDialog = false
-                        }//onClick
-                    ) {
-                        Text("No")
-                    }//TextButton
-                }//dismissButton
-            )//AlertDialog
+                onChooseSave = {
+                    //save to file
+                    saveDetections(
+                        context,
+                        viewModel.detections,
+                        viewModel.bmpUri?.toString(),
+                        Pair(viewModel.geoLat, viewModel.geoLon),
+                        viewModel.takenWithCamera,
+                        prefs,
+                        true
+                    )//saveDetections
+
+                    //hide dialog and disable save button (we're already saving it)
+                    showManualSaveDialog = false
+                    isManualSavingEnabled = false
+                }//onChooseSave
+            )//ManualSaveDialog
+        }//if
+
+        if(showLearnMoreDialog){
+            SpeciesLinksDialog(
+                hideDialog = {
+                    showLearnMoreDialog = false
+                },
+                speciesName = selectedSpecies
+            )//SpeciesLinksDialog
         }//if
     }//Scaffold
 }//fun
