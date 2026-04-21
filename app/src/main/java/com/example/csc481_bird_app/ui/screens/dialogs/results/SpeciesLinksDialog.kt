@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -53,6 +54,7 @@ fun SpeciesLinksDialog (
 
                     //iNat link
                     ElevatedButton(
+                        colors = ButtonDefaults.buttonColors(),
                         onClick = {
                             //check for the link to iNaturalist and open it if it exists
                             val link_iNat = jsonSpecies.optString("iNaturalist", "")
@@ -77,6 +79,7 @@ fun SpeciesLinksDialog (
 
                     //AllAboutBirds link
                     ElevatedButton(
+                        colors = ButtonDefaults.buttonColors(),
                         onClick = {
                             //check for the link to All About Birds and open it if it exists
                             val link_AAB = jsonSpecies.optString("AllAboutBirds", "")

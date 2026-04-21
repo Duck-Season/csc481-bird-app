@@ -11,13 +11,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
@@ -40,13 +45,14 @@ fun SettingsScreen(
 ){
     //checkbox remember mutables
     //settings candidates:
-    // - disable automatic detection saving
-    // - enable dark mode
     // - manage favorited species (manage collections of favorites?)
     var cbAutoOpenGalleryPicker by remember { mutableStateOf(prefs.getBoolean("pref_autoOpenGalleryPicker", true)) }
     var cbAutosavingEnabled by remember { mutableStateOf(prefs.getBoolean("pref_autosavingEnabled", true)) }
     var cbAutosaveEmptyScans by remember { mutableStateOf(prefs.getBoolean("pref_autosaveEmptyScans", false)) }
-    var cbDarkModeEnabled by remember { mutableStateOf(prefs.getBoolean("pref_darkModeEnabled", false)) }
+
+    //dropdown remember mutables
+    var ddSystemThemeExpanded by remember { mutableStateOf(false)}
+    var ddSystemThemeSelected by remember { mutableStateOf(prefs.getString("pref_systemTheme", "Light"))}
 
     //the actual Composable
     Scaffold(
@@ -171,6 +177,106 @@ fun SettingsScreen(
                                 editor.apply()
                             }//onCheckedChange
                         )//Checkbox
+                    }//Row
+
+                    Text(
+                        text = "Themes",
+                        style = MaterialTheme.typography.headlineMedium
+                    )//Text
+
+                    HorizontalDivider(
+                        modifier = Modifier.width(200.dp)
+                    )//HorizontalDivider
+                    Spacer(
+                        modifier = Modifier.padding(4.dp)
+                    )//Spacer
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ){
+                        ExposedDropdownMenuBox(
+                            expanded = ddSystemThemeExpanded,
+                            onExpandedChange = { ddSystemThemeExpanded = !ddSystemThemeExpanded }
+                        ) {
+                            TextField(
+                                value = ddSystemThemeSelected!!,
+                                onValueChange = {},
+                                readOnly = true,
+                                trailingIcon = {
+                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = ddSystemThemeExpanded)
+                                },
+                                colors = ExposedDropdownMenuDefaults.textFieldColors(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                            )//TextField
+
+                            ExposedDropdownMenu(
+                                expanded = ddSystemThemeExpanded,
+                                onDismissRequest = { ddSystemThemeExpanded = false }
+                            ) {
+
+                                DropdownMenuItem(
+                                    text = {
+                                        Row() {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.baseline_folder_24),
+                                                contentDescription = null
+                                            )//Icon
+                                            Text("Light")
+                                        }//Row
+                                    },
+                                    onClick = {
+                                        val editor = prefs.edit()
+                                        editor.putString("pref_systemTheme", "Light")
+                                        editor.apply()
+
+                                        ddSystemThemeSelected = "Light"
+                                        ddSystemThemeExpanded = false
+                                    }//onClick
+                                )//DropdownMenuItem
+
+                                DropdownMenuItem(
+                                    text = {
+                                        Row() {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.baseline_folder_24),
+                                                contentDescription = null
+                                            )//Icon
+                                            Text("Dark")
+                                        }//Row
+                                    },
+                                    onClick = {
+                                        val editor = prefs.edit()
+                                        editor.putString("pref_systemTheme", "Dark")
+                                        editor.apply()
+
+                                        ddSystemThemeSelected = "Dark"
+                                        ddSystemThemeExpanded = false
+                                    }//onClick
+                                )//DropdownMenuItem
+
+                                DropdownMenuItem(
+                                    text = {
+                                        Row() {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.baseline_folder_24),
+                                                contentDescription = null
+                                            )//Icon
+                                            Text("System")
+                                        }//Row
+                                    },
+                                    onClick = {
+                                        val editor = prefs.edit()
+                                        editor.putString("pref_systemTheme", "System")
+                                        editor.apply()
+
+                                        ddSystemThemeSelected = "System"
+                                        ddSystemThemeExpanded = false
+                                    }//onClick
+                                )//DropdownMenuItem
+                            }//ExposedDropdownMenu
+                        }//ExposedDropdownMenuBox
                     }//Row
                 }//Column
             }//item

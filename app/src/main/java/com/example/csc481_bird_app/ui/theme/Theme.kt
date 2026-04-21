@@ -1,6 +1,5 @@
 package com.example.csc481_bird_app.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -35,11 +34,12 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun Csc481birdappTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
+    themePref: String = "Light",
     content: @Composable () -> Unit
 ) {
+    val darkTheme = (isSystemInDarkTheme() && themePref == "System") || (themePref == "Dark")
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
