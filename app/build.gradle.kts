@@ -89,4 +89,6 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("io.coil-kt:coil-svg:2.6.0")
 
+    //osmdroid
+    implementation("org.osmdroid:osmdroid-android:6.1.18")
 }

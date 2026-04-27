@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap.createBitmap
 import android.location.Geocoder
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -42,10 +44,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.Hyphens
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -54,6 +60,7 @@ import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.filesaving.saveDetections
 import com.example.csc481_bird_app.ui.ScanningIndicator
 import com.example.csc481_bird_app.ui.screens.dialogs.results.ManualSaveDialog
+import com.example.csc481_bird_app.ui.screens.dialogs.results.MapDialog
 import com.example.csc481_bird_app.ui.screens.dialogs.results.RescanDialog
 import com.example.csc481_bird_app.ui.screens.dialogs.results.SpeciesLinksDialog
 import kotlinx.coroutines.Dispatchers
@@ -82,6 +89,7 @@ fun ResultsScreen(
     var isManualSavingEnabled by remember {mutableStateOf(true)}
     var showLearnMoreDialog by remember {mutableStateOf(false)}
     var selectedSpecies by remember { mutableStateOf("") }
+    var showMapDialog by remember { mutableStateOf(false) }
 
     //helper function to fetch location
     @SuppressLint("MissingPermission")
@@ -249,7 +257,8 @@ fun ResultsScreen(
                         BoundingBoxOverlay(viewModel, bmp, selectedIndex)
                     }//Box
 
-                    Box(
+                    //display the location here
+                    Column(
                         modifier = Modifier
                             .weight(0.1f)
                             .height(32.dp)
@@ -271,13 +280,38 @@ fun ResultsScreen(
                             text = "Taken at: \n$displayStr",
                             fontSize = 12.sp
                         )//Text
+
+                        if(viewModel.geoLat != null && viewModel.geoLon != null){
+                            //button to trigger OSM display
+                            ElevatedButton(
+                                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.primary),
+                                onClick = {
+                                    showMapDialog = true
+                                },
+                                shape = MaterialTheme.shapes.medium,
+                                modifier = Modifier.padding(4.dp)
+                            ) {
+                                Row(){
+                                    Image(
+                                        painter = painterResource(R.drawable.outline_globe_location_pin_24),
+                                        contentDescription = "View on OSM Icon",
+                                        contentScale = ContentScale.Fit
+                                    )//AsyncImage
+
+                                    Spacer(modifier = Modifier.padding(8.dp))
+
+                                    Text("View on OpenStreetMap")
+                                }//Row
+                            }//ElevatedButton
+                        }//if
                     }//Box
 
+                    //display the detection cards here
                     LazyColumn(
                         modifier = Modifier
                             .padding(16.dp)
                             .weight(0.3f),
-                        contentPadding = PaddingValues(16.dp),
+                        contentPadding = PaddingValues(8.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         if(viewModel.detections.isNotEmpty()){
@@ -306,7 +340,7 @@ fun ResultsScreen(
                                     Column(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(16.dp),
+                                            .padding(12.dp),
                                     ) {
                                         Row() {
                                             //get width and height of bounding box; pick the smaller
@@ -328,7 +362,7 @@ fun ResultsScreen(
                                                 model = previewBmp, // Get the URI/File instead of Bitmap
                                                 contentDescription = "Preview",
                                                 modifier = Modifier
-                                                    .weight(0.2f)
+                                                    .weight(0.25f)
                                                     .aspectRatio(1f / 1f)
                                                     .clip(RoundedCornerShape(8.dp)),
                                                 contentScale = ContentScale.Crop,
@@ -336,19 +370,23 @@ fun ResultsScreen(
 
                                             Spacer(
                                                 modifier = Modifier
-                                                    .weight(0.1f)
+                                                    .weight(0.05f)
                                             )//Spacer
 
                                             Text(
                                                 text = "${index+1}.) " + det.className.substringAfter(" ").replace("_", " "),
                                                 fontSize = 16.sp,
                                                 modifier = Modifier
-                                                    .weight(0.4f)
+                                                    .weight(0.5f),
+                                                style = TextStyle(
+                                                    hyphens = Hyphens.Auto,
+                                                    lineBreak = LineBreak.Paragraph
+                                                )
                                             )//Text
 
                                             Text(
                                                 text = "${String.format("%.2f", det.confidence*100)}%",
-                                                fontSize = 24.sp,
+                                                fontSize = 18.sp,
                                                 modifier = Modifier
                                                     .weight(0.3f)
                                             )//Text
@@ -357,7 +395,7 @@ fun ResultsScreen(
                                         //display when tapped
                                         if(selectedIndex == index){
                                             TextButton(
-                                                colors = ButtonDefaults.buttonColors(),
+                                                colors = ButtonDefaults.buttonColors(Color.Transparent, MaterialTheme.colorScheme.primary),
                                                 onClick = {
                                                     val speciesName = det.className.substringAfter(" ").substringBefore(" (").trim()
                                                     showLearnMoreDialog = true
@@ -511,6 +549,16 @@ fun ResultsScreen(
                 },
                 speciesName = selectedSpecies
             )//SpeciesLinksDialog
+        }//if
+
+        if(showMapDialog){
+            MapDialog(
+                context,
+                {
+                    showMapDialog = false
+                },
+                Pair(viewModel.geoLat!!, viewModel.geoLon!!)
+            )
         }//if
     }//Scaffold
 }//fun

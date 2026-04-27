@@ -28,13 +28,17 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -54,12 +58,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -359,42 +361,68 @@ fun DetectByCameraScreen(
                     }//Canvas
                 }//.let
 
-                //switch cameras
-                IconButton(
-                    onClick = { useFrontCamera = !useFrontCamera },
-                    enabled = !hasTakenPicture, //disable the flip while capturing
-                    modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .padding(16.dp)
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.outline_cameraswitch_24),
-                        contentDescription = "Capture Image",
-                        modifier = Modifier
-                            .size(256.dp),
-                        colorFilter = if(hasTakenPicture){ColorFilter.tint(Color.Gray) } else { ColorFilter.tint(Color.White)}
-                    )//Image
-                }//IconButton
-
-                //button to take the picture
-                IconButton(
+                //botton bar for camera controls
+                Box(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
-                        .padding(16.dp),
-                    onClick = {
-                        captureImage(imageCapture, cameraExecutor)
-                    },
-                    enabled = !hasTakenPicture
+                        .fillMaxWidth()
+                        .background(
+                            Color.Black.copy(alpha = 0.35f)
+                        )
+                        .padding(vertical = 20.dp)
                 ) {
-                    Image(
-                        painter = painterResource(R.drawable.baseline_circle_24),
-                        contentDescription = "Capture Image",
-                        modifier = Modifier
-                            .size(256.dp),
-                        colorFilter = if(hasTakenPicture){ColorFilter.tint(Color.Gray) } else { ColorFilter.tint(Color.White)}
-                    )//Image
-                }//IconButton
-            }//Box
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // switch camera button
+                        Box(
+                            modifier = Modifier
+                                .size(72.dp)
+                                .clip(CircleShape)
+                                .background(Color.White.copy(alpha = 0.15f)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            IconButton(
+                                onClick = { useFrontCamera = !useFrontCamera },
+                                enabled = !hasTakenPicture
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.outline_cameraswitch_24),
+                                    contentDescription = "Switch Camera",
+                                    tint = Color.White,
+                                    modifier = Modifier.size(64.dp)
+                                )//Icon
+                            }//IconButton
+                        }//Box
+
+                        // capture picture button
+                        Box(
+                            modifier = Modifier
+                                .size(84.dp)
+                                .clip(CircleShape)
+                                .background(Color.White.copy(alpha = 0.25f)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            IconButton(
+                                onClick = { captureImage(imageCapture, cameraExecutor) },
+                                enabled = !hasTakenPicture
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.baseline_circle_24),
+                                    contentDescription = "Capture",
+                                    tint = if (hasTakenPicture) Color.Gray else Color.White,
+                                    modifier = Modifier.size(64.dp)
+                                )//Icon
+                            }//IconButton
+                        }//Box (capture button)
+
+                        // spacer to balance layout
+                        Spacer(modifier = Modifier.size(72.dp))
+                    }//Row
+                }//Box (control bar)
+            }//Box (container for camera view)
         }else{
             if(viewModel.isProcessing && viewModel.bitmap != null){
                 Box(

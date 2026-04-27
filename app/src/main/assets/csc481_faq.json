@@ -43,7 +43,7 @@
         "subheader": "\"Are my camera pictures saved automatically?\"",
         "subitems": [
           {
-            "text": "\"Yes! All pictures taken, regardless of whether they produce scans, are saved automatically to your phone's default photo gallery for easy access. Even if the app is deleted, your photos will be saved, though your saved scans will not be.\""
+            "text": "Yes! All pictures taken, regardless of whether they produce scans, are saved automatically to your phone's default photo gallery for easy access. Even if the app is deleted, your photos will be saved, though your saved scans will not be."
           }
         ]
       },
@@ -51,7 +51,7 @@
         "subheader": "\"Does the camera mode support tap-to-focus?\"",
         "subitems": [
           {
-            "text": "\"Yes! Just tap on the screen and a small circle will appear for a brief moment to focus in on that region of the screen.\""
+            "text": "Yes! Just tap on the screen and a small circle will appear for a brief moment to focus in on that region of the screen."
           }
         ]
       },
@@ -59,7 +59,7 @@
         "subheader": "\"Will you support live detection in the future?\"",
         "subitems": [
           {
-            "text": "\"Maybe. Our current model is somewhat large and requires directly processing on the phone. The performance may not be the best on older devices, but it should technically be feasible!\""
+            "text": "Maybe. Our current model is somewhat large and requires directly processing on the phone. The performance may not be the best on older devices, but it should technically be feasible!"
           }
         ]
       }
@@ -104,9 +104,9 @@
           },
           {
             "hasTwoLinks": " true",
-            "text1": "This app was trained on the",
-            "link1": "NABirds",
-            "url1": "https://dl.allaboutbirds.org/nabirds",
+            "text1": "This app was trained on images sourced from the",
+            "link1": "Macaulay Library",
+            "url1": "https://www.macaulaylibrary.org/",
             "text2": "dataset from the",
             "link2": "Cornell Lab of Ornithology",
             "url2": "https://www.birds.cornell.edu/home"

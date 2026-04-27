@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -16,11 +17,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.example.csc481_bird_app.R
 import org.json.JSONObject
 
@@ -54,7 +55,7 @@ fun SpeciesLinksDialog (
 
                     //iNat link
                     ElevatedButton(
-                        colors = ButtonDefaults.buttonColors(),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
                         onClick = {
                             //check for the link to iNaturalist and open it if it exists
                             val link_iNat = jsonSpecies.optString("iNaturalist", "")
@@ -79,7 +80,7 @@ fun SpeciesLinksDialog (
 
                     //AllAboutBirds link
                     ElevatedButton(
-                        colors = ButtonDefaults.buttonColors(),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
                         onClick = {
                             //check for the link to All About Birds and open it if it exists
                             val link_AAB = jsonSpecies.optString("AllAboutBirds", "")
@@ -114,6 +115,6 @@ fun SpeciesLinksDialog (
             ) {
                 Text("Cancel")
             }//TextButton
-        }
+        }//confirmButton
     )//AlertDialog
 }//fun
