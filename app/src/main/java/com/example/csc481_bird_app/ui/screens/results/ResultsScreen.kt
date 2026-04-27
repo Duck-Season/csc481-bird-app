@@ -2,6 +2,7 @@ package com.example.csc481_bird_app.ui.screens.results
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap.createBitmap
 import android.location.Geocoder
 import android.net.Uri
@@ -20,25 +21,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
@@ -51,19 +44,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.Hyphens
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.csc481_bird_app.R
-import com.example.csc481_bird_app.data.FavoritesManager
 import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.filesaving.saveDetections
 import com.example.csc481_bird_app.ui.ScanningIndicator
-import androidx.compose.runtime.collectAsState
+import com.example.csc481_bird_app.ui.screens.dialogs.results.ManualSaveDialog
+import com.example.csc481_bird_app.ui.screens.dialogs.results.MapDialog
+import com.example.csc481_bird_app.ui.screens.dialogs.results.RescanDialog
+import com.example.csc481_bird_app.ui.screens.dialogs.results.SpeciesLinksDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -74,40 +73,23 @@ import java.util.Locale
 fun ResultsScreen(
     viewModel: DectectionsViewModel,
     onBack: () -> Unit,
-    onToggleTheme: () -> Unit,
-    isDark: Boolean
+    prefs: SharedPreferences
 ){
     val context = LocalContext.current
 
-    fun openBirdPage(birdName: String) {
-        val urlName = birdName
-            .replace("(Manual)", "")
-            .trim()
-            .let { 
-                if (it.contains(" ") && it.substringBefore(" ").all { char -> char.isDigit() }) 
-                    it.substringAfter(" ") 
-                else it 
-            }
-            .replace(" ", "_")
-
-        val url = "https://www.allaboutbirds.org/guide/$urlName"
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        context.startActivity(intent)
-    }
-
-    //mutable values
+    //mutable variables
     var selectedIndex by remember { mutableStateOf<Int>(-1)}
     var locationName by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
+
+    //mutable dialog variabels
     var showRescanDialog by remember { mutableStateOf(false) }
     var isValidScan by remember { mutableStateOf(false) }
-
-    val favoritesManager = remember { FavoritesManager(context) }
-    val favorites by favoritesManager.favoritesFlow.collectAsState(initial = emptySet())
-
-    var searchQuery by remember { mutableStateOf("") }
-    var expanded by remember { mutableStateOf(false) }
-    var allBirds by remember { mutableStateOf(listOf<String>()) }
+    var showManualSaveDialog by remember {mutableStateOf(false)}
+    var isManualSavingEnabled by remember {mutableStateOf(true)}
+    var showLearnMoreDialog by remember {mutableStateOf(false)}
+    var selectedSpecies by remember { mutableStateOf("") }
+    var showMapDialog by remember { mutableStateOf(false) }
 
     //helper function to fetch location
     @SuppressLint("MissingPermission")
@@ -171,17 +153,8 @@ fun ResultsScreen(
         fetchLocation()
     }//LaunchedEffect
 
-    LaunchedEffect(Unit) {
-        val input = context.assets.open("labels.txt")
-        val list = input.bufferedReader().readLines().map {
-            it.substringAfter(" ").replace("_", " ")
-        }
-        allBirds = list
-    }
-
     //------------ the Composable part ------------
     Scaffold(
-        //------------ Top Bar ------------
         topBar = {
             TopAppBar(
                 colors = topAppBarColors(
@@ -218,7 +191,23 @@ fun ResultsScreen(
                             Row() {
                                 Icon(
                                     painter = painterResource(id = R.drawable.outline_rescan_24),
-                                    contentDescription = "Rescan Selected File"
+                                    contentDescription = "Rescan Current Scan"
+                                )//Icon
+                            }//Row
+                        }//Button
+
+                        //manual saving button
+                        TextButton(
+                            enabled = isManualSavingEnabled,
+                            onClick = {
+                                //display the dialog for deleting files
+                                showManualSaveDialog = true
+                            }//onClick
+                        ) {
+                            Row() {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.rounded_save_24),
+                                    contentDescription = "Manually Save Scan"
                                 )//Icon
                             }//Row
                         }//Button
@@ -268,7 +257,8 @@ fun ResultsScreen(
                         BoundingBoxOverlay(viewModel, bmp, selectedIndex)
                     }//Box
 
-                    Box(
+                    //display the location here
+                    Column(
                         modifier = Modifier
                             .weight(0.1f)
                             .height(32.dp)
@@ -290,85 +280,38 @@ fun ResultsScreen(
                             text = "Taken at: \n$displayStr",
                             fontSize = 12.sp
                         )//Text
+
+                        if(viewModel.geoLat != null && viewModel.geoLon != null){
+                            //button to trigger OSM display
+                            ElevatedButton(
+                                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.primary),
+                                onClick = {
+                                    showMapDialog = true
+                                },
+                                shape = MaterialTheme.shapes.medium,
+                                modifier = Modifier.padding(4.dp)
+                            ) {
+                                Row(){
+                                    Image(
+                                        painter = painterResource(R.drawable.outline_globe_location_pin_24),
+                                        contentDescription = "View on OSM Icon",
+                                        contentScale = ContentScale.Fit
+                                    )//AsyncImage
+
+                                    Spacer(modifier = Modifier.padding(8.dp))
+
+                                    Text("View on OpenStreetMap")
+                                }//Row
+                            }//ElevatedButton
+                        }//if
                     }//Box
 
-                    //------------ Search Bar ------------
-                    val filteredBirds = allBirds.filter {
-                        it.contains(searchQuery, ignoreCase = true)
-                    }.take(15)
-
-                    Column(
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    ) {
-                        ExposedDropdownMenuBox(
-                            expanded = expanded,
-                            onExpandedChange = { expanded = !expanded }
-                        ) {
-
-                            TextField(
-                                value = searchQuery,
-                                onValueChange = {
-                                    searchQuery = it
-                                    expanded = true
-                                },
-                                label = { Text("Add Bird Manually") },
-                                placeholder = { Text("Type bird name...") },
-                                trailingIcon = {
-                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded)
-                                },
-                                modifier = Modifier
-                                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable, true)
-                                    .fillMaxWidth()
-                            )
-
-                            ExposedDropdownMenu(
-                                expanded = expanded,
-                                onDismissRequest = { expanded = false }
-                            ) {
-
-                                filteredBirds.forEach { bird ->
-
-                                    DropdownMenuItem(
-                                        text = { Text(bird) },
-                                        onClick = {
-
-                                            val exists = viewModel.detections.any {
-                                                it.className.contains(bird, ignoreCase = true)
-                                            }
-
-                                            if (!exists) {
-                                                viewModel.detections =
-                                                    viewModel.detections + com.example.csc481_bird_app.detector.Detection(
-                                                        className = "$bird (Manual)",
-                                                        confidence = 1.0f,
-                                                        classIndex = allBirds.indexOf(bird),
-                                                        bbox = android.graphics.RectF(0f, 0f, 100f, 100f),
-                                                        subDetections = emptyList()
-                                                    )
-                                            }
-
-                                            searchQuery = ""
-                                            expanded = false
-                                        }
-                                    )
-                                }
-
-                                if (filteredBirds.isEmpty()) {
-                                    DropdownMenuItem(
-                                        text = { Text("No birds found") },
-                                        onClick = {}
-                                    )
-                                }
-                            }
-                        }
-                    }
-
-                    //------------ Results List ------------
+                    //display the detection cards here
                     LazyColumn(
                         modifier = Modifier
                             .padding(16.dp)
                             .weight(0.3f),
-                        contentPadding = PaddingValues(16.dp),
+                        contentPadding = PaddingValues(8.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         if(viewModel.detections.isNotEmpty()){
@@ -397,7 +340,7 @@ fun ResultsScreen(
                                     Column(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(16.dp),
+                                            .padding(12.dp),
                                     ) {
                                         Row() {
                                             //get width and height of bounding box; pick the smaller
@@ -419,7 +362,7 @@ fun ResultsScreen(
                                                 model = previewBmp, // Get the URI/File instead of Bitmap
                                                 contentDescription = "Preview",
                                                 modifier = Modifier
-                                                    .weight(0.2f)
+                                                    .weight(0.25f)
                                                     .aspectRatio(1f / 1f)
                                                     .clip(RoundedCornerShape(8.dp)),
                                                 contentScale = ContentScale.Crop,
@@ -427,77 +370,47 @@ fun ResultsScreen(
 
                                             Spacer(
                                                 modifier = Modifier
-                                                    .weight(0.1f)
+                                                    .weight(0.05f)
                                             )//Spacer
 
                                             Text(
-                                                text = "${index+1}.) " + (if (det.className.contains("(Manual)")) det.className.replace("(Manual)", "").trim() else det.className.substringAfter(" ").replace("_", " ")),
+                                                text = "${index+1}.) " + det.className.substringAfter(" ").replace("_", " "),
                                                 fontSize = 16.sp,
                                                 modifier = Modifier
-                                                    .weight(0.4f)
+                                                    .weight(0.5f),
+                                                style = TextStyle(
+                                                    hyphens = Hyphens.Auto,
+                                                    lineBreak = LineBreak.Paragraph
+                                                )
                                             )//Text
 
                                             Text(
                                                 text = "${String.format("%.2f", det.confidence*100)}%",
-                                                fontSize = 24.sp,
+                                                fontSize = 18.sp,
                                                 modifier = Modifier
                                                     .weight(0.3f)
                                             )//Text
-
-                                            if (det.className.contains("(Manual)")) {
-                                                IconButton(
-                                                    onClick = {
-                                                        viewModel.detections =
-                                                            viewModel.detections.toMutableList().also {
-                                                                it.remove(det)
-                                                            }
-                                                    }
-                                                ) {
-                                                    Icon(
-                                                        imageVector = Icons.Default.Delete,
-                                                        contentDescription = "Delete"
-                                                    )
-                                                }
-                                            }
                                         }//Row
 
-                                        Spacer(modifier = Modifier.height(8.dp))
-
-                                        OutlinedButton(
-                                            onClick = {
-                                                openBirdPage(det.className)
-                                            },
-                                            modifier = Modifier.fillMaxWidth()
-                                        ) {
-                                            Text("🌐 View on AllAboutBirds")
-                                        }
-
-                                        val birdName = det.className
-                                            .replace("(Manual)", "")
-                                            .let {
-                                                if (it.contains(" ") && it.substringBefore(" ").all { char -> char.isDigit() })
-                                                    it.substringAfter(" ")
-                                                else it
-                                            }
-                                            .replace("_", " ")
-                                            .trim()
-
-                                        val isFav = favorites.contains(birdName)
-
-                                        OutlinedButton(
-                                            onClick = {
-                                                scope.launch {
-                                                    favoritesManager.toggleFavorite(birdName)
-                                                }
-                                            },
-                                            modifier = Modifier.fillMaxWidth()
-                                        ) {
-                                            Text(
-                                                if (isFav) "⭐ Favorited" else "☆ Add to Favorites"
-                                            )
-                                        }
-
+                                        //display when tapped
                                         if(selectedIndex == index){
+                                            TextButton(
+                                                colors = ButtonDefaults.buttonColors(Color.Transparent, MaterialTheme.colorScheme.primary),
+                                                onClick = {
+                                                    val speciesName = det.className.substringAfter(" ").substringBefore(" (").trim()
+                                                    showLearnMoreDialog = true
+                                                    selectedSpecies = speciesName
+                                                }//onClick
+                                            ) {
+                                                Row() {
+                                                    Icon(
+                                                        painter = painterResource(id = R.drawable.outline_open_in_browser_24),
+                                                        contentDescription = "Learn more"
+                                                    )//Icon
+                                                    Text("Learn more about this species")
+                                                }//Row
+                                            }//TextButton
+
                                             Text(
                                                 text = "Other candidates",
                                                 fontSize = 12.sp
@@ -558,7 +471,6 @@ fun ResultsScreen(
                         }//if-else
                     }//LazyColumn
                 }else{
-                    //------------ Scanning Overlay ------------
                     //rescanning screen
                     Box(
                         modifier = Modifier.fillMaxSize(),
@@ -578,56 +490,75 @@ fun ResultsScreen(
             }//.let
         }//Column
 
-        //------------ Rescan Dialog ------------
         //confirm we want to do a rescan first
         if(showRescanDialog){
-            AlertDialog(
-                icon = {
-                    Icon(painter = painterResource(id = R.drawable.outline_rescan_24), contentDescription = "Rescan Current Results")
-                },
-                title = {
-                    Text("Rescan")
-                },
-                text = {
-                    Text("Would you like to rescan the current results? This will create another save file.")
-                },
-                onDismissRequest = {
+            RescanDialog(
+                hideDialog = {
                     showRescanDialog = false
                 },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            scope.launch {
-                                //hide dialog
-                                showRescanDialog = false
+                onChooseRescan = {
+                    scope.launch {
+                        //hide dialog
+                        showRescanDialog = false
 
-                                //run detections again
-                                viewModel.runDetections(viewModel.bitmap!!)
+                        //run detections again
+                        viewModel.runDetections(viewModel.bitmap!!)
 
-                                //save to file
-                                saveDetections(
-                                    context,
-                                    viewModel.detections,
-                                    viewModel.bmpUri.toString(),
-                                    Pair(viewModel.geoLat, viewModel.geoLon),
-                                    viewModel.takenWithCamera
-                                )//saveDetections
-                            }//scope.launch
-                        }//onClick
-                    ) {
-                        Text("Yes")
-                    }//TextButton
+                        //save to file
+                        saveDetections(
+                            context,
+                            viewModel.detections,
+                            viewModel.bmpUri.toString(),
+                            Pair(viewModel.geoLat, viewModel.geoLon),
+                            viewModel.takenWithCamera,
+                            prefs
+                        )//saveDetections
+                    }//scope.launch
+                }//onChooseRescan
+            )//RescanDialog
+        }//if
+
+        if(showManualSaveDialog){
+            ManualSaveDialog(
+                hideDialog = {
+                    showManualSaveDialog = false
                 },
-                dismissButton = {
-                    TextButton(
-                        onClick = {
-                            showRescanDialog = false
-                        }//onClick
-                    ) {
-                        Text("No")
-                    }//TextButton
-                }//dismissButton
-            )//AlertDialog
+                onChooseSave = {
+                    //save to file
+                    saveDetections(
+                        context,
+                        viewModel.detections,
+                        viewModel.bmpUri?.toString(),
+                        Pair(viewModel.geoLat, viewModel.geoLon),
+                        viewModel.takenWithCamera,
+                        prefs,
+                        true
+                    )//saveDetections
+
+                    //hide dialog and disable save button (we're already saving it)
+                    showManualSaveDialog = false
+                    isManualSavingEnabled = false
+                }//onChooseSave
+            )//ManualSaveDialog
+        }//if
+
+        if(showLearnMoreDialog){
+            SpeciesLinksDialog(
+                hideDialog = {
+                    showLearnMoreDialog = false
+                },
+                speciesName = selectedSpecies
+            )//SpeciesLinksDialog
+        }//if
+
+        if(showMapDialog){
+            MapDialog(
+                context,
+                {
+                    showMapDialog = false
+                },
+                Pair(viewModel.geoLat!!, viewModel.geoLon!!)
+            )
         }//if
     }//Scaffold
 }//fun

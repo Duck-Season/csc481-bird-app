@@ -1,4 +1,4 @@
-package com.example.csc481_bird_app.ui.screens.choosefile
+package com.example.csc481_bird_app.ui.screens.dialogs.choosefile
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.input.TextFieldLineLimits
@@ -9,10 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.example.csc481_bird_app.R

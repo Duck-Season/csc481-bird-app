@@ -80,8 +80,6 @@ dependencies {
     //Geolocation
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
-    implementation("androidx.compose.material:material-icons-extended")
-
     //CameraX
     implementation("androidx.camera:camera-camera2:1.3.1")
     implementation("androidx.camera:camera-lifecycle:1.3.1")
@@ -89,7 +87,8 @@ dependencies {
 
     //Coil
     implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("io.coil-kt:coil-svg:2.6.0")
 
-    // DataStore
-    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    //osmdroid
+    implementation("org.osmdroid:osmdroid-android:6.1.18")
 }

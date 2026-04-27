@@ -1,4 +1,4 @@
-package com.example.csc481_bird_app.ui.screens.choosefile
+package com.example.csc481_bird_app.ui.screens.dialogs.choosefile
 
 import android.content.Context
 import androidx.compose.foundation.layout.Column

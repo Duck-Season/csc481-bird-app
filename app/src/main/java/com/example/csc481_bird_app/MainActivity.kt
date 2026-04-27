@@ -1,61 +1,73 @@
 package com.example.csc481_bird_app
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.camera.core.ImageCapture
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.csc481_bird_app.data.UserPreferences
 import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.ui.screens.choosefile.ChooseFileScreen
 import com.example.csc481_bird_app.ui.screens.DetectByCameraScreen
 import com.example.csc481_bird_app.ui.screens.DetectByGalleryScreen
 import com.example.csc481_bird_app.ui.screens.FAQScreen
 import com.example.csc481_bird_app.ui.screens.HomeScreen
+import com.example.csc481_bird_app.ui.screens.SettingsScreen
 import com.example.csc481_bird_app.ui.screens.results.ResultsScreen
-import kotlinx.coroutines.launch
+import com.example.csc481_bird_app.ui.theme.Csc481birdappTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val viewModel = DectectionsViewModel(application)
-        val prefs = UserPreferences(this)
+
+        //needed for managing preferences
+        val sharedPrefs = getPreferences(MODE_PRIVATE)
+        var themePref by mutableStateOf(sharedPrefs.getString("pref_systemTheme", "Light") ?: "Light")
 
         enableEdgeToEdge()
         setContent {
-            val darkMode by prefs.darkModeFlow.collectAsState(initial = false)
+            DisposableEffect(Unit) {
+                val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+                    if (key == "pref_systemTheme") {
+                        themePref = sharedPrefs.getString("pref_systemTheme", "Light") ?: "Light"
+                    }//if
+                }//val
+                sharedPrefs.registerOnSharedPreferenceChangeListener(listener)
+                onDispose { sharedPrefs.unregisterOnSharedPreferenceChangeListener(listener) }
+            }//DisposableEffect
 
-            com.example.csc481_bird_app.ui.theme.Csc481birdappTheme(darkTheme = darkMode) {
+            Csc481birdappTheme(
+                themePref = themePref
+            ) {
                 //create controller for navigating screens
                 val navController = rememberNavController()
 
-                fun onBackToHome(){
+                fun onBackReset(){
                     //reset everything in the viewModel
-                    viewModel.isProcessing = false;
-                    viewModel.bitmap = null;
-                    viewModel.detections = emptyList();
-                    viewModel.geoLat = null;
-                    viewModel.geoLon = null;
-                    viewModel.takenWithCamera = false;
-                    viewModel.bmpUri = null;
+                    viewModel.isProcessing = false
+                    viewModel.bitmap = null
+                    viewModel.detections = emptyList()
+                    viewModel.geoLat = null
+                    viewModel.geoLon = null
+                    viewModel.takenWithCamera = false
+                    viewModel.bmpUri = null
 
                     //move back to home screen
                     navController.navigate("home")
                 }//fun
-
-                val imageCapture = remember {ImageCapture.Builder().build()}
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -65,7 +77,7 @@ class MainActivity : ComponentActivity() {
                         composable("home") {
                             HomeScreen(
                                 onCameraClick = {
-                                    viewModel.takenWithCamera = true;
+                                    viewModel.takenWithCamera = true
                                     navController.navigate("bycamera")
                                 },
                                 onGalleryClick = {
@@ -76,13 +88,10 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onFAQClick = {
                                     navController.navigate("faq")
-                                },//onFAQClick
-                                onToggleTheme = {
-                                    lifecycleScope.launch {
-                                        prefs.setDarkMode(!darkMode)
-                                    }
                                 },
-                                isDark = darkMode
+                                onSettingsClick = {
+                                    navController.navigate("settings")
+                                }
                             )///HomeScreen
                         }//composable
                         composable("bycamera") {
@@ -92,18 +101,20 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate("results")
                                 },
                                 onBack = {
-                                    onBackToHome()
-                                }//onBack
+                                    onBackReset()
+                                },
+                                prefs = sharedPrefs
                             )//DetectByCameraScreen
                         }//composable
                         composable("bygallery") {
                             DetectByGalleryScreen(
                                 viewModel,
+                                sharedPrefs,
                                 onDetectionsComplete = {
                                     navController.navigate("results")
                                 },
                                 onBack = {
-                                    onBackToHome()
+                                    onBackReset()
                                 }//onBack
                             )//DetectByGalleryScreen
                         }//composable
@@ -114,7 +125,7 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate("results")
                                 },
                                 onBack = {
-                                    onBackToHome()
+                                    onBackReset()
                                 }//onBack
                             )//ChooseFileScreen
                         }//composable
@@ -122,22 +133,27 @@ class MainActivity : ComponentActivity() {
                             ResultsScreen(
                                 viewModel,
                                 onBack = {
-                                    onBackToHome()
+                                    onBackReset()
                                 },
-                                onToggleTheme = {
-                                    lifecycleScope.launch {
-                                        prefs.setDarkMode(!darkMode)
-                                    }
-                                },
-                                isDark = darkMode
+                                prefs = sharedPrefs
                             )//ResultsScreen
                         }//composable
                         composable("faq") {
                             FAQScreen(
                                 onBack = {
-                                    navController.popBackStack()
-                                }
-                            )
+                                    //no need for ViewModel management
+                                    navController.navigate("home")
+                                }//onBack
+                            )//FAQScreen
+                        }//composable
+                        composable("settings") {
+                            SettingsScreen(
+                                prefs = sharedPrefs,
+                                onBack = {
+                                    //no need for ViewModel management
+                                    navController.navigate("home")
+                                }//onBack
+                            )//SettingsScreen
                         }//composable
                     }//NavHost
                 }//Surface

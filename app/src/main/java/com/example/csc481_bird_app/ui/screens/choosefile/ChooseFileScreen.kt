@@ -22,12 +22,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,12 +33,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.csc481_bird_app.data.FavoritesManager
 import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.filesaving.loadDetections
-import com.example.csc481_bird_app.utils.extractBirdNameFromSave
+import com.example.csc481_bird_app.ui.screens.dialogs.choosefile.CreateFolderDialog
+import com.example.csc481_bird_app.ui.screens.dialogs.choosefile.DeleteDialog
+import com.example.csc481_bird_app.ui.screens.dialogs.choosefile.MoveFileDialog
 import com.example.csc481_bird_app.utils.getImageUriFromSave
-import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -54,9 +52,6 @@ fun ChooseFileScreen(
     onBack: () -> Unit
 ){
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    val favoritesManager = remember { FavoritesManager(context) }
-    val favorites by favoritesManager.favoritesFlow.collectAsState(initial = emptySet())
 
     //mutable values
     var selectedIndex by remember { mutableStateOf(-1)}
@@ -65,7 +60,7 @@ fun ChooseFileScreen(
     var tempIsCamera by remember { mutableStateOf(false) }
     var currentDir by remember { mutableStateOf(context.filesDir) }
 
-    //dialog mutables
+    //dialog mutable flags
     var showDeleteDialog by remember { mutableStateOf(false)}
     var showCreateFolderDialog by remember { mutableStateOf(false)}
     var showMoveFileDialog by remember { mutableStateOf(false)}
@@ -81,7 +76,7 @@ fun ChooseFileScreen(
 
     //load in the list of files
     val listSaves = remember { mutableStateListOf<File>() }
-    LaunchedEffect(currentDir, favorites) {
+    LaunchedEffect(currentDir) {
         //clear existing list and counter
         listSaves.clear()
 
@@ -104,14 +99,7 @@ fun ChooseFileScreen(
                     else true
                 } else false
             }//.filter
-            ?.sortedWith(
-                compareByDescending<File> { file ->
-                    val birdName = extractBirdNameFromSave(context, file.name, currentDir)
-                    favorites.contains(birdName)
-                }.thenByDescending {
-                    it.lastModified()
-                }
-            )
+            ?.sortedByDescending { it.lastModified() }
             ?: emptyList()
 
         listSaves.addAll(files)
@@ -244,8 +232,6 @@ fun ChooseFileScreen(
 
                     //convert epoch time in name to readable format
                     val previewName = convertEpochDateToReadable(nameSplits[2])
-                    val birdName = extractBirdNameFromSave(context, name, currentDir)
-                    val isFavorite = favorites.contains(birdName)
 
                     FileCard(
                         fileName = previewName,
@@ -260,7 +246,6 @@ fun ChooseFileScreen(
                         },
                         imgUri = imgUri,
                         isCameraSave = isCameraSave,
-                        isFavorite = isFavorite,
                         onDelete = {
                             //set temporary selection value
                             selectedIndex = index
@@ -271,11 +256,6 @@ fun ChooseFileScreen(
                             selectedIndex = index
                             selectedIsFile = false
                             showMoveFileDialog = true
-                        },
-                        onToggleFavorite = {
-                            scope.launch {
-                                favoritesManager.toggleFavorite(birdName)
-                            }
                         }
                     )//FileCard
                 }//itemsIndexed
@@ -289,11 +269,11 @@ fun ChooseFileScreen(
                     showDeleteDialog = false
                 },
                 onChooseDelete = {
-                    if(selectedIsFile){
+                    if (selectedIsFile) {
                         //delete the currently chosen file and remove it from display list
                         listSaves[selectedIndex].delete()
                         listSaves.removeAt(selectedIndex)
-                    }else{
+                    } else {
                         //delete the currently chosen folder and remove it from display list
                         listFolders[selectedIndex].delete()
                         listFolders.removeAt(selectedIndex)
@@ -311,13 +291,13 @@ fun ChooseFileScreen(
                 hideDialog = {
                     showCreateFolderDialog = false
                 },
-                onChooseCreate = {
-                    folderName: String -> run {
+                onChooseCreate = { folderName: String ->
+                    run {
                         //create new file with name
                         val createdFolder = File(context.filesDir, "birdScans_${folderName}")
 
                         //create a folder; if it works, add the folder to the list
-                        if(createdFolder.mkdir()) listFolders.add(createdFolder)
+                        if (createdFolder.mkdir()) listFolders.add(createdFolder)
                     }//fun
                 }//onChooseCreate
             )//Dialog

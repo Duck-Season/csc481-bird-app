@@ -2,6 +2,7 @@ package com.example.csc481_bird_app.filesaving
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.util.Log
 import com.example.csc481_bird_app.detector.Detection
 import java.util.Date
@@ -9,9 +10,19 @@ import java.util.Date
 //save a list of detections to an internal file to be accessed later
 //detections is self-explanatory
 //coords are going to be passed either from geolocation API (camera mode) or EXIF data (gallery)
-fun saveDetections(context: Context, detections: List<Detection>, imageUri: String?, coords: Pair<Float?, Float?>, isCameraSave: Boolean){
-    //make sure that the list isn't empty first AND there's an image
-    if(detections.isNotEmpty() && imageUri != null){
+fun saveDetections(
+    context: Context,
+    detections: List<Detection>,
+    imageUri: String?,
+    coords: Pair<Float?, Float?>,
+    isCameraSave: Boolean,
+    prefs: SharedPreferences,
+    forceSave :Boolean = false
+){
+    //make sure there's an image and either there's some detections or autosave for empty images is enabled
+    val isAutosaveEnabled = prefs.getBoolean("pref_autosavingEnabled", true)
+    val isAutosaveEmptyEnabled = prefs.getBoolean("pref_autosaveEmptyScans", false)
+    if((((detections.isNotEmpty() && isAutosaveEnabled) || isAutosaveEmptyEnabled) || forceSave) && imageUri != null){
         try {
             //create filename for save
             //indicate whether camera or gallery was used

@@ -1,0 +1,118 @@
+[
+  {
+    "title": "How to use the app",
+    "contents": [
+      {
+        "subheader": "Camera Mode",
+        "subitems": [
+          {
+            "text": "Entering the Camera mode will prompt you for Camera and Location permissions. These are mandatory for this mode to function properly; if you accidentally deny these permissions, they can be reenabled by going into your phone's permission settings. Otherwise, the screen will open your phone’s camera feed in-app and present a small white circle button to take a picture with. There's also an icon to flip between your phone’s default front and rear cameras. Tapping on the screen will briefly show another white circle where you tap; this is the indicator for the camera's focus. The top bar of the screen includes a back arrow to return to the home screen. Taking a picture will gray out the circle button and after a few seconds scanning the image with our detection model before moving to the results screen."
+          }
+        ]
+      },
+      {
+        "subheader": "Gallery Mode",
+        "subitems": [
+          {
+            "text": "By default, the gallery screen while automatically open up your phone's default image picker; this can be disabled in the app's settings screen. Otherwise, the screen presents a simple button to open the image picker. Either way, you can only select a single image to scan. Once detection is completed, it will automatically move into the results screen. Like with the camera mode, the top bar includes an arrow to return to the home screen."
+          }
+        ]
+      },
+      {
+        "subheader": "Results Mode",
+        "subitems": [
+          {
+            "text": "The main portion of the screen contains the uploaded image, with bounding boxes drawn on top of it and a list of detections underneath should it detect anything. Each detection entry displays a cropped preview image of the bird identified. Tapping on the entry highlights the bird’s bounding box a bright red, and expands the entry to display two possible \"sub-candidates\" that could also be the bird identified. The app will attempt to obtain the location of an image either by requesting geolocational data from the phone for a camera scan or by checking EXIF data for a gallery picture. The top bar provides two options: the first is a \"re-scan\" button to run an image through the detection model again. The second is a \"share\" button, which copies the raw image and opens it into a social media app of your choosing."
+          }
+        ]
+      },
+      {
+        "subheader": "File Mode",
+        "subitems": [
+          {
+            "text": "Files will only appear after using the gallery or camera mode first. Scans can be opened simply by tapping on them; scans also have an indicator for whether they were taken with the camera or from the gallery. Tapping the folder icon opens a dialog to create a folder that can store multiple save files; you can name it anything containing letters, numbers or underscores. If a folder of the same name already exists, the dialog does nothing. Currently, folders cannot be made within folders. Pressing the \"three buttons\" icon will provide options to either delete the scan or move it into an existing folder."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Frequently Asked Questions",
+    "contents": [
+      {
+        "subheader": "\"Are my camera pictures saved automatically?\"",
+        "subitems": [
+          {
+            "text": "Yes! All pictures taken, regardless of whether they produce scans, are saved automatically to your phone's default photo gallery for easy access. Even if the app is deleted, your photos will be saved, though your saved scans will not be."
+          }
+        ]
+      },
+      {
+        "subheader": "\"Does the camera mode support tap-to-focus?\"",
+        "subitems": [
+          {
+            "text": "Yes! Just tap on the screen and a small circle will appear for a brief moment to focus in on that region of the screen."
+          }
+        ]
+      },
+      {
+        "subheader": "\"Will you support live detection in the future?\"",
+        "subitems": [
+          {
+            "text": "Maybe. Our current model is somewhat large and requires directly processing on the phone. The performance may not be the best on older devices, but it should technically be feasible!"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Supported Species",
+    "contents": [
+      {
+        "isSpeciesListSection": "true"
+      }
+    ]
+  },
+  {
+    "title": "Credits",
+    "contents": [
+      {
+        "subheader": "Meet the Dev Team",
+        "subitems": [
+          {
+            "text": "Aidan Haurin - Model training and management, file management, file system UI, results screen UI"
+          },
+          {
+            "text": "Ricco Little - Camera system, species filtering, geolocational data and Google Maps integration"
+          },
+          {
+            "text": "Dastan Utegenov - Gallery screen, camera focusing, results screen UI"
+          }
+        ]
+      },
+      {
+        "subheader": "Software and Data",
+        "subitems": [
+          {
+            "hasTwoLinks": " true",
+            "text1": "This app runs on the",
+            "link1": "YOLOv11",
+            "url1": "https://docs.ultralytics.com/models/yolo11/",
+            "text2": "object detection model by",
+            "link2": "Ultralytics",
+            "url2": "https://www.ultralytics.com/"
+          },
+          {
+            "hasTwoLinks": " true",
+            "text1": "This app was trained on images sourced from the",
+            "link1": "Macaulay Library",
+            "url1": "https://www.macaulaylibrary.org/",
+            "text2": "dataset from the",
+            "link2": "Cornell Lab of Ornithology",
+            "url2": "https://www.birds.cornell.edu/home"
+          }
+        ]
+      }
+    ]
+  }
+]

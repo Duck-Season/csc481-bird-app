@@ -1,26 +1,17 @@
 package com.example.csc481_bird_app.ui.screens
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.LightMode
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -42,8 +33,7 @@ fun HomeScreen(
     onGalleryClick: () -> Unit,
     onFileClick: () -> Unit,
     onFAQClick: () -> Unit,
-    onToggleTheme: () -> Unit,
-    isDark: Boolean
+    onSettingsClick: () -> Unit
 ){
     Scaffold(
         topBar = {
@@ -54,15 +44,7 @@ fun HomeScreen(
                 ),
                 title = {
                     Text("CSC481 Bird App")
-                },//title
-                actions = {
-                    IconButton(onClick = onToggleTheme) {
-                        Icon(
-                            imageVector = if (isDark) Icons.Default.DarkMode else Icons.Default.LightMode,
-                            contentDescription = "Toggle Theme"
-                        )
-                    }
-                }
+                }//title
             )//TopAppBar
         },
     ) { innerPadding ->
@@ -74,6 +56,7 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            //camera screen button
             item {
                 OutlinedButton(
                     onClick = onCameraClick,
@@ -103,6 +86,7 @@ fun HomeScreen(
                 }//Button
             }
 
+            //gallery screen button
             item {
                 OutlinedButton(
                     onClick = onGalleryClick,
@@ -130,8 +114,8 @@ fun HomeScreen(
                 }//Button
             }//item
 
+            //file screen button
             item {
-
                 OutlinedButton(
                     onClick = onFileClick,
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
@@ -158,6 +142,7 @@ fun HomeScreen(
                 }//Button
             }//item
 
+            //FAQ screen button
             item {
                 OutlinedButton(
                     onClick = onFAQClick,
@@ -171,18 +156,46 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.outline_more_vert_24),
+                            painter = painterResource(id = R.drawable.outline_help_24),
                             contentDescription = "FAQ Icon",
                             tint = MaterialTheme.colorScheme.primary
                         )//Icon
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Frequently Asked\nQuestions",
+                            text = "More Information",
                             color = MaterialTheme.colorScheme.primary,
                             textAlign = TextAlign.Center
                         )
-                    }
-                }
+                    }//Row
+                }//Button
+            }//item
+
+            //settings screen button
+            item {
+                OutlinedButton(
+                    onClick = onSettingsClick,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                    shape = MaterialTheme.shapes.medium,
+                    modifier = Modifier
+                        .aspectRatio(1f/1f)
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_settings_24),
+                            contentDescription = "Settings Icon",
+                            tint = MaterialTheme.colorScheme.primary
+                        )//Icon
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Settings",
+                            color = MaterialTheme.colorScheme.primary,
+                            textAlign = TextAlign.Center
+                        )
+                    }//Row
+                }//Button
             }//item
         }//LazyVerticalGrid
     }//Column

@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -57,20 +58,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.exifinterface.media.ExifInterface
@@ -98,6 +94,7 @@ fun DetectByCameraScreen(
     onDetectionsComplete: () -> Unit,
     onBack: () -> Unit,
     scaleType: PreviewView.ScaleType = PreviewView.ScaleType.FILL_CENTER,
+    prefs: SharedPreferences
 ){
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -196,6 +193,8 @@ fun DetectByCameraScreen(
                             viewModel.isProcessing = true
                             viewModel.runDetections(bmp)
 
+                            viewModel.bmpUri = savedUri
+
                             val geoCoords = Pair(viewModel.geoLat, viewModel.geoLon)
 
                             if (viewModel.detections.isNotEmpty()) {
@@ -204,7 +203,8 @@ fun DetectByCameraScreen(
                                     viewModel.detections,
                                     savedUri.toString(),
                                     geoCoords,
-                                    true
+                                    true,
+                                    prefs
                                 )//saveDetections
                             }//if
 
@@ -342,22 +342,6 @@ fun DetectByCameraScreen(
                     }//update
                 )//AndroidView
 
-                // Cinematic Vignette Overlay
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            Brush.verticalGradient(
-                                colors = listOf(
-                                    Color.Black.copy(alpha = 0.25f),
-                                    Color.Transparent,
-                                    Color.Transparent,
-                                    Color.Black.copy(alpha = 0.35f)
-                                )
-                            )
-                        )
-                )
-
                 //animated tap pointer
                 tapPosition?.let { position ->
                     //it's the alpha AND scale!
@@ -377,7 +361,7 @@ fun DetectByCameraScreen(
                     }//Canvas
                 }//.let
 
-                // ===== Bottom Camera Control Bar =====
+                //botton bar for camera controls
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
@@ -392,7 +376,7 @@ fun DetectByCameraScreen(
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // ===== Switch Camera Button =====
+                        // switch camera button
                         Box(
                             modifier = Modifier
                                 .size(72.dp)
@@ -407,12 +391,13 @@ fun DetectByCameraScreen(
                                 Icon(
                                     painter = painterResource(R.drawable.outline_cameraswitch_24),
                                     contentDescription = "Switch Camera",
-                                    tint = Color.White
-                                )
-                            }
-                        }
+                                    tint = Color.White,
+                                    modifier = Modifier.size(64.dp)
+                                )//Icon
+                            }//IconButton
+                        }//Box
 
-                        // ===== Capture Button (center, bigger) =====
+                        // capture picture button
                         Box(
                             modifier = Modifier
                                 .size(84.dp)
@@ -428,16 +413,16 @@ fun DetectByCameraScreen(
                                     painter = painterResource(R.drawable.baseline_circle_24),
                                     contentDescription = "Capture",
                                     tint = if (hasTakenPicture) Color.Gray else Color.White,
-                                    modifier = Modifier.size(42.dp)
-                                )
-                            }
-                        }
+                                    modifier = Modifier.size(64.dp)
+                                )//Icon
+                            }//IconButton
+                        }//Box (capture button)
 
                         // spacer to balance layout
                         Spacer(modifier = Modifier.size(72.dp))
-                    }
-                }
-            }//Box
+                    }//Row
+                }//Box (control bar)
+            }//Box (container for camera view)
         }else{
             if(viewModel.isProcessing && viewModel.bitmap != null){
                 Box(

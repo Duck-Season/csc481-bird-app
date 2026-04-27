@@ -1,6 +1,7 @@
 package com.example.csc481_bird_app.ui.screens
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
@@ -32,8 +33,9 @@ import kotlinx.coroutines.withContext
 @Composable
 fun DetectByGalleryScreen(
     viewModel: DectectionsViewModel,
+    prefs: SharedPreferences,
     onDetectionsComplete: () -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -67,6 +69,8 @@ fun DetectByGalleryScreen(
                 bitmap?.let { bmp ->
                     viewModel.runDetections(bmp)
 
+                    viewModel.bmpUri = uri
+
                     //save results to a file
                     if(viewModel.detections.isNotEmpty()){
                         context.contentResolver.openInputStream(uri)?.use { stream ->
@@ -80,10 +84,9 @@ fun DetectByGalleryScreen(
                                 viewModel.detections,
                                 uri.toString(),
                                 coords,
-                                false
-                            )
-
-                            viewModel.bmpUri = uri
+                                false,
+                                prefs
+                            )//saveDetections
                         }//.use
                     }//if
 
@@ -95,6 +98,15 @@ fun DetectByGalleryScreen(
         }//.let
     }//val
 
+    //option to launch the picker automatically
+    val openPickerOnStart = prefs.getBoolean("pref_autoOpenGalleryPicker", true)
+    LaunchedEffect(Unit) {
+        if (openPickerOnStart) {
+            picker.launch("image/*")
+        }//if
+    }//LaunchedEffect
+
+    //the actual Composable
     Scaffold(
         topBar = {
             TopAppBar(
