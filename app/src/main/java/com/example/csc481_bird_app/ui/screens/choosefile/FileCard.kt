@@ -41,11 +41,11 @@ fun FileCard(
     imgUri: Uri? = null,
     isCameraSave: Boolean = false,
     isDeleteEnabled: Boolean = true,
-    isFavorite: Boolean = false,
     onSelection: () -> Unit,
     onDelete: () -> Unit = {},
     onMove: () -> Unit = {},
-    onToggleFavorite: () -> Unit = {},
+    isFavorite: Boolean = false,
+    onToggleFavorite: () -> Unit = {}
 ){
     var expanded by remember { mutableStateOf(false) }
 
@@ -99,6 +99,16 @@ fun FileCard(
             ){
                 //only show for saved scans
                 if(folder == null){
+                    IconButton(
+                        onClick = onToggleFavorite
+                    ) {
+                        Icon(
+                            imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
+                            contentDescription = if (isFavorite) "Remove from Favorites" else "Add to Favorites",
+                            tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
                     Icon(
                         painter = painterResource(id = if(isCameraSave) R.drawable.rounded_add_camera_24 else R.drawable.rounded_add_photo_alternate_24),
                         contentDescription = "Save taken with phone " + if(isCameraSave) "camera" else "gallery",
@@ -110,17 +120,6 @@ fun FileCard(
                     text = fileName,
                     fontSize = 16.sp
                 )
-
-                if (folder == null) {
-                    IconButton(onClick = onToggleFavorite) {
-                        Icon(
-                            imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
-                            contentDescription = "Favorite",
-                            tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
-                        )
-                    }
-                }
-
                 Spacer(modifier = Modifier.weight(0.4f))
 
                 Box(){

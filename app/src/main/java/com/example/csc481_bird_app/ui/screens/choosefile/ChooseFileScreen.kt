@@ -22,10 +22,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,12 +35,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.csc481_bird_app.data.FavoritesManager
 import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.filesaving.loadDetections
+import com.example.csc481_bird_app.ui.screens.choosefile.FileCard
 import com.example.csc481_bird_app.ui.screens.dialogs.choosefile.CreateFolderDialog
 import com.example.csc481_bird_app.ui.screens.dialogs.choosefile.DeleteDialog
 import com.example.csc481_bird_app.ui.screens.dialogs.choosefile.MoveFileDialog
 import com.example.csc481_bird_app.utils.getImageUriFromSave
+import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -52,6 +57,11 @@ fun ChooseFileScreen(
     onBack: () -> Unit
 ){
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    // Favorites state
+    val favoritesManager = remember { FavoritesManager(context) }
+    val favorites by favoritesManager.favoritesFlow.collectAsState(initial = emptySet())
 
     //mutable values
     var selectedIndex by remember { mutableStateOf(-1)}
@@ -76,7 +86,7 @@ fun ChooseFileScreen(
 
     //load in the list of files
     val listSaves = remember { mutableStateListOf<File>() }
-    LaunchedEffect(currentDir) {
+    LaunchedEffect(currentDir, favorites) {
         //clear existing list and counter
         listSaves.clear()
 
@@ -99,7 +109,14 @@ fun ChooseFileScreen(
                     else true
                 } else false
             }//.filter
-            ?.sortedByDescending { it.lastModified() }
+            ?.sortedWith(
+                // Sort by favorites first, then by last modified date (most recent first)
+                compareByDescending<File> { 
+                    val birdName = extractBirdName(it.name)
+                    birdName.isNotEmpty() && favorites.contains(birdName) 
+                }
+                    .thenByDescending { it.lastModified() }
+            )
             ?: emptyList()
 
         listSaves.addAll(files)
@@ -213,7 +230,7 @@ fun ChooseFileScreen(
                                 showDeleteDialog = true
                             },
                             //only allow folder deletion if folder is empty
-                            isDeleteEnabled = folder.listFiles().size == 0
+                            isDeleteEnabled = (folder.listFiles()?.size ?: 0) == 0
                         )//FileCard
                     }//itemsIndexed
                 }//if
@@ -232,6 +249,9 @@ fun ChooseFileScreen(
 
                     //convert epoch time in name to readable format
                     val previewName = convertEpochDateToReadable(nameSplits[2])
+
+                    val birdName = extractBirdName(name)
+                    val isFav = favorites.contains(birdName)
 
                     FileCard(
                         fileName = previewName,
@@ -256,6 +276,12 @@ fun ChooseFileScreen(
                             selectedIndex = index
                             selectedIsFile = false
                             showMoveFileDialog = true
+                        },
+                        isFavorite = isFav,
+                        onToggleFavorite = {
+                            scope.launch {
+                                favoritesManager.toggleFavorite(birdName)
+                            }
                         }
                     )//FileCard
                 }//itemsIndexed
@@ -332,3 +358,17 @@ fun convertEpochDateToReadable(strDate: String): String{
     val formatter = SimpleDateFormat("MMMM dd, yyyy\n HH:mm:ss aaa", Locale.getDefault())
     return formatter.format(date)
 }//fun
+
+/**
+ * Extracts the bird name from a filename.
+ * Expected format: save_{camera/gallery}_{timestamp}_{Bird_Name}
+ */
+fun extractBirdName(fileName: String): String {
+    // Expected format: save_{camera/gallery}_{timestamp}_{Bird_Name}
+    // or older: save_{camera/gallery}_{timestamp}
+    val parts = fileName.split("_")
+    if (parts.size < 4) return "" // No bird name in filename
+
+    // Join all parts after the timestamp (index 2) to handle multi-word bird names
+    return parts.drop(3).joinToString(" ").replace("_", " ")
+}

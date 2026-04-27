@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap.createBitmap
 import android.location.Geocoder
 import android.net.Uri
+import android.graphics.RectF
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -21,21 +22,30 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,7 +66,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.csc481_bird_app.R
+import com.example.csc481_bird_app.data.FavoritesManager
 import com.example.csc481_bird_app.detector.DectectionsViewModel
+import com.example.csc481_bird_app.detector.Detection
 import com.example.csc481_bird_app.filesaving.saveDetections
 import com.example.csc481_bird_app.ui.ScanningIndicator
 import com.example.csc481_bird_app.ui.screens.dialogs.results.ManualSaveDialog
@@ -77,10 +89,24 @@ fun ResultsScreen(
 ){
     val context = LocalContext.current
 
+    // Favorites state
+    val favoritesManager = remember { FavoritesManager(context) }
+    val favorites by favoritesManager.favoritesFlow.collectAsState(initial = emptySet())
+
     //mutable variables
     var selectedIndex by remember { mutableStateOf<Int>(-1)}
     var locationName by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
+
+    // Bird search dropdown state for manually adding birds to the detection list
+    var expanded by remember { mutableStateOf(false) }
+    var searchQuery by remember { mutableStateOf("") }
+    var allBirds by remember { mutableStateOf<List<String>>(emptyList()) }
+
+    // Filtered list of birds based on search query, limited to top 15 results
+    val filteredBirds = allBirds.filter {
+        it.contains(searchQuery, ignoreCase = true)
+    }.take(15)
 
     //mutable dialog variabels
     var showRescanDialog by remember { mutableStateOf(false) }
@@ -152,6 +178,16 @@ fun ResultsScreen(
     LaunchedEffect(viewModel.geoLat, viewModel.geoLon) {
         fetchLocation()
     }//LaunchedEffect
+
+    // Load bird labels from assets on initialization
+    LaunchedEffect(Unit) {
+        val input = context.assets.open("labels.txt")
+        val list = input.bufferedReader().readLines().map {
+            // Remove numeric prefix and replace underscores with spaces for display
+            it.substringAfter(" ").replace("_", " ")
+        }
+        allBirds = list
+    }
 
     //------------ the Composable part ------------
     Scaffold(
@@ -304,7 +340,72 @@ fun ResultsScreen(
                                 }//Row
                             }//ElevatedButton
                         }//if
-                    }//Box
+                    }//Column
+
+                    // Manual Bird Search Dropdown: Allows users to add birds not automatically detected
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        ExposedDropdownMenuBox(
+                            expanded = expanded,
+                            onExpandedChange = { expanded = !expanded }
+                        ) {
+                            TextField(
+                                value = searchQuery,
+                                onValueChange = {
+                                    searchQuery = it
+                                    expanded = true
+                                },
+                                label = { Text("Add Bird") },
+                                placeholder = { Text("Type bird name...") },
+                                trailingIcon = {
+                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded)
+                                },
+                                modifier = Modifier
+                                    .menuAnchor()
+                                    .fillMaxWidth()
+                            )
+
+                            ExposedDropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false }
+                            ) {
+                                filteredBirds.forEach { bird ->
+                                    DropdownMenuItem(
+                                        text = { Text(bird) },
+                                        onClick = {
+                                            // Only add if not already in the list
+                                            val exists = viewModel.detections.any {
+                                                it.className.equals(bird, ignoreCase = true)
+                                            }
+
+                                            if (!exists) {
+                                                viewModel.detections =
+                                                    viewModel.detections + Detection(
+                                                        className = "$bird (Manual)",
+                                                        confidence = 1.0f,
+                                                        bbox = RectF(0f, 0f, 100f, 100f),
+                                                        classIndex = -1,
+                                                        subDetections = emptyList()
+                                                    )
+                                            }
+                                            searchQuery = ""
+                                            expanded = false
+                                        }
+                                    )
+                                }
+
+                                if (filteredBirds.isEmpty()) {
+                                    DropdownMenuItem(
+                                        text = { Text("No birds found") },
+                                        onClick = {}
+                                    )
+                                }
+                            }
+                        }
+                    }
 
                     //display the detection cards here
                     LazyColumn(
@@ -390,6 +491,25 @@ fun ResultsScreen(
                                                 modifier = Modifier
                                                     .weight(0.3f)
                                             )//Text
+
+                                            // Manual bird removal button: Only visible for manual entries
+                                            if (det.className.contains("(Manual)")) {
+                                                IconButton(
+                                                    onClick = {
+                                                        viewModel.detections =
+                                                            viewModel.detections.toMutableList().also {
+                                                                it.remove(det)
+                                                            }
+                                                    },
+                                                    modifier = Modifier.weight(0.15f)
+                                                ) {
+                                                    Icon(
+                                                        imageVector = Icons.Default.Delete,
+                                                        contentDescription = "Remove Manual Detection",
+                                                        tint = MaterialTheme.colorScheme.error
+                                                    )
+                                                }
+                                            }
                                         }//Row
 
                                         //display when tapped
@@ -410,6 +530,24 @@ fun ResultsScreen(
                                                     Text("Learn more about this species")
                                                 }//Row
                                             }//TextButton
+
+                                            // Favorite Button: Allows users to pin this bird species to the top of the file list
+                                            val birdNameForFav = det.className
+                                                .substringAfter(" ") // handle "1.) Bird Name"
+                                                .substringBefore(" (") // handle "(Manual)"
+                                                .trim()
+                                            val isFav = favorites.contains(birdNameForFav)
+
+                                            OutlinedButton(
+                                                onClick = {
+                                                    scope.launch {
+                                                        favoritesManager.toggleFavorite(birdNameForFav)
+                                                    }
+                                                },
+                                                modifier = Modifier.fillMaxWidth().padding(top = 4.dp)
+                                            ) {
+                                                Text(if (isFav) "⭐ Favorited" else "☆ Add to Favorites")
+                                            }
 
                                             Text(
                                                 text = "Other candidates",

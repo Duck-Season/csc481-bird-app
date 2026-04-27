@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -91,4 +92,7 @@ dependencies {
 
     //osmdroid
     implementation("org.osmdroid:osmdroid-android:6.1.18")
+
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.2")
 }

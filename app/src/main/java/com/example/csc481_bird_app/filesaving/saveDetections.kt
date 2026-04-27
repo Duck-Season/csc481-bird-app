@@ -27,7 +27,17 @@ fun saveDetections(
             //create filename for save
             //indicate whether camera or gallery was used
             //using Date to make unique-ish names
-            val saveName = "save_" + (if(isCameraSave) "camera_" else "gallery_") + Date().time
+            var saveName = "save_" + (if(isCameraSave) "camera_" else "gallery_") + Date().time
+
+            // If there's at least one detection, append the first bird's name for easier sorting/filtering
+            // This allows the gallery screen to identify favorites without reading every file
+            if (detections.isNotEmpty()) {
+                val firstBird = detections.first().className
+                    .substringAfter(" ") // remove potential index/prefix (e.g., "1.) ")
+                    .substringBefore(" (") // remove "(Manual)" if present
+                    .replace(" ", "_")
+                saveName += "_$firstBird"
+            }
 
             //start with the image path and geocoords first, we need only store them once
             var strContents = imageUri + "\n"
