@@ -43,7 +43,7 @@ fun HomeScreen(
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
-                    Text("CSC481 Bird App")
+                    Text("Gander: Bird Detection App")
                 }//title
             )//TopAppBar
         },

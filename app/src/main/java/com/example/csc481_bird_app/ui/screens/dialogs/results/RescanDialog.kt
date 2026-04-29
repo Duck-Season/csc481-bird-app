@@ -24,12 +24,12 @@ fun RescanDialog (
             Text("Would you like to rescan the current results? This will create another save file.")
         },
         onDismissRequest = {
-            hideDialog
+            hideDialog()
         },
         confirmButton = {
             TextButton(
                 onClick = {
-                    onChooseRescan
+                    onChooseRescan()
                 }//onClick
             ) {
                 Text("Yes")
@@ -38,7 +38,7 @@ fun RescanDialog (
         dismissButton = {
             TextButton(
                 onClick = {
-                    hideDialog
+                    hideDialog()
                 }//onClick
             ) {
                 Text("No")

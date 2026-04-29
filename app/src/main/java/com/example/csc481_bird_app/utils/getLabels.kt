@@ -2,7 +2,7 @@ package com.example.csc481_bird_app.utils
 
 import android.content.Context
 import android.util.Log
-private val labelsFilename = "nabirds/classes.txt"
+private const val labelsFilename = "macaulay/macaulay_classes.txt"
 
 fun getLabels (context: Context): List<String> {
     try {

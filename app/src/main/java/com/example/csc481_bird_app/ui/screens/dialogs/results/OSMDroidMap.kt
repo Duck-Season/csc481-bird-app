@@ -20,7 +20,8 @@ import org.osmdroid.views.overlay.Marker
 fun OsmdroidMap(
     context: Context,
     modifier: Modifier = Modifier,
-    startPoint: GeoPoint = GeoPoint(39.9523, -75.1638), // defaults to Philadelpha
+    startPoint: GeoPoint = GeoPoint(39.9523, -75.1638), // defaults to Philadelphia
+    locationName: String?,
     zoom: Double = 20.0
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -49,8 +50,8 @@ fun OsmdroidMap(
                    val marker = Marker(this).apply {
                        position = startPoint
                        setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                       title = "Your location"
-                       snippet = "${String.format("%.2f", startPoint.latitude)}, ${String.format("%.2f", startPoint.longitude)}"
+                       title = "Picture taken at:\n$locationName"
+                       snippet = "(${String.format("%.2f", startPoint.latitude)}, ${String.format("%.2f", startPoint.longitude)})"
                    }//.apply
                    overlays.add(marker)
                }//.apply

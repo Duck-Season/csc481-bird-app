@@ -80,13 +80,13 @@
         "subheader": "Meet the Dev Team",
         "subitems": [
           {
-            "text": "Aidan Haurin - Model training and management, file management, file system UI, results screen UI"
+            "text": "Aidan Haurin - Model training and management, file management, file system UI, results screen UI, and OpenStreetMap integration."
           },
           {
-            "text": "Ricco Little - Camera system, species filtering, geolocational data and Google Maps integration"
+            "text": "Ricco Little - Camera system, species filtering, and geolocational data."
           },
           {
-            "text": "Dastan Utegenov - Gallery screen, camera focusing, results screen UI"
+            "text": "Dastan Utegenov - Gallery screen, camera focusing, and results screen UI."
           }
         ]
       },

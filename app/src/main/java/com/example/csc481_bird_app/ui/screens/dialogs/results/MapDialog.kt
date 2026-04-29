@@ -22,7 +22,8 @@ import org.osmdroid.util.GeoPoint
 fun MapDialog(
     context: Context,
     hideDialog: () -> Unit,
-    geoCoords: Pair<Float, Float>
+    geoCoords: Pair<Float, Float>,
+    locationName: String?
 ){
     //create the GeoPoint
     var geoPoint by remember { mutableStateOf(GeoPoint(geoCoords.first.toDouble(), geoCoords.second.toDouble())) }
@@ -36,7 +37,8 @@ fun MapDialog(
             OsmdroidMap(
                 modifier = Modifier.fillMaxWidth().height(500.dp).clip(RectangleShape),
                 context = context,
-                startPoint = geoPoint
+                startPoint = geoPoint,
+                locationName = locationName
             )
         },
         onDismissRequest = {

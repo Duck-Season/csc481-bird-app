@@ -119,7 +119,7 @@ fun DetectByGalleryScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()
                     ){
-                        TextButton(
+                        IconButton(
                             onClick = onBack,
                         ) {
                             Icon(

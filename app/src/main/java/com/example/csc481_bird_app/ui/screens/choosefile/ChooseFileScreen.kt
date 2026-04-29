@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -118,7 +119,7 @@ fun ChooseFileScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()
                     ){
-                        TextButton(
+                        IconButton(
                             onClick = {
                                 if (currentDir == context.filesDir){
                                     onBack()
@@ -141,7 +142,7 @@ fun ChooseFileScreen(
                             )//Spacer
 
                             //allow folder creation ONLY at the top level
-                            TextButton(
+                            IconButton(
                                 onClick = {
                                     //display the dialog for deleting files
                                     showCreateFolderDialog = true
@@ -152,6 +153,10 @@ fun ChooseFileScreen(
                                     contentDescription = "Create New Folder"
                                 )//Icon
                             }//Button
+
+                            Spacer(
+                                modifier = Modifier.padding(8.dp)
+                            )//Spacer
                         }else{
                             //indicate we're in a folder
                             Text(currentDir.name.substringAfter("_"))

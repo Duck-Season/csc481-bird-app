@@ -3,9 +3,7 @@ package com.example.csc481_bird_app.ui.screens.results
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap.createBitmap
 import android.location.Geocoder
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -13,21 +11,21 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -43,22 +41,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.Hyphens
-import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import com.example.csc481_bird_app.R
 import com.example.csc481_bird_app.detector.DectectionsViewModel
 import com.example.csc481_bird_app.filesaving.saveDetections
 import com.example.csc481_bird_app.ui.ScanningIndicator
+import com.example.csc481_bird_app.ui.screens.dialogs.results.FilterDialog
 import com.example.csc481_bird_app.ui.screens.dialogs.results.ManualSaveDialog
 import com.example.csc481_bird_app.ui.screens.dialogs.results.MapDialog
 import com.example.csc481_bird_app.ui.screens.dialogs.results.RescanDialog
@@ -75,21 +69,30 @@ fun ResultsScreen(
     onBack: () -> Unit,
     prefs: SharedPreferences
 ){
+    //need to pass context into a bunch of different components
     val context = LocalContext.current
 
     //mutable variables
-    var selectedIndex by remember { mutableStateOf<Int>(-1)}
+    var selectedIndex by remember { mutableStateOf(-1)}
     var locationName by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
 
-    //mutable dialog variabels
+    //mutable dialog variables
     var showRescanDialog by remember { mutableStateOf(false) }
     var isValidScan by remember { mutableStateOf(false) }
+
     var showManualSaveDialog by remember {mutableStateOf(false)}
     var isManualSavingEnabled by remember {mutableStateOf(true)}
+
     var showLearnMoreDialog by remember {mutableStateOf(false)}
     var selectedSpecies by remember { mutableStateOf("") }
+
     var showMapDialog by remember { mutableStateOf(false) }
+
+    var showFilterDialog by remember { mutableStateOf(false) }
+    var filterSet by remember { mutableStateOf(setOf<String>()) }
+
+    var favoritesSet by remember { mutableStateOf(prefs.getStringSet("prefs_favoriteSpecies", setOf<String>())) }
 
     //helper function to fetch location
     @SuppressLint("MissingPermission")
@@ -166,6 +169,7 @@ fun ResultsScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()
                     ){
+                        //go back to Home screen
                         TextButton(
                             onClick = onBack,
                         ) {
@@ -175,14 +179,42 @@ fun ResultsScreen(
                             )//Icon
                         }//TextButton
 
-                        Text("${viewModel.detections.size} bird${if(viewModel.detections.size == 1) "" else "s"} found")
+                        //list the number of detections found, if any
+                        //change based on whether we're filtering or not
+                        val headerCount = if(filterSet.isNotEmpty()){
+                            viewModel.detections.filter{filterSet.contains(it.className)}.size
+                        }else viewModel.detections.size
+                        Text("${headerCount} bird${if(headerCount == 1) "" else "s"} found")
 
+                        //text spacer
                         Spacer(
                             modifier = Modifier.weight(1.5f)
-                        )
+                        )//Spacer
+
+                        //filter button
+                        BadgedBox(badge = {
+                            //just gotta indicate there's filters on, nothing fancy
+                            if(filterSet.isNotEmpty()){
+                                Badge()
+                            }//if
+                        }){
+                            IconButton(
+                                onClick = {
+                                    //display the dialog for deleting files
+                                    showFilterDialog = true
+                                }//onClick
+                            ) {
+                                Row() {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.outline_filter_alt_24),
+                                        contentDescription = "Filter for Certain Species"
+                                    )//Icon
+                                }//Row
+                            }//Button
+                        }//BadgedBox
 
                         //re-scan button
-                        TextButton(
+                        IconButton(
                             onClick = {
                                 //display the dialog for deleting files
                                 showRescanDialog = true
@@ -197,7 +229,7 @@ fun ResultsScreen(
                         }//Button
 
                         //manual saving button
-                        TextButton(
+                        IconButton(
                             enabled = isManualSavingEnabled,
                             onClick = {
                                 //display the dialog for deleting files
@@ -213,7 +245,7 @@ fun ResultsScreen(
                         }//Button
 
                         //sharing button
-                        TextButton(
+                        IconButton(
                             onClick = {
                                 shareResults()
                             },
@@ -261,26 +293,9 @@ fun ResultsScreen(
                     Column(
                         modifier = Modifier
                             .weight(0.1f)
-                            .height(32.dp)
+                            .height(32.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ){
-                        var displayStr = ""
-                        if(locationName != null){
-                            displayStr += locationName + " "
-                        }//if
-
-                        if(viewModel.geoLat != null && viewModel.geoLon != null){
-                            displayStr += "(${viewModel.geoLat}, ${viewModel.geoLon})"
-                        }//if
-
-                        if(displayStr == ""){
-                            displayStr = "Location Unknown"
-                        }//if
-
-                        Text(
-                            text = "Taken at: \n$displayStr",
-                            fontSize = 12.sp
-                        )//Text
-
                         if(viewModel.geoLat != null && viewModel.geoLon != null){
                             //button to trigger OSM display
                             ElevatedButton(
@@ -292,15 +307,14 @@ fun ResultsScreen(
                                 modifier = Modifier.padding(4.dp)
                             ) {
                                 Row(){
-                                    Image(
+                                    Icon(
                                         painter = painterResource(R.drawable.outline_globe_location_pin_24),
                                         contentDescription = "View on OSM Icon",
-                                        contentScale = ContentScale.Fit
                                     )//AsyncImage
 
                                     Spacer(modifier = Modifier.padding(8.dp))
 
-                                    Text("View on OpenStreetMap")
+                                    Text("View region on OpenStreetMap")
                                 }//Row
                             }//ElevatedButton
                         }//if
@@ -315,139 +329,38 @@ fun ResultsScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         if(viewModel.detections.isNotEmpty()){
-                            itemsIndexed(viewModel.detections){ index, det ->
+                            itemsIndexed(viewModel.detections.sortedByDescending { favoritesSet!!.contains(it.className) }){ index, det ->
                                 //------------ Detection Card ------------
-                                Card(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(4.dp),
-                                    colors = CardDefaults.cardColors(
-                                        containerColor = if (selectedIndex == index) {
-                                            MaterialTheme.colorScheme.primaryFixedDim
-                                        } else {
-                                            MaterialTheme.colorScheme.primaryContainer
-                                        }//if-else
-                                    ),
-                                    onClick = {
-                                        if(selectedIndex == index){
-                                            selectedIndex = -1
-                                        }else{
-                                            //set temporary selection values
-                                            selectedIndex = index
-                                        }//if-else
-                                    }//onClick
-                                ) {
-                                    Column(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(12.dp),
-                                    ) {
-                                        Row() {
-                                            //get width and height of bounding box; pick the smaller
-                                            val bbW = det.bbox.right.toInt() - det.bbox.left.toInt()
-                                            val bbH = det.bbox.bottom.toInt() - det.bbox.top.toInt()
-                                            val bbS = minOf(bbW, bbH)
+                                if(filterSet.isEmpty() || filterSet.contains(det.className)){
+                                    ResultsCard(
+                                        det = det,
+                                        bmp = bmp,
+                                        index = index,
+                                        selectedIndex = selectedIndex,
+                                        onSetSelectedIndex = {
+                                            if(selectedIndex == index){
+                                                selectedIndex = -1
+                                            }else{
+                                                //set temporary selection values
+                                                selectedIndex = index
+                                            }//if-else
+                                        },
+                                        onLearnMoreClick = {
+                                            showLearnMoreDialog = true
+                                            selectedSpecies = det.className.trim()
+                                        },
+                                        isFavoriteSpecies = favoritesSet!!.contains(det.className),
+                                        setFavorite = {
+                                            if(favoritesSet!!.contains(det.className)){
+                                                favoritesSet = favoritesSet?.minus(det.className)
+                                            }else{
+                                                favoritesSet = favoritesSet?.plus(det.className)
+                                            }//if-else
 
-                                            //crop the image to the bounding box
-                                            val previewBmp = createBitmap(
-                                                bmp,
-                                                det.bbox.left.toInt(),
-                                                det.bbox.top.toInt(),
-                                                bbS,
-                                                bbS,
-                                            )
-
-                                            //a preview of the image is more intuitive than a date
-                                            AsyncImage(
-                                                model = previewBmp, // Get the URI/File instead of Bitmap
-                                                contentDescription = "Preview",
-                                                modifier = Modifier
-                                                    .weight(0.25f)
-                                                    .aspectRatio(1f / 1f)
-                                                    .clip(RoundedCornerShape(8.dp)),
-                                                contentScale = ContentScale.Crop,
-                                            )//AsyncImage
-
-                                            Spacer(
-                                                modifier = Modifier
-                                                    .weight(0.05f)
-                                            )//Spacer
-
-                                            Text(
-                                                text = "${index+1}.) " + det.className.substringAfter(" ").replace("_", " "),
-                                                fontSize = 16.sp,
-                                                modifier = Modifier
-                                                    .weight(0.5f),
-                                                style = TextStyle(
-                                                    hyphens = Hyphens.Auto,
-                                                    lineBreak = LineBreak.Paragraph
-                                                )
-                                            )//Text
-
-                                            Text(
-                                                text = "${String.format("%.2f", det.confidence*100)}%",
-                                                fontSize = 18.sp,
-                                                modifier = Modifier
-                                                    .weight(0.3f)
-                                            )//Text
-                                        }//Row
-
-                                        //display when tapped
-                                        if(selectedIndex == index){
-                                            TextButton(
-                                                colors = ButtonDefaults.buttonColors(Color.Transparent, MaterialTheme.colorScheme.primary),
-                                                onClick = {
-                                                    val speciesName = det.className.substringAfter(" ").substringBefore(" (").trim()
-                                                    showLearnMoreDialog = true
-                                                    selectedSpecies = speciesName
-                                                }//onClick
-                                            ) {
-                                                Row() {
-                                                    Icon(
-                                                        painter = painterResource(id = R.drawable.outline_open_in_browser_24),
-                                                        contentDescription = "Learn more"
-                                                    )//Icon
-                                                    Text("Learn more about this species")
-                                                }//Row
-                                            }//TextButton
-
-                                            Text(
-                                                text = "Other candidates",
-                                                fontSize = 12.sp
-                                            )//Text
-
-                                            Column {
-                                                det.subDetections.forEachIndexed { index, subDet ->
-                                                    Column {
-                                                        Row (
-                                                            modifier = Modifier
-                                                                .fillMaxWidth()
-                                                        ) {
-                                                            Text(
-                                                                text = subDet.first,
-                                                                fontSize = 12.sp,
-                                                                modifier = Modifier.weight(0.6f)
-                                                            )
-                                                            Text(
-                                                                "${String.format("%.2f", subDet.second*100)}%",
-                                                                fontSize = 12.sp,
-                                                                modifier = Modifier.weight(0.4f)
-                                                            )
-                                                        }//Row
-                                                        Row (
-                                                            modifier = Modifier
-                                                                .fillMaxWidth()
-                                                        )  {
-                                                            LinearProgressIndicator(
-                                                                progress = { subDet.second },
-                                                            )
-                                                        }//Row
-                                                    }//Column
-                                                }//forEach
-                                            }//Column
-                                        }//if
-                                    }//Column
-                                }//Card
+                                            prefs.edit().putStringSet("prefs_favoriteSpecies", favoritesSet).apply()
+                                        }//setFavorite
+                                    )//ResultsCard
+                                }//if
                             }//itemsIndexed
                         } else {
                             //detections were not found
@@ -553,12 +466,24 @@ fun ResultsScreen(
 
         if(showMapDialog){
             MapDialog(
-                context,
-                {
+                context = context,
+                hideDialog = {
                     showMapDialog = false
                 },
-                Pair(viewModel.geoLat!!, viewModel.geoLon!!)
+                geoCoords =Pair(viewModel.geoLat!!, viewModel.geoLon!!),
+                locationName = locationName
             )
+        }//if
+
+        if(showFilterDialog){
+            FilterDialog(
+                context = context,
+                hideDialog = {
+                    showFilterDialog = false
+                },
+                filterSet = filterSet,
+                onFilterSetChange = { filterSet = it }
+            )//FilterDialog
         }//if
     }//Scaffold
 }//fun

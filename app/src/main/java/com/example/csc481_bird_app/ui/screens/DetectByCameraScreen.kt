@@ -296,7 +296,7 @@ fun DetectByCameraScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        TextButton(onClick = onBack) {
+                        IconButton(onClick = onBack) {
                             Icon(
                                 painter = painterResource(id = R.drawable.rounded_arrow_back_24),
                                 contentDescription = "Back Arrow"

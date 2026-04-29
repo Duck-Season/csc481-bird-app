@@ -14,13 +14,12 @@ import java.nio.channels.FileChannel
 import androidx.core.graphics.scale
 import androidx.core.graphics.createBitmap
 import com.example.csc481_bird_app.utils.getLabels
-import kotlin.math.exp
 
 class YOLOv11Detector(private val context: Context) {
     private var interpreter: Interpreter? = null
     private var inputImageWidth = 1024
     private var inputImageHeight = 1024
-    private val modelFilename = "nabirds/YOLOv11_NABirds_17mar2026_epoch30_int8.tflite"
+    private val modelFilename = "macaulay/YOLOv11_Macaulay_28apr2026_best_int8.tflite"
     private val labelClasses: List<String>
     private val groupClasses: List<String>
     private val iouThreshold = 0.45f
@@ -193,19 +192,12 @@ class YOLOv11Detector(private val context: Context) {
                     }//if
                 }//for
 
-                //get these for subdetections
-                val groupScoresSorted = groupScores.entries
-                    .sortedByDescending { it.value }
-                val gSSentries = groupScoresSorted
+                //get these for sub-detections
+                val groupScoresSorted = groupScores.entries.sortedByDescending { it.value }
 
                 val subDetections = mutableListOf<Pair<String, Float>>()
-                if (gSSentries.size > 1) subDetections.add(Pair(gSSentries[1].key, gSSentries[1].value))
-                if (gSSentries.size > 2) subDetections.add(Pair(gSSentries[2].key, gSSentries[2].value))
-
-                //if no group entry shows up, skip this one
-                //otherwise, get the score from the highest group
-                val bestGroup = groupScores.maxByOrNull { it.value } ?: continue
-                val maxGroupConfidence = bestGroup.value
+                if (groupScoresSorted.size > 1) subDetections.add(Pair(groupScoresSorted[1].key, groupScoresSorted[1].value))
+                if (groupScoresSorted.size > 2) subDetections.add(Pair(groupScoresSorted[2].key, groupScoresSorted[2].value))
 
                 //if the threshold is reached, begin creating the bounding box for our detection
                 if (maxSingleConfidence >= confidenceThreshold) {
@@ -234,7 +226,7 @@ class YOLOv11Detector(private val context: Context) {
                         detections.add(
                             Detection(
                                 bbox = RectF(clampedX, clampedY, clampedX + clampedW, clampedY + clampedH),
-                                confidence = maxGroupConfidence,
+                                confidence = maxSingleConfidence,
                                 classIndex = maxSingleClassIndex,
                                 className = className,
                                 subDetections = subDetections
@@ -266,7 +258,6 @@ class YOLOv11Detector(private val context: Context) {
 
         //make final results list
         val result = mutableListOf<Detection>()
-        val sigma = 0.55f
 
         while (filteredDetections.isNotEmpty()) {
             //pop the highest scoring detection first from the list

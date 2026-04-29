@@ -24,16 +24,13 @@ fun ManualSaveDialog (
             Text("Are you sure you want to manually save this scan?")
         },
         onDismissRequest = {
-            hideDialog
+            hideDialog()
         },
         confirmButton = {
             TextButton(
                 onClick = {
                     //run saving function
                     onChooseSave()
-
-                    //hide dialog
-                    hideDialog()
                 }//onClick
             ) {
                 Text("Save Scan")
