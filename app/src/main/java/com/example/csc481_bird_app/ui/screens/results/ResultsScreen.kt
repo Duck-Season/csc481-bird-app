@@ -286,7 +286,7 @@ fun ResultsScreen(
                         )//Image
 
                         //display the bounding boxes
-                        BoundingBoxOverlay(viewModel, bmp, selectedIndex)
+                        BoundingBoxOverlay(viewModel.detections.sortedByDescending { favoritesSet!!.contains(it.className) }, bmp, selectedIndex)
                     }//Box
 
                     //display the location here
@@ -323,7 +323,6 @@ fun ResultsScreen(
                     //display the detection cards here
                     LazyColumn(
                         modifier = Modifier
-                            .padding(16.dp)
                             .weight(0.3f),
                         contentPadding = PaddingValues(8.dp),
                         horizontalAlignment = Alignment.CenterHorizontally

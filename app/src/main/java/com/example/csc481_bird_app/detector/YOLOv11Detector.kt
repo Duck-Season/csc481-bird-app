@@ -14,6 +14,7 @@ import java.nio.channels.FileChannel
 import androidx.core.graphics.scale
 import androidx.core.graphics.createBitmap
 import com.example.csc481_bird_app.utils.getLabels
+import kotlin.math.exp
 
 class YOLOv11Detector(private val context: Context) {
     private var interpreter: Interpreter? = null
@@ -21,7 +22,7 @@ class YOLOv11Detector(private val context: Context) {
     private var inputImageHeight = 1024
     private val modelFilename = "macaulay/YOLOv11_Macaulay_28apr2026_best_int8.tflite"
     private val labelClasses: List<String>
-    private val groupClasses: List<String>
+    private val subClasses: List<String>
     private val iouThreshold = 0.45f
 
 
@@ -47,9 +48,7 @@ class YOLOv11Detector(private val context: Context) {
         //load in the labels from the text file
         labelClasses = getLabels(context)
 
-        //get group class names ready for score aggregating
-        val regex = Regex("\\s*\\(.*?\\)")
-        groupClasses = labelClasses.map { it.replace(regex, "").trim() }
+        subClasses = labelClasses
     }//init
 
     //loads the model into the interpreter
@@ -150,13 +149,9 @@ class YOLOv11Detector(private val context: Context) {
             //create the initial list of detections
             val detections = mutableListOf<Detection>()
 
-            //aggregate the scores by grouping up species names
-            val groupScores = mutableMapOf<String, Float>()
-
             //process each of the outputs
             for (i in 0 until outputShape[2]) {
-                //clear the group scores beforehand
-                groupScores.clear()
+                val groupScores = mutableMapOf<String, Float>()
 
                 val xCenter = outputArray[0][i]
                 val yCenter = outputArray[1][i]
@@ -168,36 +163,32 @@ class YOLOv11Detector(private val context: Context) {
                 var maxSingleClassIndex = 0
 
                 var quickMax = 0f
+                for (j in 4 until outputShape[1]) {
+                    val conf = outputArray[j][i]
+                    if (conf > quickMax) quickMax = conf
+                }
 
-                //remember to start counting from 4 onwards
+                //skip early if smaller than confidence threshold
+                if (quickMax < confidenceThreshold) continue
+
                 for (j in 4 until outputShape[1]) {
                     val classConfidence = outputArray[j][i]
                     val classIndex = j - 4
-
-                    //check current single score against max
                     if (classConfidence > maxSingleConfidence) {
                         maxSingleConfidence = classConfidence
-                        maxSingleClassIndex = j - 4
-                    }//if
-
-                    //quick pre-scan to skip classes with too low a threshold
-                    if (outputArray[j][i] > quickMax) quickMax = outputArray[j][i]
-                    if (quickMax < confidenceThreshold) continue
-
-                    //update the group scores
-                    val groupName = if (classIndex < labelClasses.size) groupClasses[classIndex] else continue
-                    val current = groupScores.getOrDefault(groupName, 0f)
-                    if (classConfidence > current) {
-                        groupScores[groupName] = classConfidence
-                    }//if
+                        maxSingleClassIndex = classIndex
+                    }
+                    val subName = if (classIndex < subClasses.size) subClasses[classIndex] else continue
+                    val current = groupScores.getOrDefault(subName, 0f)
+                    if (classConfidence > current) groupScores[subName] = classConfidence
                 }//for
 
                 //get these for sub-detections
-                val groupScoresSorted = groupScores.entries.sortedByDescending { it.value }
+                val subScoresSorted = groupScores.entries.sortedByDescending { it.value }
 
                 val subDetections = mutableListOf<Pair<String, Float>>()
-                if (groupScoresSorted.size > 1) subDetections.add(Pair(groupScoresSorted[1].key, groupScoresSorted[1].value))
-                if (groupScoresSorted.size > 2) subDetections.add(Pair(groupScoresSorted[2].key, groupScoresSorted[2].value))
+                if (subScoresSorted.size > 1) subDetections.add(Pair(subScoresSorted[1].key, subScoresSorted[1].value))
+                if (subScoresSorted.size > 2) subDetections.add(Pair(subScoresSorted[2].key, subScoresSorted[2].value))
 
                 //if the threshold is reached, begin creating the bounding box for our detection
                 if (maxSingleConfidence >= confidenceThreshold) {
@@ -269,9 +260,10 @@ class YOLOv11Detector(private val context: Context) {
             //decay scores of the remaining candidates based on IoU overlap with best
             for (det in filteredDetections) {
                 val iou = calculateIoU(best.bbox, det.bbox)
-                if(iou > iouThreshold){
-                    det.confidence *= (1-iou)
-                }else continue;
+                val sigma = 0.5f
+                if (iou > iouThreshold) {
+                    det.confidence *= exp(-(iou * iou) / sigma)
+                }//if
             }//for
 
             //remove any entries falling below score threshold

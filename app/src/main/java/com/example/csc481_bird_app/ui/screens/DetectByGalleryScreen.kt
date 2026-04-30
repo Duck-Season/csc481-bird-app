@@ -36,6 +36,7 @@ fun DetectByGalleryScreen(
     prefs: SharedPreferences,
     onDetectionsComplete: () -> Unit,
     onBack: () -> Unit,
+    disableNavbar: () -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -48,6 +49,9 @@ fun DetectByGalleryScreen(
         uri?.let {
             //launch on a separate thread so the app doesn't freeze
             scope.launch {
+                //disable navbar
+                disableNavbar()
+
                 // CRITICAL: Request permanent read access to this specific file
                 try {
                     val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION

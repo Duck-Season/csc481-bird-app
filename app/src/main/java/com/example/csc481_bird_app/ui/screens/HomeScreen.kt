@@ -33,7 +33,8 @@ fun HomeScreen(
     onGalleryClick: () -> Unit,
     onFileClick: () -> Unit,
     onFAQClick: () -> Unit,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
+    outerPadding: PaddingValues
 ){
     Scaffold(
         topBar = {

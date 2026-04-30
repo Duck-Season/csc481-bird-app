@@ -2,6 +2,7 @@ package com.example.csc481_bird_app.ui.screens.dialogs.results
 
 import android.content.Context
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -135,9 +136,11 @@ fun FilterDialog (
                 LazyHorizontalStaggeredGrid(
                     rows = StaggeredGridCells.Adaptive(20.dp),
                     horizontalItemSpacing = 2.dp,
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                    contentPadding = PaddingValues(4.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(80.dp)
+                        .height(if(filterSet.isNotEmpty()) 60.dp else 0.dp)
                 ) {
                     items(filterSet.size){
                         val speciesName = filterSet.elementAt(it)

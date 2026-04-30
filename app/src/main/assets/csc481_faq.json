@@ -80,13 +80,13 @@
         "subheader": "Meet the Dev Team",
         "subitems": [
           {
-            "text": "Aidan Haurin - Model training and management, file management, file system UI, results screen UI, and OpenStreetMap integration."
-          },
-          {
-            "text": "Ricco Little - Camera system, species filtering, and geolocational data."
+            "text": "Aidan Haurin - Model training and management, file management, file system UI, results screen UI, species filtering, and OpenStreetMap integration."
           },
           {
             "text": "Dastan Utegenov - Gallery screen, camera focusing, and results screen UI."
+          },
+          {
+            "text": "Ricco Little - Camera system, species filtering, and geolocational data."
           }
         ]
       },
@@ -107,7 +107,7 @@
             "text1": "This app was trained on images sourced from the",
             "link1": "Macaulay Library",
             "url1": "https://www.macaulaylibrary.org/",
-            "text2": "dataset from the",
+            "text2": "database managed by the",
             "link2": "Cornell Lab of Ornithology",
             "url2": "https://www.birds.cornell.edu/home"
           }

@@ -12,10 +12,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
 import com.example.csc481_bird_app.detector.DectectionsViewModel
+import com.example.csc481_bird_app.detector.Detection
 
 @Composable
 fun BoundingBoxOverlay(
-    viewModel: DectectionsViewModel,
+    detections: List<Detection>,
     bmp: Bitmap,
     selectedIndex: Int
 ){
@@ -26,7 +27,7 @@ fun BoundingBoxOverlay(
         val offsetX = (size.width - bmp.width * scale) / 2f
         val offsetY = (size.height - bmp.height * scale) / 2f
 
-        viewModel.detections.forEachIndexed { index, det ->
+        detections.forEachIndexed { index, det ->
             //if a certain detection is selected, 'highlight' it on the image
             val bboxColor = if(index == selectedIndex){
                 Color.Red

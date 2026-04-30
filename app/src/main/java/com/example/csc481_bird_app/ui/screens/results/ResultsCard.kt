@@ -13,7 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.unit.dp
@@ -98,13 +98,15 @@ fun ResultsCard(
 
                 Text(
                     text = "${index + 1}.) ${det.className}",
-                    fontSize = 16.sp,
+                    fontSize = 24.sp,
                     modifier = Modifier
                         .weight(0.5f),
+                    fontWeight = FontWeight.Light,
                     style = TextStyle(
                         hyphens = Hyphens.Auto,
                         lineBreak = LineBreak.Paragraph
-                    )
+                    ),
+                    color = MaterialTheme.colorScheme.primary
                 )//Text
 
                 Column(
@@ -114,7 +116,9 @@ fun ResultsCard(
                 ){
                     Text(
                         text = "${String.format("%.2f", det.confidence*100)}%",
-                        fontSize = 18.sp,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary
                     )//Text
 
                     Spacer(Modifier.padding(8.dp))
@@ -135,10 +139,14 @@ fun ResultsCard(
 
             //display when tapped
             if(selectedIndex == index){
-                Column (horizontalAlignment = Alignment.CenterHorizontally){
+                Spacer(modifier = Modifier.padding(4.dp))
+
+                Column (){
                     Text(
                         text = "Other candidates",
-                        fontSize = 12.sp
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary
                     )//Text
 
                     det.subDetections.forEachIndexed { index, subDet ->
@@ -150,12 +158,14 @@ fun ResultsCard(
                                 Text(
                                     text = subDet.first,
                                     fontSize = 12.sp,
-                                    modifier = Modifier.weight(0.6f)
+                                    modifier = Modifier.weight(0.6f),
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                                 Text(
                                     "${String.format("%.2f", subDet.second*100)}%",
                                     fontSize = 12.sp,
-                                    modifier = Modifier.weight(0.4f)
+                                    modifier = Modifier.weight(0.4f),
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             }//Row
                             Row (
@@ -170,12 +180,6 @@ fun ResultsCard(
                     }//forEach
 
                     Spacer(modifier = Modifier.padding(4.dp))
-
-                    HorizontalDivider(
-                        modifier = Modifier.fillMaxWidth().padding(2.dp),
-                        thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.primary
-                    )
 
                     TextButton(
                         colors = ButtonDefaults.buttonColors(Color.Transparent, MaterialTheme.colorScheme.primary),
