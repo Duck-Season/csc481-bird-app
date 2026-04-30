@@ -16,9 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
@@ -26,7 +24,6 @@ import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
@@ -71,10 +68,12 @@ fun FilterDialog (
     //the actual Composable
     AlertDialog(
         modifier = Modifier.height(600.dp),
+        icon = {
+            if(!isFavoritingMode) Icon(painter = painterResource(id = R.drawable.outline_filter_alt_24), contentDescription = null)
+        },
         title = {
             Text(
-                text = if(isFavoritingMode) "Favorite Species" else "Filter Species",
-                textAlign = TextAlign.Center
+                text = if(isFavoritingMode) "Favorite Species" else "Filter Species"
             )
         },
         text = {

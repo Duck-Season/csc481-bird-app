@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -73,7 +74,8 @@ fun HomeScreen(
                         Icon(
                             painter = painterResource(id = R.drawable.rounded_add_camera_24),
                             contentDescription = "File Icon",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.requiredSize(64.dp)
                         )//Icon
 
                         Spacer(modifier = Modifier.width(8.dp))
@@ -103,7 +105,8 @@ fun HomeScreen(
                         Icon(
                             painter = painterResource(id = R.drawable.rounded_add_photo_alternate_24),
                             contentDescription = "File Icon",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.requiredSize(64.dp)
                         )//Icon
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
@@ -131,7 +134,8 @@ fun HomeScreen(
                         Icon(
                             painter = painterResource(id = R.drawable.rounded_files_24),
                             contentDescription = "File Icon",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.requiredSize(64.dp)
                         )//Icon
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
@@ -159,7 +163,8 @@ fun HomeScreen(
                         Icon(
                             painter = painterResource(id = R.drawable.outline_help_24),
                             contentDescription = "FAQ Icon",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.requiredSize(64.dp)
                         )//Icon
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
@@ -187,7 +192,8 @@ fun HomeScreen(
                         Icon(
                             painter = painterResource(id = R.drawable.baseline_settings_24),
                             contentDescription = "Settings Icon",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.requiredSize(64.dp)
                         )//Icon
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(

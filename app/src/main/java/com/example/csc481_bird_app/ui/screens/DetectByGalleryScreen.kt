@@ -7,6 +7,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -18,7 +19,9 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.exifinterface.media.ExifInterface
 import com.example.csc481_bird_app.R
 import com.example.csc481_bird_app.detector.DectectionsViewModel
@@ -145,18 +148,33 @@ fun DetectByGalleryScreen(
             verticalArrangement = Arrangement.Center
         ) {
             if(!viewModel.isProcessing){
-                //button to open the image (gets disabled while processing)
-                Button(
+                //button to open the image (gets hidden while processing)
+                OutlinedButton(
                     onClick = { picker.launch("image/*") },
-                    enabled = !viewModel.isProcessing
+                    enabled = !viewModel.isProcessing,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                    shape = MaterialTheme.shapes.medium,
+                    modifier = Modifier
+                        .aspectRatio(1f/1f)
+                        .fillMaxWidth()
                 ) {
-                    Row() {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
                         Icon(
                             painter = painterResource(id = R.drawable.rounded_add_photo_alternate_24),
-                            contentDescription = "File Icon"
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.requiredSize(100.dp)
                         )//Icon
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text( "Select Image")
+                        Text(
+                            text = "To get started, click here\nto open your phone's image gallery!",
+                            color = MaterialTheme.colorScheme.primary,
+                            textAlign = TextAlign.Center,
+                            fontSize = 18.sp
+                        )//Text
                     }//Row
                 }//Button
             }//if
