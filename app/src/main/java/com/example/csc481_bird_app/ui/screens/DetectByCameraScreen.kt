@@ -37,6 +37,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
@@ -61,7 +62,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -357,6 +360,10 @@ fun DetectByCameraScreen(
                             color = Color.White.copy(alpha = alphaScale),
                             radius = 32.dp.toPx() * alphaScale,
                             center = position,
+                            style = Stroke(
+                                width = 2.dp.toPx(),
+                                cap = StrokeCap.Round
+                            )//style
                         )//drawCircle
                     }//Canvas
                 }//.let
@@ -379,9 +386,8 @@ fun DetectByCameraScreen(
                         // switch camera button
                         Box(
                             modifier = Modifier
-                                .size(72.dp)
-                                .clip(CircleShape)
-                                .background(Color.White.copy(alpha = 0.15f)),
+                                .size(100.dp)
+                                .clip(CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
                             IconButton(
@@ -392,7 +398,7 @@ fun DetectByCameraScreen(
                                     painter = painterResource(R.drawable.outline_cameraswitch_24),
                                     contentDescription = "Switch Camera",
                                     tint = Color.White,
-                                    modifier = Modifier.size(64.dp)
+                                    modifier = Modifier.size(86.dp)
                                 )//Icon
                             }//IconButton
                         }//Box
@@ -400,9 +406,8 @@ fun DetectByCameraScreen(
                         // capture picture button
                         Box(
                             modifier = Modifier
-                                .size(84.dp)
-                                .clip(CircleShape)
-                                .background(Color.White.copy(alpha = 0.25f)),
+                                .size(100.dp)
+                                .clip(CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
                             IconButton(
@@ -410,16 +415,16 @@ fun DetectByCameraScreen(
                                 enabled = !hasTakenPicture
                             ) {
                                 Icon(
-                                    painter = painterResource(R.drawable.baseline_circle_24),
+                                    painter = painterResource(R.drawable.icon_camera_button),
                                     contentDescription = "Capture",
                                     tint = if (hasTakenPicture) Color.Gray else Color.White,
-                                    modifier = Modifier.size(64.dp)
+                                    modifier = Modifier.requiredSize(64.dp)
                                 )//Icon
                             }//IconButton
                         }//Box (capture button)
 
                         // spacer to balance layout
-                        Spacer(modifier = Modifier.size(72.dp))
+                        Spacer(modifier = Modifier.size(100.dp))
                     }//Row
                 }//Box (control bar)
             }//Box (container for camera view)

@@ -3,6 +3,7 @@ package com.example.csc481_bird_app
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
@@ -104,6 +105,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    BackHandler(enabled = currentRoute != "home") {
+                        onBackReset()
+                    }
+
                     Scaffold(
                         topBar = {
                             if(altLayoutPref && currentRoute == "home"){
@@ -206,6 +211,7 @@ class MainActivity : ComponentActivity() {
                             startDestination = "home",
                             modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())
                         ) {
+
                             composable("home") {
                                 if(altLayoutPref){
                                     Column(
@@ -283,6 +289,10 @@ class MainActivity : ComponentActivity() {
                                 )//ChooseFileScreen
                             }//composable
                             composable("results") {
+                                BackHandler(enabled = currentRoute != "home") {
+                                    onBackReset()
+                                }
+
                                 ResultsScreen(
                                     viewModel,
                                     onBack = {
