@@ -79,23 +79,21 @@ fun DetectByGalleryScreen(
                     viewModel.bmpUri = uri
 
                     //save results to a file
-                    if(viewModel.detections.isNotEmpty()){
-                        context.contentResolver.openInputStream(uri)?.use { stream ->
-                            val exif = ExifInterface(stream)
-                            val coords = Pair(
-                                exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE)?.split("/")[0]?.toFloatOrNull(),
-                                exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)?.split("/")[0]?.toFloatOrNull()
-                            )//val Pair
-                            saveDetections(
-                                context,
-                                viewModel.detections,
-                                uri.toString(),
-                                coords,
-                                false,
-                                prefs
-                            )//saveDetections
-                        }//.use
-                    }//if
+                    context.contentResolver.openInputStream(uri)?.use { stream ->
+                        val exif = ExifInterface(stream)
+                        val coords = Pair(
+                            exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE)?.split("/")[0]?.toFloatOrNull(),
+                            exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)?.split("/")[0]?.toFloatOrNull()
+                        )//val Pair
+                        saveDetections(
+                            context,
+                            viewModel.detections,
+                            uri.toString(),
+                            coords,
+                            false,
+                            prefs
+                        )//saveDetections
+                    }//.use
 
                     //call function for moving into the results screen
                     Log.d("csc481birdapp", "Detections after runDetections: ${viewModel.detections.size}")

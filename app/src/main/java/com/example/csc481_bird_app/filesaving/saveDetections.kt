@@ -22,7 +22,7 @@ fun saveDetections(
     //make sure there's an image and either there's some detections or autosave for empty images is enabled
     val isAutosaveEnabled = prefs.getBoolean("pref_autosavingEnabled", true)
     val isAutosaveEmptyEnabled = prefs.getBoolean("pref_autosaveEmptyScans", false)
-    if((((detections.isNotEmpty() && isAutosaveEnabled) || isAutosaveEmptyEnabled) || forceSave) && imageUri != null){
+    if ((isAutosaveEnabled && (detections.isNotEmpty() || isAutosaveEmptyEnabled) || forceSave) && imageUri != null){
         try {
             //create filename for save
             //indicate whether camera or gallery was used

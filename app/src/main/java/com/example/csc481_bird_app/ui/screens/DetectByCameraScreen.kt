@@ -200,16 +200,14 @@ fun DetectByCameraScreen(
 
                             val geoCoords = Pair(viewModel.geoLat, viewModel.geoLon)
 
-                            if (viewModel.detections.isNotEmpty()) {
-                                saveDetections(
-                                    context,
-                                    viewModel.detections,
-                                    savedUri.toString(),
-                                    geoCoords,
-                                    true,
-                                    prefs
-                                )//saveDetections
-                            }//if
+                            saveDetections(
+                                context,
+                                viewModel.detections,
+                                savedUri.toString(),
+                                geoCoords,
+                                true,
+                                prefs
+                            )//saveDetections
 
                             Log.d("csc481birdapp", "Detections after runDetections: ${viewModel.detections.size}")
                             onDetectionsComplete()
